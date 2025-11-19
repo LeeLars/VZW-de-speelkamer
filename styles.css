@@ -1,0 +1,50 @@
+/* VZW De Speelkamer - Consistent Card Styling */
+
+/* Base card style - gebruik deze voor alle cards */
+.card-base {
+  @apply bg-white rounded-[2rem] shadow-lg border border-gray-50 transition-all duration-300;
+}
+
+.card-hover {
+  @apply hover:shadow-xl hover:-translate-y-1;
+}
+
+/* Card variants */
+.card-primary {
+  @apply card-base card-hover border-b-4 border-b-sk_teal;
+}
+
+.card-secondary {
+  @apply card-base card-hover border-b-4 border-b-sk_yellow;
+}
+
+.card-accent {
+  @apply card-base card-hover border-b-4 border-b-sk_pink;
+}
+
+/* Section container */
+.section-container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12;
+}
+
+/* Consistent padding for cards */
+.card-padding {
+  @apply p-6 md:p-8;
+}
+
+/* Icon containers */
+.icon-container {
+  @apply w-12 h-12 rounded-xl flex items-center justify-center shadow-sm transition-all;
+}
+
+.icon-container-teal {
+  @apply icon-container bg-sk_teal/10 text-sk_teal;
+}
+
+.icon-container-yellow {
+  @apply icon-container bg-sk_yellow/10 text-yellow-700;
+}
+
+.icon-container-pink {
+  @apply icon-container bg-sk_pink/10 text-pink-700;
+}

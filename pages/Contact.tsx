@@ -85,7 +85,7 @@ export const Contact: React.FC = () => {
                      <MapPin size={20} /> Tijdens opvanguren
                   </h4>
                   <p className="text-gray-600 mb-4">
-                    Voor dringende zaken tijdens de opvanguren of kampen belt u best rechtstreeks naar de verantwoordelijke.
+                    Voor dringende zaken tijdens de opvanguren of vakantiekampen belt u best rechtstreeks naar de verantwoordelijke.
                   </p>
                   <div className="bg-sk_teal/5 p-4 rounded-xl border border-sk_teal/10">
                      <p className="text-gray-800 font-bold">Inge Versavel</p>

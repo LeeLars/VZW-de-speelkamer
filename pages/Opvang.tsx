@@ -196,7 +196,7 @@ export const Opvang: React.FC = () => {
                 : 'text-gray-500 hover:bg-gray-50 hover:text-sk_yellow'
             }`}
           >
-            <Calendar size={20} /> Kampen & Vrije Dagen
+            <Calendar size={20} /> Vakantiekampen & Vrije Dagen
           </button>
           <button
             onClick={() => setActiveTab('studie')}
@@ -219,7 +219,7 @@ export const Opvang: React.FC = () => {
              
              {/* Hero & General Info */}
              <div className="text-center max-w-3xl mx-auto mb-12">
-                <h2 className="text-3xl font-bold text-gray-800 mb-4">Dagelijkse Opvang</h2>
+                <h2 className="text-3xl font-bold text-gray-800 mb-4">Dagelijkse voor- en naschoolse opvang</h2>
                 <p className="text-gray-600 leading-relaxed text-lg mb-6 font-light">
                   We staan elke dag paraat voor alle kinderen van VBS De Frères, Sint-Andreas en Het Kleurenpalet. 
                   Inschrijven voor de reguliere opvang is niet nodig; we werken met een handig scansysteem.
@@ -345,7 +345,7 @@ export const Opvang: React.FC = () => {
                             <div>
                               <h4 className="font-bold text-gray-800 text-sm mb-1">Geen inschrijving nodig</h4>
                               <p className="text-xs text-gray-500 leading-relaxed">
-                                Voor de dagelijkse voor- en naschoolse opvang hoef je niet in te schrijven. Wel voor kampen en vrije dagen.
+                                Voor de dagelijkse voor- en naschoolse opvang hoef je niet in te schrijven. Wel voor vakantiekampen en vrije dagen.
                               </p>
                             </div>
                           </div>
@@ -356,7 +356,7 @@ export const Opvang: React.FC = () => {
           </div>
         )}
 
-        {/* TAB 2: Kampen & Vrije Dagen */}
+        {/* TAB 2: Vakantiekampen & Vrije Dagen */}
         {activeTab === 'kampen' && (
           <div className="space-y-8">
             {/* Filter Buttons */}
@@ -383,7 +383,7 @@ export const Opvang: React.FC = () => {
               </div>
             </div>
 
-            {/* Kampen */}
+            {/* Vakantiekampen */}
             <div id="kampen-section" className="scroll-mt-32">
               <div className="flex items-center gap-4 mb-8">
                  <div className="w-12 h-12 bg-sk_yellow/20 text-yellow-800 rounded-2xl flex items-center justify-center"><Calendar size={24} /></div>
@@ -391,7 +391,7 @@ export const Opvang: React.FC = () => {
               </div>
               {camps.length === 0 ? (
                 <div className="bg-gray-50 rounded-[2.5rem] p-12 text-center border-2 border-dashed border-gray-200">
-                  <p className="text-gray-500 font-medium">Er zijn momenteel geen kampen gepland. Kom later terug!</p>
+                  <p className="text-gray-500 font-medium">Er zijn momenteel geen vakantiekampen gepland. Kom later terug!</p>
                 </div>
               ) : (
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -435,7 +435,7 @@ export const Opvang: React.FC = () => {
         {activeTab === 'studie' && (
           <div>
              <div className="text-center max-w-3xl mx-auto mb-12">
-                <h2 className="text-3xl font-bold text-gray-800 mb-4">Studiebegeleiding op maat</h2>
+                <h2 className="text-3xl font-bold text-gray-800 mb-4">Studie aanbod op maat</h2>
                 <p className="text-gray-600 leading-relaxed text-lg mb-6 font-light">
                   Omdat elk kind op zijn eigen tempo leert. Wij bieden ondersteuning via taallessen, studiebegeleiding en bijles.
                 </p>

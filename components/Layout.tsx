@@ -158,7 +158,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                   </p>
                 </Link>
 
-                {/* Kampen & Vrije Dagen */}
+                {/* Vakantiekampen & Vrije Dagen */}
                 <Link
                   to="/opvang#kampen"
                   onClick={() => setShowMegaMenu(false)}
@@ -169,7 +169,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                       <Calendar size={24} strokeWidth={2} />
                     </div>
                     <h3 className="text-lg font-bold text-gray-800 group-hover:text-yellow-700 transition-colors">
-                      Kampen & Vrije Dagen
+                      Vakantiekampen & Vrije Dagen
                     </h3>
                   </div>
                   <p className="text-sm text-gray-500 leading-relaxed">
@@ -238,10 +238,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             {/* Col 1: Brand & About */}
             <div className="space-y-6">
               <div className="flex items-center gap-3">
-                 <div className="w-8 h-8 bg-sk_teal text-white rounded-lg flex items-center justify-center shadow-sm">
-                    <Puzzle size={18} fill="currentColor" />
-                 </div>
-                 <h3 className="text-xl font-bold text-gray-800">De Speelkamer</h3>
+                 <img src="/images/Logo-VZW-de-speelkamer.png" alt="VZW De Speelkamer" className="w-30 h-30 object-contain" />
               </div>
               <p className="text-gray-500 leading-relaxed font-light">
                 Warme, educatieve opvang in het hart van Brugge. Verbonden aan VBS De Frères en samenwerkend met diverse partners om elk kind een tweede thuis te bieden.
@@ -300,11 +297,27 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
               </ul>
             </div>
           </div>
-          <div className="border-t border-gray-100 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center text-gray-400 text-xs font-medium gap-4">
-            <span>&copy; {new Date().getFullYear()} VZW De Speelkamer. Alle rechten voorbehouden.</span>
-            <Link to="/admin" className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-gray-50 hover:text-sk_teal transition-colors">
-               <Lock size={12} /> Team Login
-            </Link>
+          <div className="border-t border-gray-100 mt-16 pt-8">
+            <div className="flex flex-col md:flex-row justify-between items-center text-gray-400 text-xs font-medium gap-4">
+              <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4">
+                <span>&copy; {new Date().getFullYear()} VZW De Speelkamer. Alle rechten voorbehouden.</span>
+                <span className="hidden md:inline">•</span>
+                <span>
+                  Gemaakt door{' '}
+                  <a 
+                    href="https://grafixstudio.be/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-sk_teal font-bold hover:text-sk_pink transition-colors hover:underline"
+                  >
+                    Grafix Studio
+                  </a>
+                </span>
+              </div>
+              <Link to="/admin" className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-gray-50 hover:text-sk_teal transition-colors">
+                 <Lock size={12} /> Team Login
+              </Link>
+            </div>
           </div>
         </div>
       </footer>

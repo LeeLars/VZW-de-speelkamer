@@ -38,7 +38,7 @@ export const Home: React.FC = () => {
                 to="/opvang#kampen"
                 className="inline-flex items-center justify-center px-8 py-4 rounded-full bg-white text-sk_teal border-2 border-sk_teal/20 font-bold text-lg hover:border-sk_teal hover:bg-sk_teal/5 transition-all hover:-translate-y-1"
               >
-                Bekijk kampen
+                Bekijk vakantiekampen
               </Link>
             </div>
           </div>
@@ -68,45 +68,45 @@ export const Home: React.FC = () => {
       {/* Services Cards - Playful Style */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-20 relative z-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Card 1 - Mint */}
-          <div className="group bg-white p-8 rounded-[2.5rem] shadow-xl shadow-sk_mint/10 border-b-8 border-sk_mint hover:-translate-y-2 transition-all duration-300">
-            <div className="w-16 h-16 bg-sk_mint rounded-2xl rotate-3 group-hover:rotate-12 transition-transform flex items-center justify-center mb-6 text-green-800 shadow-sm">
-              <Heart size={32} strokeWidth={2} />
+          {/* Card 1 - Teal */}
+          <div className="group bg-white p-8 rounded-[2rem] shadow-lg border border-gray-50 border-b-4 border-b-sk_teal hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+            <div className="w-14 h-14 bg-sk_teal/10 rounded-xl flex items-center justify-center mb-6 text-sk_teal group-hover:bg-sk_teal group-hover:text-white transition-all">
+              <Heart size={28} strokeWidth={2} />
             </div>
             <h3 className="text-2xl font-bold text-gray-800 mb-3">Voor- & Naschools</h3>
-            <p className="text-gray-500 mb-6 leading-relaxed">
+            <p className="text-gray-600 mb-6 leading-relaxed">
               Elke dag staan we klaar van 07:00 tot 19:00. Een veilige haven voor en na schooltijd.
             </p>
-            <Link to="/opvang" className="inline-flex items-center gap-2 text-sk_teal font-bold group-hover:gap-3 transition-all bg-sk_mint/10 px-4 py-2 rounded-full">
+            <Link to="/opvang" className="inline-flex items-center gap-2 text-sk_teal font-bold group-hover:gap-3 transition-all bg-sk_teal/10 px-4 py-2 rounded-xl hover:bg-sk_teal hover:text-white">
               Meer info <ArrowRight size={18} />
             </Link>
           </div>
 
           {/* Card 2 - Yellow */}
-          <div className="group bg-white p-8 rounded-[2.5rem] shadow-xl shadow-sk_yellow/10 border-b-8 border-sk_yellow hover:-translate-y-2 transition-all duration-300">
-            <div className="w-16 h-16 bg-sk_yellow rounded-2xl -rotate-3 group-hover:-rotate-12 transition-transform flex items-center justify-center mb-6 text-yellow-800 shadow-sm">
-              <Calendar size={32} strokeWidth={2} />
+          <div className="group bg-white p-8 rounded-[2rem] shadow-lg border border-gray-50 border-b-4 border-b-sk_yellow hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+            <div className="w-14 h-14 bg-sk_yellow/10 rounded-xl flex items-center justify-center mb-6 text-yellow-700 group-hover:bg-sk_yellow group-hover:text-yellow-900 transition-all">
+              <Calendar size={28} strokeWidth={2} />
             </div>
-            <h3 className="text-2xl font-bold text-gray-800 mb-3">Kampen & Vrije dagen</h3>
-            <p className="text-gray-500 mb-6 leading-relaxed">
+            <h3 className="text-2xl font-bold text-gray-800 mb-3">Vakantiekampen & Vrije dagen</h3>
+            <p className="text-gray-600 mb-6 leading-relaxed">
               Vakantie? Studiedag? Wij zorgen voor een dag vol avontuur, spel en plezier!
             </p>
-            <Link to="/opvang#kampen" className="inline-flex items-center gap-2 text-sk_teal font-bold group-hover:gap-3 transition-all bg-sk_yellow/10 px-4 py-2 rounded-full">
+            <Link to="/opvang#kampen" className="inline-flex items-center gap-2 text-yellow-700 font-bold group-hover:gap-3 transition-all bg-sk_yellow/10 px-4 py-2 rounded-xl hover:bg-sk_yellow hover:text-yellow-900">
               Kalender bekijken <ArrowRight size={18} />
             </Link>
           </div>
 
           {/* Card 3 - Pink */}
-          <div className="group bg-white p-8 rounded-[2.5rem] shadow-xl shadow-sk_pink/10 border-b-8 border-sk_pink hover:-translate-y-2 transition-all duration-300">
-            <div className="w-16 h-16 bg-sk_pink rounded-2xl rotate-3 group-hover:rotate-12 transition-transform flex items-center justify-center mb-6 text-white shadow-sm">
-              <BookOpen size={32} strokeWidth={2} />
+          <div className="group bg-white p-8 rounded-[2rem] shadow-lg border border-gray-50 border-b-4 border-b-sk_pink hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+            <div className="w-14 h-14 bg-sk_pink/10 rounded-xl flex items-center justify-center mb-6 text-pink-700 group-hover:bg-sk_pink group-hover:text-white transition-all">
+              <BookOpen size={28} strokeWidth={2} />
             </div>
-            <h3 className="text-2xl font-bold text-gray-800 mb-3">Studie aanbod</h3>
-            <p className="text-gray-500 mb-6 leading-relaxed">
-              Hulp nodig bij huiswerk of talen? Ons team biedt ondersteuning op maat.
+            <h3 className="text-2xl font-bold text-gray-800 mb-3">Studie-aanbod</h3>
+            <p className="text-gray-600 mb-6 leading-relaxed">
+              Woensdagnamiddag en tijdens vakanties bieden we studieondersteuning aan.
             </p>
-            <Link to="/opvang#studie" className="inline-flex items-center gap-2 text-sk_teal font-bold group-hover:gap-3 transition-all bg-sk_pink/10 px-4 py-2 rounded-full">
-              Ontdek opties <ArrowRight size={18} />
+            <Link to="/opvang#studie" className="inline-flex items-center gap-2 text-pink-700 font-bold group-hover:gap-3 transition-all bg-sk_pink/10 px-4 py-2 rounded-xl hover:bg-sk_pink hover:text-white">
+              Ontdek meer <ArrowRight size={18} />
             </Link>
           </div>
         </div>
