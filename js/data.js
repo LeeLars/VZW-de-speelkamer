@@ -7,7 +7,7 @@ const DATA = {
             name: 'VBS De Frères',
             address: 'Nieuwstraat 2, 8000 Brugge',
             description: 'Onze hoofdlocatie gelegen in het hartje van Brugge.',
-            image: '/images/Opvang001.jpg',
+            image: './images/Opvang001.jpg',
             phone: '050 12 34 56',
             email: 'info@vzwdespeelkamer.be'
         },
@@ -16,7 +16,7 @@ const DATA = {
             name: 'Sint-Andreas',
             address: 'Gentpoortstraat 1, 8000 Brugge',
             description: 'Een gezellige locatie met veel speelruimte.',
-            image: '/images/Opvang006.jpg',
+            image: './images/Opvang006.jpg',
             phone: '050 12 34 56',
             email: 'info@vzwdespeelkamer.be'
         },
@@ -25,7 +25,7 @@ const DATA = {
             name: 'Het Kleurenpalet',
             address: 'Groenestraat 27, 8000 Brugge',
             description: 'Onze locatie met focus op creativiteit.',
-            image: '/images/Opvang001.jpg',
+            image: './images/Opvang001.jpg',
             phone: '050 12 34 56',
             email: 'info@vzwdespeelkamer.be'
         }
@@ -37,7 +37,7 @@ const DATA = {
             name: 'Sarah Pieters',
             role: 'Algemeen Coördinator',
             locationIds: ['loc1', 'loc2', 'loc3'],
-            imageUrl: '/images/team.jpg',
+            imageUrl: './images/team.jpg',
             bio: 'Sarah is de drijvende kracht achter De Speelkamer en zorgt voor een warme en professionele werking.'
         },
         {
@@ -45,7 +45,7 @@ const DATA = {
             name: 'Tom Maes',
             role: 'Hoofdbegeleider',
             locationIds: ['loc1'],
-            imageUrl: '/images/team.jpg',
+            imageUrl: './images/team.jpg',
             bio: 'Tom staat in voor de dagelijkse begeleiding en brengt veel energie en creativiteit mee.'
         },
         {
@@ -53,7 +53,7 @@ const DATA = {
             name: 'Elke De Smet',
             role: 'Begeleider',
             locationIds: ['loc2'],
-            imageUrl: '/images/team.jpg',
+            imageUrl: './images/team.jpg',
             bio: 'Elke zorgt voor een veilige en gezellige sfeer waar kinderen zich thuis voelen.'
         },
         {
@@ -61,7 +61,7 @@ const DATA = {
             name: 'Jonas Vermeulen',
             role: 'Sportbegeleider',
             locationIds: ['loc3'],
-            imageUrl: '/images/team.jpg',
+            imageUrl: './images/team.jpg',
             bio: 'Jonas brengt beweging en sport in de opvang met veel enthousiasme.'
         }
     ],
