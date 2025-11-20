@@ -1,6 +1,20 @@
 # 🎨 VZW De Speelkamer - Website
 
-Moderne website voor VZW De Speelkamer - Buitenschoolse opvang in Antwerpen.
+Moderne website voor VZW De Speelkamer - Buitenschoolse opvang in Brugge.
+
+## ⚡ NIEUW: Pure HTML/CSS/JS Versie Beschikbaar!
+
+**Het React project is nu ook beschikbaar als pure HTML/CSS/JavaScript versie!**
+
+✅ **Geen build process nodig**  
+✅ **Geen Node.js of npm vereist**  
+✅ **Direct te openen in browser**  
+✅ **Makkelijk te hosten op elke server**  
+✅ **Zelfde design en functionaliteit**  
+
+👉 **Open gewoon `index.html` in je browser en het werkt!**
+
+[Zie hieronder voor meer details](#-pure-htmlcssjs-versie)
 
 ## 🚀 Features
 
@@ -13,12 +27,19 @@ Moderne website voor VZW De Speelkamer - Buitenschoolse opvang in Antwerpen.
 
 ## 🛠️ Tech Stack
 
+### Originele React Versie (voor developers)
 - **React 19.2** - UI Framework
 - **TypeScript 5.8** - Type safety
 - **Vite** - Build tool
 - **React Router v7** - Routing
 - **TailwindCSS** - Styling
 - **Lucide Icons** - Icon library
+
+### Pure HTML/CSS/JS Versie (aanbevolen voor productie)
+- **Vanilla JavaScript** - Geen frameworks
+- **Tailwind CSS CDN** - Styling
+- **Hash-based routing** - Single Page Application
+- **Inline SVG** - Icons
 
 ## 📦 Installatie
 
@@ -176,6 +197,113 @@ Facebook: [facebook.com/opvangminipalet](https://www.facebook.com/opvangminipale
 ## 📄 License
 
 © 2025 VZW De Speelkamer. Alle rechten voorbehouden.
+
+## 🌐 Pure HTML/CSS/JS Versie
+
+### Waarom deze versie?
+
+De pure HTML versie is gemaakt omdat:
+- React soms problemen geeft met hosting
+- Geen build process = sneller en eenvoudiger
+- Werkt op elke webserver zonder configuratie
+- Makkelijker te onderhouden voor niet-developers
+
+### Hoe te gebruiken
+
+**Optie 1: Direct openen (lokaal testen)**
+```bash
+# Dubbelklik gewoon op index.html
+# Of via terminal:
+open index.html
+```
+
+**Optie 2: Met lokale server (aanbevolen)**
+```bash
+# Python 3
+python3 -m http.server 8000
+
+# Dan open: http://localhost:8000
+```
+
+**Optie 3: Upload naar webserver**
+- Upload alle bestanden via FTP/SFTP
+- Zorg dat de `/images` folder mee wordt geüpload
+- Klaar! De site werkt direct
+
+### Wat zit erin?
+
+Het `index.html` bestand bevat:
+
+✅ **5 Pagina's** (hash-based routing):
+- `#home` - Homepage met hero sectie
+- `#opvang` - Opvang & Studie info
+- `#locaties` - 3 Locaties met foto's
+- `#team` - Team members
+- `#contact` - Contactgegevens
+
+✅ **Functionaliteit**:
+- Responsive navigatie (desktop + mobile)
+- Dynamische content rendering
+- Smooth page transitions
+- Active navigation states
+
+### Data aanpassen
+
+Open `index.html` en scroll naar het `<script>` gedeelte onderaan:
+
+```javascript
+// Locaties aanpassen
+const LOCATIONS = [
+    { id: 'loc1', name: 'VBS De Frères', ... },
+    // Voeg meer toe of pas aan
+];
+
+// Team members aanpassen
+const TEAM = [
+    { id: 't1', name: 'Sarah Pieters', ... },
+    // Voeg meer toe of pas aan
+];
+```
+
+### Deployment
+
+**Netlify (gratis & makkelijk):**
+1. Ga naar [netlify.com/drop](https://app.netlify.com/drop)
+2. Sleep de hele project folder naar de pagina
+3. Klaar! Je krijgt een live URL
+
+**Hostinger / cPanel:**
+1. Upload via File Manager of FTP
+2. Zet bestanden in `public_html/` folder
+3. Bezoek je domein
+
+**GitHub Pages:**
+```bash
+git add .
+git commit -m "HTML versie"
+git push
+# Enable GitHub Pages in repository settings
+```
+
+### Voordelen vs React versie
+
+| Feature | React | Pure HTML |
+|---------|-------|----------|
+| Build nodig | ✅ Ja | ❌ Nee |
+| Node.js vereist | ✅ Ja | ❌ Nee |
+| Hosting | Complex | Simpel |
+| Laadtijd | ~500kb | ~50kb |
+| Onderhoud | Developer | Iedereen |
+| Admin panel | ✅ Ja | ⚠️ Nog toe te voegen |
+
+### Volgende stappen (optioneel)
+
+Om meer functionaliteit toe te voegen:
+
+1. **Admin panel**: Maak `admin.html` met formulieren
+2. **Backend**: Voeg PHP/Node.js API toe voor data opslag
+3. **CMS**: Integreer headless CMS (Strapi, Contentful)
+4. **Forms**: Gebruik FormSpree of Netlify Forms voor contact
 
 ---
 

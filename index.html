@@ -1,11 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="nl">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/images/Logo-VZW-de-speelkamer.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>VZW De Speelkamer</title>
+    <title>VZW De Speelkamer - Pure HTML Versie</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -33,22 +32,547 @@
         font-family: 'ABeeZee', sans-serif;
         background-color: #fcfdfc;
       }
+      .page { display: none; }
+      .page.active { display: block; }
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .page.active { animation: fadeIn 0.3s ease-out; }
     </style>
-  <script type="importmap">
-{
-  "imports": {
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "react-router-dom": "https://aistudiocdn.com/react-router-dom@^7.9.6",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react": "https://aistudiocdn.com/react@^19.2.0"
-  }
-}
-</script>
-<link rel="stylesheet" href="/index.css">
 </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
-  </body>
+<body>
+    <div class="min-h-screen flex flex-col bg-[#fcfdfc] font-sans selection:bg-sk_mint/50">
+        <!-- Header -->
+        <header class="bg-white/90 backdrop-blur-lg sticky top-0 z-50 border-b border-gray-100/50 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)]">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-24 items-center">
+                    <a href="#home" class="flex items-center gap-3 group">
+                        <img src="/images/Logo-VZW-de-speelkamer.png" alt="Logo VZW De Speelkamer" class="h-16 w-auto object-contain transform group-hover:scale-105 transition-transform duration-300 drop-shadow-sm" />
+                    </a>
+                    <nav class="hidden md:flex items-center gap-2">
+                        <a href="#home" class="nav-link px-5 py-2.5 rounded-full transition-all text-sm font-medium tracking-wide text-gray-600 hover:text-sk_teal hover:bg-sk_mint/20">Home</a>
+                        <a href="#opvang" class="nav-link px-5 py-2.5 rounded-full transition-all text-sm font-medium tracking-wide text-gray-600 hover:text-sk_teal hover:bg-sk_mint/20">Opvang & Studie</a>
+                        <a href="#locaties" class="nav-link px-5 py-2.5 rounded-full transition-all text-sm font-medium tracking-wide text-gray-600 hover:text-sk_teal hover:bg-sk_mint/20">Locaties</a>
+                        <a href="#team" class="nav-link px-5 py-2.5 rounded-full transition-all text-sm font-medium tracking-wide text-gray-600 hover:text-sk_teal hover:bg-sk_mint/20">Team</a>
+                        <a href="#contact" class="nav-link px-5 py-2.5 rounded-full transition-all text-sm font-medium tracking-wide text-gray-600 hover:text-sk_teal hover:bg-sk_mint/20">Contact</a>
+                        <a href="https://www.facebook.com/opvangminipalet" target="_blank" class="ml-4 w-10 h-10 flex items-center justify-center rounded-full bg-blue-50 text-[#1877F2] hover:bg-[#1877F2] hover:text-white transition-all duration-300 hover:rotate-12">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                        </a>
+                    </nav>
+                    <button id="mobile-menu-btn" class="md:hidden p-2 rounded-xl bg-gray-50 text-gray-600 hover:bg-sk_mint/20 hover:text-sk_teal">
+                        <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                    </button>
+                </div>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 py-4 shadow-xl">
+                <div class="flex flex-col px-4 space-y-2">
+                    <a href="#home" class="mobile-nav-link px-5 py-2.5 rounded-full text-sm font-medium text-gray-600 hover:text-sk_teal hover:bg-sk_mint/20">Home</a>
+                    <a href="#opvang" class="mobile-nav-link px-5 py-2.5 rounded-full text-sm font-medium text-gray-600 hover:text-sk_teal hover:bg-sk_mint/20">Opvang & Studie</a>
+                    <a href="#locaties" class="mobile-nav-link px-5 py-2.5 rounded-full text-sm font-medium text-gray-600 hover:text-sk_teal hover:bg-sk_mint/20">Locaties</a>
+                    <a href="#team" class="mobile-nav-link px-5 py-2.5 rounded-full text-sm font-medium text-gray-600 hover:text-sk_teal hover:bg-sk_mint/20">Team</a>
+                    <a href="#contact" class="mobile-nav-link px-5 py-2.5 rounded-full text-sm font-medium text-gray-600 hover:text-sk_teal hover:bg-sk_mint/20">Contact</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-grow relative overflow-x-hidden">
+            <!-- HOME PAGE -->
+            <div id="page-home" class="page active">
+                <div class="space-y-12 pb-16">
+                    <section class="relative bg-[#fcfdfc] pt-12 pb-32 lg:pt-20 lg:pb-48">
+                        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-[500px] h-[500px] bg-sk_mint/20 rounded-full blur-3xl opacity-60 animate-pulse"></div>
+                        <div class="absolute bottom-0 left-0 -ml-20 mb-20 w-96 h-96 bg-sk_yellow/20 rounded-full blur-3xl opacity-60"></div>
+                        <div class="absolute top-40 left-1/2 transform -translate-x-1/2 w-full max-w-3xl h-96 bg-sk_pink/10 rounded-full blur-[100px] opacity-40"></div>
+                        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center gap-16">
+                          <div class="flex-1 text-center md:text-left z-10">
+                            <div class="inline-block bg-white border-2 border-sk_yellow px-4 py-1.5 rounded-full text-sm font-bold text-yellow-700 mb-6 shadow-sm transform -rotate-2">
+                                👋 Welkom bij VZW De Speelkamer!
+                            </div>
+                            <h1 class="text-5xl md:text-7xl font-bold text-gray-800 leading-[1.1] mb-8">
+                                De kinderopvang <br/>
+                                <span class="text-transparent bg-clip-text bg-gradient-to-r from-sk_teal to-sk_mint">gelegen</span> in <br/>
+                                hartje Brugge
+                            </h1>
+                            <p class="text-xl text-gray-600 mb-10 max-w-lg mx-auto md:mx-0 leading-relaxed font-light">
+                                Een tweede thuis waar spelen, leren en groeien hand in hand gaan. Voor alle kinderen van 2,5 tot 12 jaar.
+                            </p>
+                            <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                                <a href="#opvang" class="inline-flex items-center justify-center px-8 py-4 rounded-full bg-sk_teal text-white font-bold text-lg hover:bg-[#3d94a5] transition-all shadow-[0_8px_20px_-6px_rgba(74,177,196,0.5)] hover:shadow-[0_12px_25px_-8px_rgba(74,177,196,0.6)] hover:-translate-y-1">Ontdek ons aanbod</a>
+                                <a href="#opvang" class="inline-flex items-center justify-center px-8 py-4 rounded-full bg-white text-sk_teal border-2 border-sk_teal/20 font-bold text-lg hover:border-sk_teal hover:bg-sk_teal/5 transition-all hover:-translate-y-1">Bekijk vakantiekampen</a>
+                            </div>
+                          </div>
+                          
+                          <!-- Hero Images Grid -->
+                          <div class="flex-1 relative hidden md:block">
+                             <div class="grid grid-cols-2 gap-4 transform rotate-3 scale-90 lg:scale-100">
+                                <div class="space-y-4 mt-12">
+                                   <img src="/images/Opvang001.jpg" alt="Onze School" class="rounded-[2rem] shadow-xl border-4 border-white transform hover:scale-105 transition-transform duration-500 w-full h-80 object-cover" />
+                                   <div class="bg-sk_yellow p-6 rounded-[2rem] shadow-lg transform -rotate-3 flex items-center justify-center">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
+                                   </div>
+                                </div>
+                                <div class="space-y-4">
+                                   <div class="bg-sk_pink p-6 rounded-[2rem] shadow-lg transform rotate-2 text-white font-bold text-xl text-center">
+                                     Spelend <br/> Leren
+                                   </div>
+                                   <img src="/images/Opvang006.jpg" alt="Leren" class="rounded-[2rem] shadow-xl border-4 border-white transform hover:scale-105 transition-transform duration-500 w-full h-80 object-cover" />
+                                </div>
+                             </div>
+                          </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Service Cards -->
+                    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-20 relative z-20">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            <!-- Card 1 - Teal -->
+                            <div class="group bg-white p-8 rounded-[2rem] shadow-lg border border-gray-50 border-b-4 border-b-sk_teal hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                                <div class="w-14 h-14 bg-sk_teal/10 rounded-xl flex items-center justify-center mb-6 text-sk_teal group-hover:bg-sk_teal group-hover:text-white transition-all">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                                </div>
+                                <h3 class="text-2xl font-bold text-gray-800 mb-3">Voor- & Naschools</h3>
+                                <p class="text-gray-600 mb-6 leading-relaxed">Elke dag staan we klaar van 07:00 tot 19:00. Een veilige haven voor en na schooltijd.</p>
+                                <a href="#opvang" class="inline-flex items-center gap-2 text-sk_teal font-bold bg-sk_teal/10 px-4 py-2 rounded-xl hover:bg-sk_teal hover:text-white transition-all">
+                                    Meer info
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                                </a>
+                            </div>
+
+                            <!-- Card 2 - Yellow -->
+                            <div class="group bg-white p-8 rounded-[2rem] shadow-lg border border-gray-50 border-b-4 border-b-sk_yellow hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                                <div class="w-14 h-14 bg-sk_yellow/10 rounded-xl flex items-center justify-center mb-6 text-yellow-700 group-hover:bg-sk_yellow group-hover:text-yellow-900 transition-all">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                </div>
+                                <h3 class="text-2xl font-bold text-gray-800 mb-3">Vakantiekampen & Vrije dagen</h3>
+                                <p class="text-gray-600 mb-6 leading-relaxed">Vakantie? Studiedag? Wij zorgen voor een dag vol avontuur, spel en plezier!</p>
+                                <a href="#opvang" onclick="setTimeout(() => switchOpvangTab('kampen'), 100)" class="inline-flex items-center gap-2 text-yellow-700 font-bold bg-sk_yellow/10 px-4 py-2 rounded-xl hover:bg-sk_yellow hover:text-yellow-900 transition-all">
+                                    Kalender bekijken
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                                </a>
+                            </div>
+
+                            <!-- Card 3 - Pink -->
+                            <div class="group bg-white p-8 rounded-[2rem] shadow-lg border border-gray-50 border-b-4 border-b-sk_pink hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                                <div class="w-14 h-14 bg-sk_pink/10 rounded-xl flex items-center justify-center mb-6 text-pink-700 group-hover:bg-sk_pink group-hover:text-white transition-all">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                                </div>
+                                <h3 class="text-2xl font-bold text-gray-800 mb-3">Studie-aanbod</h3>
+                                <p class="text-gray-600 mb-6 leading-relaxed">Woensdagnamiddag en tijdens vakanties bieden we studieondersteuning aan.</p>
+                                <a href="#opvang" onclick="setTimeout(() => switchOpvangTab('studie'), 100)" class="inline-flex items-center gap-2 text-pink-700 font-bold bg-sk_pink/10 px-4 py-2 rounded-xl hover:bg-sk_pink hover:text-white transition-all">
+                                    Ontdek meer
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Why Us / USPs -->
+                    <section class="py-20">
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div class="text-center mb-16">
+                                <h2 class="text-4xl font-bold text-gray-800 mb-4">Waarom kiezen voor De Speelkamer?</h2>
+                                <div class="w-24 h-2 bg-sk_teal/20 rounded-full mx-auto"></div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                                <div class="flex flex-col items-center text-center group p-6 rounded-3xl hover:bg-white hover:shadow-lg transition-all duration-300">
+                                    <div class="mb-6 w-20 h-20 rounded-full bg-sk_mint/20 flex items-center justify-center text-green-800 group-hover:scale-110 transition-transform">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                    </div>
+                                    <h4 class="font-bold text-xl text-gray-800 mb-2">Centraal in Brugge</h4>
+                                    <p class="text-gray-500 font-medium">Makkelijk bereikbaar & dichtbij.</p>
+                                </div>
+                                <div class="flex flex-col items-center text-center group p-6 rounded-3xl hover:bg-white hover:shadow-lg transition-all duration-300">
+                                    <div class="mb-6 w-20 h-20 rounded-full bg-sk_pink/20 flex items-center justify-center text-red-800 group-hover:scale-110 transition-transform">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                                    </div>
+                                    <h4 class="font-bold text-xl text-gray-800 mb-2">Warme sfeer</h4>
+                                    <p class="text-gray-500 font-medium">Een klein en vertrouwd team.</p>
+                                </div>
+                                <div class="flex flex-col items-center text-center group p-6 rounded-3xl hover:bg-white hover:shadow-lg transition-all duration-300">
+                                    <div class="mb-6 w-20 h-20 rounded-full bg-sk_yellow/20 flex items-center justify-center text-yellow-800 group-hover:scale-110 transition-transform">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                                    </div>
+                                    <h4 class="font-bold text-xl text-gray-800 mb-2">Educatief sterk</h4>
+                                    <p class="text-gray-500 font-medium">Spelend leren staat centraal.</p>
+                                </div>
+                                <div class="flex flex-col items-center text-center group p-6 rounded-3xl hover:bg-white hover:shadow-lg transition-all duration-300">
+                                    <div class="mb-6 w-20 h-20 rounded-full bg-sk_teal/20 flex items-center justify-center text-teal-800 group-hover:scale-110 transition-transform">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                    </div>
+                                    <h4 class="font-bold text-xl text-gray-800 mb-2">Goede partners</h4>
+                                    <p class="text-gray-500 font-medium">Nauwe band met de scholen.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- About Short -->
+                    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                        <div class="bg-sk_mint/10 rounded-[3rem] p-8 md:p-12 lg:p-16 flex flex-col md:flex-row items-center gap-12 relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-64 h-64 bg-sk_mint/20 rounded-full -mr-16 -mt-16 blur-2xl"></div>
+                            <div class="flex-1 relative z-10 order-2 md:order-1">
+                                <div class="relative">
+                                    <div class="absolute inset-0 bg-sk_yellow rounded-[2rem] rotate-3 transform translate-x-2 translate-y-2"></div>
+                                    <img src="/images/Opvang001.jpg" alt="Team" class="relative rounded-[2rem] shadow-lg w-full border-4 border-white" />
+                                </div>
+                            </div>
+                            <div class="flex-1 relative z-10 order-1 md:order-2">
+                                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6">Samen groeien & bloeien</h2>
+                                <p class="text-gray-600 mb-8 leading-relaxed text-lg">
+                                    VZW De Speelkamer werkt nauw samen met VBS De Frères, Sint-Andreas en Het Kleurenpalet.
+                                    Ons doel is om een naadloze overgang te bieden tussen school en vrije tijd.
+                                </p>
+                                <a href="#team" class="inline-block bg-white text-sk_teal border-2 border-sk_teal px-8 py-3 rounded-full font-bold hover:bg-sk_teal hover:text-white transition-colors shadow-sm">
+                                    Ontmoet ons team
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- OPVANG PAGE -->
+            <div id="page-opvang" class="page">
+                <div class="pb-16 bg-[#fcfdfc]">
+                    <div class="relative pt-12 pb-32 lg:pt-20 lg:pb-48">
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                            <div class="inline-block bg-white border-2 border-sk_teal/20 px-4 py-1.5 rounded-full text-sm font-bold text-sk_teal mb-6 shadow-sm">Aanbod & Inschrijvingen</div>
+                            <h1 class="text-5xl md:text-6xl font-bold text-gray-800 mb-6">Wat doen we vandaag?</h1>
+                            <p class="text-xl text-gray-600 max-w-2xl mx-auto">Of het nu gaat om dagelijkse opvang, een spannend kamp of extra studiehulp: bij De Speelkamer zit je goed.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Tabs -->
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-20 relative z-20">
+                        <div class="bg-white rounded-[2rem] shadow-xl p-2 flex flex-col md:flex-row gap-2 max-w-4xl mx-auto mb-12">
+                            <button onclick="switchOpvangTab('school')" id="tab-btn-school" class="opvang-tab flex-1 py-4 px-6 rounded-[1.5rem] text-base font-bold transition-all bg-sk_teal text-white">Voor- & Naschools</button>
+                            <button onclick="switchOpvangTab('kampen')" id="tab-btn-kampen" class="opvang-tab flex-1 py-4 px-6 rounded-[1.5rem] text-base font-bold transition-all text-gray-500 hover:bg-gray-50">Vakantiekampen</button>
+                            <button onclick="switchOpvangTab('studie')" id="tab-btn-studie" class="opvang-tab flex-1 py-4 px-6 rounded-[1.5rem] text-base font-bold transition-all text-gray-500 hover:bg-gray-50">Studie-aanbod</button>
+                        </div>
+                        
+                        <!-- Tab Content -->
+                        <div id="tab-school" class="tab-content" style="display:block;">
+                            <div class="text-center max-w-3xl mx-auto mb-12">
+                                <h2 class="text-3xl font-bold text-gray-800 mb-4">Dagelijkse voor- en naschoolse opvang</h2>
+                                <p class="text-gray-600 leading-relaxed text-lg">We staan elke dag paraat. Inschrijven is niet nodig; we werken met een handig scansysteem.</p>
+                                <div class="inline-flex items-center gap-2 bg-sk_mint/20 text-green-800 px-5 py-2.5 rounded-full font-bold text-sm mt-4">Maandag t.e.m. Vrijdag: 07:00 - 19:00</div>
+                            </div>
+                            <div class="bg-white rounded-[2.5rem] p-8 shadow-xl max-w-2xl mx-auto">
+                                <h3 class="text-2xl font-bold text-gray-800 mb-6">Tarieven</h3>
+                                <div class="space-y-4">
+                                    <div class="flex justify-between items-center border-b border-gray-100 pb-4">
+                                        <span class="text-gray-600 font-medium">Standaard Tarief</span>
+                                        <span class="text-2xl font-bold text-gray-800">€ 1,20</span>
+                                    </div>
+                                    <div class="flex justify-between items-center border-b border-gray-100 pb-4">
+                                        <span class="text-gray-600 font-medium">Middagtoezicht</span>
+                                        <span class="text-2xl font-bold text-sk_teal">€ 1,60</span>
+                                    </div>
+                                    <div class="bg-green-50 border border-green-100 rounded-xl p-4 mt-6">
+                                        <p class="text-sm text-green-800"><strong>Gratis opvang:</strong> 15 min voor het eerste belteken én 30 min na het laatste belteken.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="tab-kampen" class="tab-content" style="display:none;">
+                            <div class="text-center max-w-3xl mx-auto mb-12">
+                                <h2 class="text-3xl font-bold text-gray-800 mb-4">Vakantiekampen & Vrije Dagen</h2>
+                                <p class="text-gray-600 leading-relaxed text-lg">Schrijf je in voor onze kampen en vrije dagen via de Google Forms.</p>
+                            </div>
+                            <div id="activities-container" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                        </div>
+                        
+                        <div id="tab-studie" class="tab-content" style="display:none;">
+                            <div class="text-center max-w-3xl mx-auto mb-12">
+                                <h2 class="text-3xl font-bold text-gray-800 mb-4">Studie-aanbod</h2>
+                                <p class="text-gray-600 leading-relaxed text-lg">Taallessen, studiebegeleiding en bijles op maat.</p>
+                            </div>
+                            <div class="bg-white rounded-[2.5rem] p-8 shadow-xl max-w-2xl mx-auto">
+                                <h3 class="text-xl font-bold text-gray-800 mb-4">Wat bieden we aan?</h3>
+                                <ul class="space-y-3 text-gray-600">
+                                    <li class="flex items-start gap-3"><span class="text-sk_teal text-xl">✓</span> Taallessen Nederlands</li>
+                                    <li class="flex items-start gap-3"><span class="text-sk_teal text-xl">✓</span> Studiebegeleiding</li>
+                                    <li class="flex items-start gap-3"><span class="text-sk_teal text-xl">✓</span> Bijles op maat</li>
+                                    <li class="flex items-start gap-3"><span class="text-sk_teal text-xl">✓</span> Huiswerkbegeleiding</li>
+                                </ul>
+                                <div class="mt-6 p-4 bg-sk_pink/10 rounded-xl">
+                                    <p class="text-sm text-gray-700">Neem contact op voor meer informatie over ons studie-aanbod.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOCATIES PAGE -->
+            <div id="page-locaties" class="page">
+                <div class="pb-16 bg-[#fcfdfc]">
+                    <div class="relative pt-12 pb-32 lg:pt-20 lg:pb-48">
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                            <h1 class="text-5xl md:text-6xl font-bold text-gray-800 mb-6">Onze Locaties</h1>
+                            <p class="text-xl text-gray-600 max-w-2xl mx-auto">VZW De Speelkamer is actief op drie gezellige locaties in het centrum van Brugge.</p>
+                        </div>
+                    </div>
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-20">
+                        <div class="grid gap-12" id="locations-container"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEAM PAGE -->
+            <div id="page-team" class="page">
+                <div class="pb-16 bg-[#fcfdfc]">
+                    <div class="relative pt-12 pb-32 lg:pt-20 lg:pb-48">
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                            <h1 class="text-5xl md:text-6xl font-bold text-gray-800 mb-6">Ons Team</h1>
+                            <p class="text-xl text-gray-600 max-w-2xl mx-auto">Het kloppende hart van De Speelkamer.</p>
+                        </div>
+                    </div>
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-20">
+                        <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10" id="team-container"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTACT PAGE -->
+            <div id="page-contact" class="page">
+                <div class="pb-16 bg-[#fcfdfc]">
+                    <div class="relative pt-12 pb-32 lg:pt-20 lg:pb-48">
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                            <h1 class="text-5xl md:text-6xl font-bold text-gray-800 mb-6">Contacteer Ons</h1>
+                            <p class="text-xl text-gray-600 max-w-2xl mx-auto">Heb je vragen? We helpen je graag verder.</p>
+                        </div>
+                    </div>
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-20">
+                        <div class="grid lg:grid-cols-2 gap-8">
+                            <div class="bg-white p-8 rounded-[2.5rem] shadow-xl">
+                                <h2 class="text-2xl font-bold text-gray-800 mb-6">Onze Gegevens</h2>
+                                <div class="space-y-6">
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-12 h-12 bg-sk_teal/10 rounded-xl flex items-center justify-center text-sk_teal">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs text-gray-400 font-bold uppercase">Email</p>
+                                            <a href="mailto:info@vzwdespeelkamer.be" class="text-lg font-bold text-gray-800 hover:text-sk_teal">info@vzwdespeelkamer.be</a>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-12 h-12 bg-sk_orange/10 rounded-xl flex items-center justify-center text-sk_orange">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs text-gray-400 font-bold uppercase">Telefoon</p>
+                                            <a href="tel:050123456" class="text-lg font-bold text-gray-800 hover:text-sk_teal">050 12 34 56</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="relative bg-white mt-24 rounded-t-[3rem] shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.05)] border-t border-gray-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                    <div>
+                        <img src="/images/Logo-VZW-de-speelkamer.png" alt="VZW De Speelkamer" class="w-30 h-30 object-contain mb-4" />
+                        <p class="text-gray-500 leading-relaxed">Warme, educatieve opvang in het hart van Brugge.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-800 mb-4">Snel naar</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#opvang" class="text-gray-500 hover:text-sk_teal">Buitenschoolse Opvang</a></li>
+                            <li><a href="#locaties" class="text-gray-500 hover:text-sk_teal">Locaties</a></li>
+                            <li><a href="#team" class="text-gray-500 hover:text-sk_teal">Team</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-800 mb-4">Contact</h3>
+                        <p class="text-gray-500 text-sm">Nieuwstraat 2, 8000 Brugge</p>
+                        <p class="text-gray-500 text-sm">info@vzwdespeelkamer.be</p>
+                        <p class="text-gray-500 text-sm">050 12 34 56</p>
+                    </div>
+                </div>
+                <div class="border-t border-gray-100 mt-8 pt-8 text-center text-gray-400 text-xs">
+                    <p>&copy; 2025 VZW De Speelkamer. Alle rechten voorbehouden. | Gemaakt door <a href="https://grafixstudio.be/" target="_blank" class="text-sk_teal font-bold hover:underline">Grafix Studio</a></p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Data
+        const LOCATIONS = [
+            { id: 'loc1', name: 'VBS De Frères', address: 'Nieuwstraat 2, 8000 Brugge', description: 'Onze hoofdlocatie gelegen in het hartje van Brugge.', image: '/images/VBS-De-freres.png' },
+            { id: 'loc2', name: 'Sint-Andreas', address: 'Gentpoortstraat 1, 8000 Brugge', description: 'Een gezellige locatie met veel speelruimte.', image: '/images/VBS-sint-andreas.png' },
+            { id: 'loc3', name: 'Het Kleurenpalet', address: 'Groenestraat 27, 8000 Brugge', description: 'Onze locatie met focus op creativiteit.', image: '/images/VBS-het-kleurenpalet.png' }
+        ];
+
+        const TEAM = [
+            { id: 't1', name: 'Sarah Pieters', role: 'Algemeen Coördinator', locationIds: ['loc1', 'loc2', 'loc3'], imageUrl: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=400&q=80' },
+            { id: 't2', name: 'Tom Maes', role: 'Hoofdbegeleider', locationIds: ['loc1'] },
+            { id: 't3', name: 'Elke De Smet', role: 'Begeleider', locationIds: ['loc2'], imageUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80' },
+            { id: 't4', name: 'Jonas Vermeulen', role: 'Sportbegeleider', locationIds: ['loc3'] }
+        ];
+
+        const ACTIVITIES = [
+            { id: 'vk1', title: 'Herfstvakantie', type: 'CAMP', startDate: '2025-10-27', endDate: '2025-10-31', hours: '09:00 - 16:00', price: '€115 (week)', googleFormUrl: 'https://forms.gle/vEVfsC6qHehb7zvP6' },
+            { id: 'vk2', title: 'Kerstvakantie', type: 'CAMP', startDate: '2025-12-22', endDate: '2025-12-23', hours: '09:00 - 16:00', price: '€46 (2 dagen)', googleFormUrl: 'https://forms.gle/sb4dNoRFMTn85L5F6' },
+            { id: 'vk4', title: 'Krokusvakantie', type: 'CAMP', startDate: '2026-02-16', endDate: '2026-02-20', hours: '09:00 - 16:00', price: '€115 (week)', googleFormUrl: 'https://forms.gle/YZF4jhJHiRjYUj9h8' },
+            { id: 'vk5', title: 'Paasvakantie - Week 1', type: 'CAMP', startDate: '2026-04-07', endDate: '2026-04-10', hours: '09:00 - 16:00', price: '€92 (4 dagen)', googleFormUrl: 'https://forms.gle/M4tgGDaWAsdQbS5y5' },
+            { id: 'vk6', title: 'Paasvakantie - Week 2', type: 'CAMP', startDate: '2026-04-13', endDate: '2026-04-17', hours: '09:00 - 16:00', price: '€115 (week)', googleFormUrl: 'https://forms.gle/XueKeMDacTDsiL357' },
+            { id: 'ps1', title: 'Pedagogische studiedag', type: 'FREE_DAY', startDate: '2025-10-03', hours: '08:00 - 18:00', price: '€12 (halve dag) / €23 (volle dag)', googleFormUrl: 'https://forms.gle/evfadnRYwcG7F8hj6' },
+            { id: 'ps2', title: 'Pedagogische studiedag', type: 'FREE_DAY', startDate: '2026-02-13', hours: '08:00 - 18:00', price: '€12 (halve dag) / €23 (volle dag)', googleFormUrl: 'https://forms.gle/YBA47sE6ao1bfHJu6' },
+            { id: 'fv1', title: 'Facultatieve vrije dag', type: 'FREE_DAY', startDate: '2025-11-10', hours: '08:00 - 18:00', price: '€12 (halve dag) / €23 (volle dag)', googleFormUrl: 'https://forms.gle/kjPC96ZvrsxrnjuP8' }
+        ];
+
+        // Tab switching for Opvang page
+        function switchOpvangTab(tab) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+            // Reset all buttons
+            document.querySelectorAll('.opvang-tab').forEach(btn => {
+                btn.classList.remove('bg-sk_teal', 'text-white', 'bg-sk_yellow', 'text-yellow-900', 'bg-sk_pink');
+                btn.classList.add('text-gray-500', 'hover:bg-gray-50');
+            });
+            
+            // Show selected tab
+            document.getElementById('tab-' + tab).style.display = 'block';
+            
+            // Style selected button
+            const btn = document.getElementById('tab-btn-' + tab);
+            btn.classList.remove('text-gray-500', 'hover:bg-gray-50');
+            if (tab === 'school') {
+                btn.classList.add('bg-sk_teal', 'text-white');
+            } else if (tab === 'kampen') {
+                btn.classList.add('bg-sk_yellow', 'text-yellow-900');
+                renderActivities();
+            } else if (tab === 'studie') {
+                btn.classList.add('bg-sk_pink', 'text-white');
+            }
+        }
+
+        // Router
+        function navigate() {
+            const hash = window.location.hash.slice(1) || 'home';
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const page = document.getElementById(`page-${hash}`);
+            if (page) page.classList.add('active');
+            
+            // Update nav active states
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('bg-sk_teal', 'text-white', 'shadow-md');
+                link.classList.add('text-gray-600');
+            });
+            document.querySelectorAll(`a[href="#${hash}"]`).forEach(link => {
+                link.classList.add('bg-sk_teal', 'text-white', 'shadow-md');
+                link.classList.remove('text-gray-600');
+            });
+            
+            window.scrollTo(0, 0);
+        }
+
+        // Render locations
+        function renderLocations() {
+            const container = document.getElementById('locations-container');
+            if (!container) return;
+            container.innerHTML = LOCATIONS.map(loc => `
+                <div class="bg-white p-8 rounded-[2.5rem] shadow-xl">
+                    <img src="${loc.image}" alt="${loc.name}" class="w-full h-64 object-cover rounded-2xl mb-6" />
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">${loc.name}</h3>
+                    <p class="text-gray-600 mb-4">${loc.address}</p>
+                    <p class="text-gray-500">${loc.description}</p>
+                </div>
+            `).join('');
+        }
+
+        // Render team
+        function renderTeam() {
+            const container = document.getElementById('team-container');
+            if (!container) return;
+            container.innerHTML = TEAM.map(member => `
+                <div class="bg-white p-8 rounded-[2.5rem] shadow-xl text-center">
+                    <div class="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden bg-gray-100">
+                        ${member.imageUrl ? `<img src="${member.imageUrl}" alt="${member.name}" class="w-full h-full object-cover" />` : '<div class="w-full h-full flex items-center justify-center text-gray-300 text-4xl">😊</div>'}
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">${member.name}</h3>
+                    <p class="text-sm text-gray-500 font-medium">${member.role}</p>
+                </div>
+            `).join('');
+        }
+
+        // Render activities
+        function renderActivities() {
+            const container = document.getElementById('activities-container');
+            if (!container) return;
+            
+            const now = new Date();
+            const futureActivities = ACTIVITIES.filter(a => new Date(a.endDate || a.startDate) >= now)
+                .sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+            
+            if (futureActivities.length === 0) {
+                container.innerHTML = '<div class="col-span-full text-center text-gray-500 py-12">Geen aankomende activiteiten op dit moment.</div>';
+                return;
+            }
+            
+            container.innerHTML = futureActivities.map(activity => {
+                const startDate = new Date(activity.startDate);
+                const endDate = activity.endDate ? new Date(activity.endDate) : null;
+                const dateStr = endDate ? 
+                    `${startDate.getDate()}-${endDate.getDate()} ${startDate.toLocaleDateString('nl-BE', {month: 'short'})}` :
+                    startDate.toLocaleDateString('nl-BE', {day: 'numeric', month: 'short'});
+                
+                const bgColor = activity.type === 'CAMP' ? 'bg-sk_yellow/10' : 'bg-sk_pink/10';
+                const badgeColor = activity.type === 'CAMP' ? 'bg-sk_yellow/40 text-yellow-900' : 'bg-sk_pink/40 text-pink-900';
+                
+                return `
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all">
+                        <div class="${bgColor} px-5 py-4">
+                            <div class="flex items-center justify-between">
+                                <span class="text-lg font-bold text-gray-800">${dateStr}</span>
+                                <span class="px-2 py-1 rounded-lg text-xs font-bold uppercase ${badgeColor}">${activity.type === 'CAMP' ? 'Kamp' : 'Vrije dag'}</span>
+                            </div>
+                        </div>
+                        <div class="p-5">
+                            <h3 class="text-sm font-bold text-gray-700 mb-3">${activity.title}</h3>
+                            <div class="space-y-2 mb-4 text-xs text-gray-600">
+                                <div>🕒 ${activity.hours}</div>
+                                <div>💶 ${activity.price}</div>
+                            </div>
+                            <a href="${activity.googleFormUrl}" target="_blank" class="block w-full text-center bg-sk_teal text-white py-2.5 rounded-xl text-xs font-bold hover:bg-[#3d94a5] transition-colors">
+                                Inschrijven
+                            </a>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Mobile menu
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('mobile-menu').classList.add('hidden');
+            });
+        });
+
+        // Init
+        window.addEventListener('hashchange', navigate);
+        window.addEventListener('load', () => {
+            navigate();
+            renderLocations();
+            renderTeam();
+        });
+    </script>
+</body>
 </html>

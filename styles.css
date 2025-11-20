@@ -1,50 +1,114 @@
-/* VZW De Speelkamer - Consistent Card Styling */
+/* VZW De Speelkamer - Custom Styles */
 
-/* Base card style - gebruik deze voor alle cards */
-.card-base {
-  @apply bg-white rounded-[2rem] shadow-lg border border-gray-50 transition-all duration-300;
+body {
+  font-family: 'ABeeZee', sans-serif;
+  background-color: #fcfdfc;
 }
 
-.card-hover {
-  @apply hover:shadow-xl hover:-translate-y-1;
+/* Page transitions */
+.page-transition {
+  animation: fadeIn 0.3s ease-out;
 }
 
-/* Card variants */
-.card-primary {
-  @apply card-base card-hover border-b-4 border-b-sk_teal;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.card-secondary {
-  @apply card-base card-hover border-b-4 border-b-sk_yellow;
+/* Active navigation state */
+.nav-link.active {
+  background-color: rgba(184, 215, 163, 0.2);
+  color: #4AB1C4;
+  font-weight: bold;
 }
 
-.card-accent {
-  @apply card-base card-hover border-b-4 border-b-sk_pink;
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
 }
 
-/* Section container */
-.section-container {
-  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12;
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
 }
 
-/* Consistent padding for cards */
-.card-padding {
-  @apply p-6 md:p-8;
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
 }
 
-/* Icon containers */
-.icon-container {
-  @apply w-12 h-12 rounded-xl flex items-center justify-center shadow-sm transition-all;
+::-webkit-scrollbar-thumb {
+  background: #4AB1C4;
+  border-radius: 5px;
 }
 
-.icon-container-teal {
-  @apply icon-container bg-sk_teal/10 text-sk_teal;
+::-webkit-scrollbar-thumb:hover {
+  background: #3d94a5;
 }
 
-.icon-container-yellow {
-  @apply icon-container bg-sk_yellow/10 text-yellow-700;
+/* Loading animation */
+.loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(74, 177, 196, 0.3);
+  border-radius: 50%;
+  border-top-color: #4AB1C4;
+  animation: spin 1s ease-in-out infinite;
 }
 
-.icon-container-pink {
-  @apply icon-container bg-sk_pink/10 text-pink-700;
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Hover effects */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Tab content transitions */
+.tab-content {
+  animation: fadeInUp 0.4s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tab button active states */
+.tab-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.tab-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.tab-btn:hover::before {
+  left: 100%;
 }
