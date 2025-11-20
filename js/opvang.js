@@ -7,10 +7,10 @@ function switchTab(tabName) {
         content.classList.add('hidden');
     });
     
-    // Reset all tab buttons
+    // Remove active state from all buttons
     document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.remove('bg-sk_teal', 'text-white', 'bg-sk_yellow', 'text-yellow-900', 'bg-sk_pink', 'shadow-lg');
-        btn.classList.add('text-gray-500', 'hover:bg-gray-50');
+        btn.classList.remove('bg-sk_teal', 'text-white', 'shadow-lg');
+        btn.classList.add('text-gray-500');
     });
     
     // Show selected tab content
@@ -19,21 +19,16 @@ function switchTab(tabName) {
         selectedContent.classList.remove('hidden');
     }
     
-    // Style selected button
+    // Add active state to selected button
     const selectedBtn = document.getElementById(`tab-btn-${tabName}`);
     if (selectedBtn) {
-        selectedBtn.classList.remove('text-gray-500', 'hover:bg-gray-50');
-        
-        if (tabName === 'school') {
-            selectedBtn.classList.add('bg-sk_teal', 'text-white', 'shadow-lg');
-        } else if (tabName === 'kampen') {
-            selectedBtn.classList.add('bg-sk_yellow', 'text-yellow-900', 'shadow-lg');
-            renderActivities();
-        } else if (tabName === 'studie') {
-            selectedBtn.classList.add('bg-sk_pink', 'text-white', 'shadow-lg');
-        }
+        selectedBtn.classList.add('bg-sk_teal', 'text-white', 'shadow-lg');
+        selectedBtn.classList.remove('text-gray-500');
     }
 }
+
+// Make switchTab available globally
+window.switchTab = switchTab;
 
 // Render activities (kampen en vrije dagen)
 function renderActivities() {
@@ -121,10 +116,13 @@ function renderActivities() {
 document.addEventListener('DOMContentLoaded', function() {
     // Check if there's a hash in the URL to switch to specific tab
     const hash = window.location.hash.slice(1);
-    if (hash === 'kampen' || hash === 'studie') {
+    if (hash === 'vakantie' || hash === 'studie') {
         switchTab(hash);
     } else {
-        // Default to school tab
-        switchTab('school');
+        // Default to vakantie tab
+        switchTab('vakantie');
     }
+    
+    // Render activities if container exists
+    renderActivities();
 });
