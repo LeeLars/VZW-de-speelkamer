@@ -121,10 +121,27 @@ function renderActivities() {
 document.addEventListener('DOMContentLoaded', function() {
     // Check if there's a hash in the URL to switch to specific tab
     const hash = window.location.hash.slice(1);
-    if (hash === 'kampen' || hash === 'studie') {
-        switchTab(hash);
-    } else {
-        // Default to school tab
-        switchTab('school');
-    }
+    
+    // Map hash names to tab names
+    const hashToTab = {
+        'voor-naschools': 'school',
+        'kampen': 'kampen',
+        'studie': 'studie'
+    };
+    
+    const tabName = hashToTab[hash] || 'school';
+    switchTab(tabName);
+    
+    // Update hash when tab is clicked
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const tab = this.id.replace('tab-btn-', '');
+            const tabToHash = {
+                'school': 'voor-naschools',
+                'kampen': 'kampen',
+                'studie': 'studie'
+            };
+            window.location.hash = tabToHash[tab];
+        });
+    });
 });
