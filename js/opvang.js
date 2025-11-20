@@ -132,6 +132,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const tabName = hashToTab[hash] || 'school';
     switchTab(tabName);
     
+    // Scroll to tabs section if hash is present
+    if (hash && hashToTab[hash]) {
+        setTimeout(() => {
+            const tabsSection = document.querySelector('.tabs-section');
+            if (tabsSection) {
+                tabsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }, 100);
+    }
+    
     // Update hash when tab is clicked
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.addEventListener('click', function() {
@@ -143,5 +153,20 @@ document.addEventListener('DOMContentLoaded', function() {
             };
             window.location.hash = tabToHash[tab];
         });
+    });
+    
+    // Listen for hash changes (when clicking mega menu links)
+    window.addEventListener('hashchange', function() {
+        const newHash = window.location.hash.slice(1);
+        const newTabName = hashToTab[newHash];
+        if (newTabName) {
+            switchTab(newTabName);
+            setTimeout(() => {
+                const tabsSection = document.querySelector('.tabs-section');
+                if (tabsSection) {
+                    tabsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 100);
+        }
     });
 });
