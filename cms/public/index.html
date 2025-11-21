@@ -31,15 +31,9 @@
             <div class="bg-white rounded-2xl shadow-xl p-8">
                 <div class="text-center mb-8">
                     <div class="flex items-center justify-center mb-6">
-                        <div class="w-24 h-24 bg-gradient-to-br from-sk_teal to-sk_mint rounded-2xl flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-                                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
-                                <path d="M2 17l10 5 10-5"></path>
-                                <path d="M2 12l10 5 10-5"></path>
-                            </svg>
-                        </div>
+                        <img src="../images/logo.png" alt="VZW De Speelkamer" class="h-24 w-auto">
                     </div>
-                    <h1 class="text-3xl font-bold text-gray-800">CMS Login</h1>
+                    <h1 class="text-3xl font-bold text-gray-800">CMS - De Speelkamer</h1>
                     <p class="text-gray-600 mt-2">Content Management Systeem</p>
                 </div>
                 
@@ -70,12 +64,7 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-center h-16">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-sk_teal rounded-lg flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-                                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
-                                <path d="M2 17l10 5 10-5M2 12l10 5 10-5"></path>
-                            </svg>
-                        </div>
+                        <img src="../images/logo.png" alt="VZW De Speelkamer" class="h-10 w-auto">
                         <h1 class="text-xl font-bold text-gray-800">CMS - De Speelkamer</h1>
                     </div>
                     <div class="flex items-center gap-4">
@@ -121,6 +110,35 @@
                         + Nieuw Kamp
                     </button>
                 </div>
+                
+                <!-- Filter and Search -->
+                <div class="bg-white rounded-xl shadow-sm p-4 mb-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Zoeken</label>
+                            <input type="text" id="activity-search" placeholder="Zoek op titel..." 
+                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Type</label>
+                            <select id="activity-type-filter" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
+                                <option value="">Alle types</option>
+                                <option value="CAMP">Kampen</option>
+                                <option value="FREE_DAY">Vrije Dagen</option>
+                                <option value="STUDY_DAY">Studiedagen</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Periode</label>
+                            <select id="activity-period-filter" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
+                                <option value="">Alle periodes</option>
+                                <option value="upcoming">Toekomstig</option>
+                                <option value="past">Verleden</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
                 <div id="activities-list" class="grid gap-4"></div>
             </div>
 
@@ -214,10 +232,14 @@
                     </div>
                 </div>
                 <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-2">Afbeelding URL</label>
-                    <input type="text" id="location-image" placeholder="./images/locatie.jpg"
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Afbeelding</label>
+                    <input type="file" id="location-image-file" accept="image/*"
                         class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_pink focus:ring-2 focus:ring-sk_pink/20 outline-none">
-                    <p class="text-xs text-gray-500 mt-1">Relatief pad naar de afbeelding</p>
+                    <p class="text-xs text-gray-500 mt-1">Max 5MB. Formaten: JPG, PNG, GIF, WebP</p>
+                    <div id="location-image-preview" class="hidden mt-3">
+                        <img id="location-preview-img" src="" alt="Preview" class="w-32 h-32 object-cover rounded-lg">
+                    </div>
+                    <input type="hidden" id="location-image">
                 </div>
                 <div class="flex gap-3 pt-4">
                     <button type="submit" class="flex-1 bg-sk_pink text-white px-6 py-3 rounded-xl font-bold hover:bg-pink-600 transition">

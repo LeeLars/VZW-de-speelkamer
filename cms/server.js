@@ -10,6 +10,7 @@ const activitiesRoutes = require('./routes/activities');
 const pricingRoutes = require('./routes/pricing');
 const teamRoutes = require('./routes/team');
 const locationsRoutes = require('./routes/locations');
+const uploadRoutes = require('./routes/upload');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -39,6 +40,7 @@ app.use('/api/activities', activitiesRoutes);
 app.use('/api/pricing', pricingRoutes);
 app.use('/api/team', teamRoutes);
 app.use('/api/locations', locationsRoutes);
+app.use('/api/upload', uploadRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
