@@ -1,336 +1,157 @@
-# 🎨 VZW De Speelkamer - Website
+# 🎨 VZW De Speelkamer - Website & CMS
 
-Moderne website voor VZW De Speelkamer - Buitenschoolse opvang in Brugge.
+Moderne website voor VZW De Speelkamer met geïntegreerd Content Management Systeem.
 
-## ⚡ NIEUW: Pure HTML/CSS/JS Versie Beschikbaar!
+## 🌐 Live URLs
 
-**Het React project is nu ook beschikbaar als pure HTML/CSS/JavaScript versie!**
-
-✅ **Geen build process nodig**  
-✅ **Geen Node.js of npm vereist**  
-✅ **Direct te openen in browser**  
-✅ **Makkelijk te hosten op elke server**  
-✅ **Zelfde design en functionaliteit**  
-
-👉 **Open gewoon `index.html` in je browser en het werkt!**
-
-[Zie hieronder voor meer details](#-pure-htmlcssjs-versie)
-
-## 🚀 Features
-
-- ✅ **Responsive Design** - Werkt op alle devices
-- ✅ **Custom CMS** - Volledig beheer systeem met backend API
-- ✅ **Vakantiekampen Beheer** - Voeg toe, bewerk en verwijder kampen
-- ✅ **Tarieven Beheer** - Pas alle prijzen aan via CMS
-- ✅ **Team Beheer** - Upload foto's en beheer teamleden
-- ✅ **Beveiligde Login** - JWT authenticatie met wachtwoord beheer
-- ✅ **Image Upload** - Automatische foto opslag in `/images`
-- ✅ **Google Forms Integratie** - Eenvoudige inschrijvingen
-- ✅ **Modern UI** - TailwindCSS styling
-
-## 🛠️ Tech Stack
-
-### Originele React Versie (voor developers)
-- **React 19.2** - UI Framework
-- **TypeScript 5.8** - Type safety
-- **Vite** - Build tool
-- **React Router v7** - Routing
-- **TailwindCSS** - Styling
-- **Lucide Icons** - Icon library
-
-### Pure HTML/CSS/JS Versie (aanbevolen voor productie)
-- **Vanilla JavaScript** - Geen frameworks
-- **Tailwind CSS CDN** - Styling
-- **Hash-based routing** - Single Page Application
-- **Inline SVG** - Icons
-
-## 📦 Installatie
-
-### Prerequisites
-- Node.js 18+ 
-- npm of yarn
-
-### Setup
-
-```bash
-# Clone repository
-git clone https://github.com/LeeLars/Website-voor-VZW-De-Speelkamer---Buitenschoolse-opvang.git
-cd vzw-de-speelkamer
-
-# Installeer dependencies
-npm install
-
-# Start development server
-npm run dev
-```
-
-Open [http://localhost:5173](http://localhost:5173) in je browser.
-
-## 🏗️ Build voor Productie
-
-```bash
-# Build applicatie
-npm run build
-
-# Preview build
-npm run preview
-```
-
-De build output staat in de `dist/` folder.
+- **Website**: https://leelar5.github.io/VZW-de-speelkamer/
+- **CMS**: https://vzw-de-speelkamer-production.up.railway.app/
 
 ## 📁 Project Structuur
 
 ```
 vzw-de-speelkamer/
-├── components/          # React componenten
-│   └── Layout.tsx      # Header, Footer, Navigatie
-├── pages/              # Route paginas
-│   ├── Home.tsx
-│   ├── Opvang.tsx
-│   ├── Admin.tsx
-│   └── ...
-├── context/            # React Context
-│   └── DataContext.tsx # Data management
-├── images/             # Afbeeldingen
-├── constants.ts        # Configuratie & initiële data
-├── types.ts           # TypeScript types
-└── App.tsx            # Main app component
+├── index.html              # Homepage
+├── opvang.html            # Opvang & activiteiten
+├── locaties.html          # Locaties overzicht
+├── team.html              # Team pagina
+├── contact.html           # Contact pagina
+├── js/                    # JavaScript bestanden
+│   ├── api-data.js       # API data loader
+│   ├── main.js           # Algemene functionaliteit
+│   ├── opvang.js         # Opvang pagina logic
+│   ├── locaties.js       # Locaties pagina logic
+│   └── team.js           # Team pagina logic
+├── images/                # Afbeeldingen
+├── styles.css             # Custom CSS
+└── cms/                   # CMS Backend
+    ├── server.js         # Express server
+    ├── routes/           # API routes
+    ├── database/         # Database (lowdb)
+    ├── middleware/       # Auth middleware
+    └── public/           # CMS frontend
 ```
 
-## 🔐 Content Management System (CMS)
+## 🚀 Quick Start
 
-**URL:** `/cms/` (of `http://localhost:3001` lokaal)  
-**Standaard Login:**
-- Gebruikersnaam: `admin`
-- Wachtwoord: `changeme123` ⚠️ **Wijzig dit direct!**
+### Website (GitHub Pages)
+De website wordt automatisch gedeployed via GitHub Pages bij elke push naar `main`.
 
-### CMS Features:
-- ✏️ **Vakantiekampen Beheer** - Voeg kampen toe met data, tijden, prijzen en Google Form links
-- 👥 **Team Beheer** - Upload foto's (max 5MB), beheer teamleden
-- 💰 **Tarieven Beheer** - Pas alle 6 tarieven aan (opvang, studie, bijles)
-- 🔒 **Beveiliging** - JWT tokens, bcrypt wachtwoorden, wachtwoord wijzigen
-- 📸 **Image Upload** - Foto's worden automatisch opgeslagen in `/images/`
-- 💾 **JSON Database** - Eenvoudig te backuppen (`cms/database/db.json`)
+### CMS (Railway)
+Het CMS draait op Railway en is verbonden met deze repository.
 
-### CMS Installatie:
+**Login credentials:**
+- Username: `admin`
+- Password: Ingesteld via Railway environment variables
 
+## 🔧 Lokale Development
+
+### Website
 ```bash
-# Installeer CMS dependencies
+# Open gewoon de HTML bestanden in een browser
+# Of gebruik een local server:
+npx serve .
+```
+
+### CMS
+```bash
 cd cms
 npm install
-
-# Configureer environment
-cp .env.example .env
-# Edit .env met je eigen waarden!
-
-# Start CMS server
 npm start
 ```
 
-CMS draait op: **http://localhost:3001**
+CMS draait op: http://localhost:3001
 
-📖 **Volledige CMS documentatie**: Zie `cms/README.md` en `DEPLOYMENT.md`
+## 📝 CMS Features
 
-## 🎯 Belangrijke Bestanden
+### ✅ Wat kan je beheren?
 
-### `constants.ts`
-Bevat initiële data:
-- Locaties (VBS De Frères, Het Kleurenpalet, Sint-Andreas)
-- Standaard activiteiten
-- Contact informatie
-- Facebook links
+1. **Vakantiekampen & Vrije Dagen**
+   - Toevoegen, bewerken, verwijderen
+   - Titel, data, uren, prijs, Google Form link
+   - Type: Kamp, Vrije Dag, Studiedag
+   - Filter & zoek functionaliteit
+   - Dupliceer functie
 
-### `types.ts`
-TypeScript interfaces voor:
-- Activity (kampen & vrije dagen)
-- Location
-- TeamMember
-- Pricing
+2. **Team**
+   - Teamleden beheren
+   - Foto upload
+   - Naam, rol, bio
+   - Locaties toewijzen
 
-### `DataContext.tsx`
-Centrale data management:
-- Merget localStorage met constants.ts
-- CRUD operaties voor alle data types
-- Automatische synchronisatie
+3. **Locaties**
+   - Locaties toevoegen/bewerken
+   - Foto upload
+   - Adres, telefoon, email
+   - Beschrijving
 
-## 🚀 Deployment naar Hostinger
+4. **Tarieven**
+   - Prijzen aanpassen
+   - Standaard tarief, middagtoezicht, etc.
 
-### Stap 1: Build
+## 🔄 Deployment
+
+### Automatisch
+- **Push naar GitHub** → Website update (2-3 min)
+- **Push naar GitHub** → CMS update via Railway (2-3 min)
+
+### Manueel Railway Deploy
 ```bash
-npm run build
+cd cms
+railway up
 ```
 
-### Stap 2: Upload
-Upload de `dist/` folder naar Hostinger:
-- Via File Manager
-- Via FTP (FileZilla)
-- Via Git (als beschikbaar)
+## 🔐 Environment Variables (Railway)
 
-### Stap 3: Database Setup (optioneel)
-Als je MySQL gebruikt:
-1. Maak database aan in Hostinger
-2. Upload PHP API bestanden
-3. Importeer SQL schema
-4. Update API endpoints in code
+Stel deze in via Railway dashboard:
 
-### Stap 4: SSL
-Activeer gratis SSL certificaat in Hostinger panel.
-
-## 🔄 GitHub Workflow
-
-### Development
-```bash
-# Maak wijzigingen
-git add .
-git commit -m "Feature: beschrijving"
-git push
+```env
+PORT=3001
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=jouw-veilig-wachtwoord
+CORS_ORIGIN=*
+NODE_ENV=production
 ```
 
-### Branches
-- `main` - Production ready code
-- `dev` - Development branch (optioneel)
+## 📚 Documentatie
 
-## 📝 Content Beheer
+- **CMS Features**: Zie `CMS-FEATURES.md`
+- **CMS Overzicht**: Zie `CMS-OVERZICHT.md`
+- **Railway Deployment**: Zie `DEPLOY-CMS-RAILWAY.md`
 
-### Activiteiten Toevoegen
-1. Ga naar `/admin`
-2. Klik "Nieuwe Activiteit"
-3. Selecteer type (Kamp/Vrije Dag)
-4. Kies categorie (Pedagogische studiedag, etc.)
-5. Vul datums in → Titel wordt automatisch gegenereerd
-6. Plak Google Form link
-7. Opslaan!
+## 🛠️ Tech Stack
 
-### Titel Formaat
-- **Meerdere dagen:** `Herfstvakantie 27 t/m 31 oktober 2025`
-- **Enkele dag:** `Pedagogische studiedag 3 oktober 2025`
+### Frontend
+- HTML5, CSS3, JavaScript (Vanilla)
+- TailwindCSS (via CDN)
+- Responsive design
 
-## 🎨 Kleuren (Brand Colors)
+### Backend (CMS)
+- Node.js + Express
+- LowDB (JSON database)
+- JWT authenticatie
+- Multer (file uploads)
 
-```css
---sk_teal: #4db8c9      /* Primary */
---sk_yellow: #ffd966    /* Accent */
---sk_pink: #ff6b9d      /* Secondary */
---sk_slate: #2d3748     /* Text */
-```
+### Hosting
+- **Website**: GitHub Pages
+- **CMS**: Railway
+- **Database**: Railway (persistent volume)
 
-## 📞 Contact
+## 🎨 Design System
 
-**VZW De Speelkamer**  
-Email: info@vzwdespeelkamer.be  
-Facebook: [facebook.com/opvangminipalet](https://www.facebook.com/opvangminipalet)
+**Kleuren:**
+- Teal: `#4EADB8` - Primaire kleur
+- Pink: `#F28B8C` - Accent
+- Yellow: `#F7DC6F` - Highlight
+- Mint: `#A8D5A0` - Secundair
+
+**Font:**
+- ABeeZee (Google Fonts)
+
+## 📞 Support
+
+Voor vragen of problemen, contacteer de ontwikkelaar.
 
 ## 📄 License
 
 © 2025 VZW De Speelkamer. Alle rechten voorbehouden.
-
-## 🌐 Pure HTML/CSS/JS Versie
-
-### Waarom deze versie?
-
-De pure HTML versie is gemaakt omdat:
-- React soms problemen geeft met hosting
-- Geen build process = sneller en eenvoudiger
-- Werkt op elke webserver zonder configuratie
-- Makkelijker te onderhouden voor niet-developers
-
-### Hoe te gebruiken
-
-**Optie 1: Direct openen (lokaal testen)**
-```bash
-# Dubbelklik gewoon op index.html
-# Of via terminal:
-open index.html
-```
-
-**Optie 2: Met lokale server (aanbevolen)**
-```bash
-# Python 3
-python3 -m http.server 8000
-
-# Dan open: http://localhost:8000
-```
-
-**Optie 3: Upload naar webserver**
-- Upload alle bestanden via FTP/SFTP
-- Zorg dat de `/images` folder mee wordt geüpload
-- Klaar! De site werkt direct
-
-### Wat zit erin?
-
-Het `index.html` bestand bevat:
-
-✅ **5 Pagina's** (hash-based routing):
-- `#home` - Homepage met hero sectie
-- `#opvang` - Opvang & Studie info
-- `#locaties` - 3 Locaties met foto's
-- `#team` - Team members
-- `#contact` - Contactgegevens
-
-✅ **Functionaliteit**:
-- Responsive navigatie (desktop + mobile)
-- Dynamische content rendering
-- Smooth page transitions
-- Active navigation states
-
-### Data aanpassen
-
-Open `index.html` en scroll naar het `<script>` gedeelte onderaan:
-
-```javascript
-// Locaties aanpassen
-const LOCATIONS = [
-    { id: 'loc1', name: 'VBS De Frères', ... },
-    // Voeg meer toe of pas aan
-];
-
-// Team members aanpassen
-const TEAM = [
-    { id: 't1', name: 'Sarah Pieters', ... },
-    // Voeg meer toe of pas aan
-];
-```
-
-### Deployment
-
-**Netlify (gratis & makkelijk):**
-1. Ga naar [netlify.com/drop](https://app.netlify.com/drop)
-2. Sleep de hele project folder naar de pagina
-3. Klaar! Je krijgt een live URL
-
-**Hostinger / cPanel:**
-1. Upload via File Manager of FTP
-2. Zet bestanden in `public_html/` folder
-3. Bezoek je domein
-
-**GitHub Pages:**
-```bash
-git add .
-git commit -m "HTML versie"
-git push
-# Enable GitHub Pages in repository settings
-```
-
-### Voordelen vs React versie
-
-| Feature | React | Pure HTML |
-|---------|-------|----------|
-| Build nodig | ✅ Ja | ❌ Nee |
-| Node.js vereist | ✅ Ja | ❌ Nee |
-| Hosting | Complex | Simpel |
-| Laadtijd | ~500kb | ~50kb |
-| Onderhoud | Developer | Iedereen |
-| Admin panel | ✅ Ja | ⚠️ Nog toe te voegen |
-
-### Volgende stappen (optioneel)
-
-Om meer functionaliteit toe te voegen:
-
-1. **Admin panel**: Maak `admin.html` met formulieren
-2. **Backend**: Voeg PHP/Node.js API toe voor data opslag
-3. **CMS**: Integreer headless CMS (Strapi, Contentful)
-4. **Forms**: Gebruik FormSpree of Netlify Forms voor contact
-
----
-
-**Ontwikkeld met ❤️ voor VZW De Speelkamer**
