@@ -1,6 +1,6 @@
 const express = require('express');
 const { db } = require('../database/init');
-const { authenticateToken } = require('../middleware/auth');
+const authMiddleware = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -34,7 +34,7 @@ router.get('/:id', (req, res) => {
 });
 
 // Create location (protected)
-router.post('/', authenticateToken, (req, res) => {
+router.post('/', authMiddleware, (req, res) => {
     try {
         const { name, address, description, image, phone, email } = req.body;
         
@@ -63,7 +63,7 @@ router.post('/', authenticateToken, (req, res) => {
 });
 
 // Update location (protected)
-router.put('/:id', authenticateToken, (req, res) => {
+router.put('/:id', authMiddleware, (req, res) => {
     try {
         const location = db.get('locations')
             .find({ id: req.params.id })
@@ -99,7 +99,7 @@ router.put('/:id', authenticateToken, (req, res) => {
 });
 
 // Delete location (protected)
-router.delete('/:id', authenticateToken, (req, res) => {
+router.delete('/:id', authMiddleware, (req, res) => {
     try {
         const location = db.get('locations')
             .find({ id: req.params.id })
