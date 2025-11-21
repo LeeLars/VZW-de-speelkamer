@@ -63,3 +63,8 @@ function renderTeam() {
 document.addEventListener('DOMContentLoaded', function() {
     renderTeam();
 });
+
+// Re-render when API data is loaded
+window.addEventListener('dataLoaded', function() {
+    renderTeam();
+});

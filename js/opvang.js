@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Listen for hash changes (when clicking mega menu links)
     window.addEventListener('hashchange', function() {
         const newHash = window.location.hash.slice(1);
-        const newTabName = hashToTab[newHash];
+        const newTabName = hashToHash[newHash];
         if (newTabName) {
             switchTab(newTabName);
             setTimeout(() => {
@@ -169,4 +169,16 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 100);
         }
     });
+});
+
+// Re-render when API data is loaded
+window.addEventListener('dataLoaded', function() {
+    const hash = window.location.hash.slice(1);
+    const hashToTab = {
+        'voor-naschools': 'school',
+        'kampen': 'kampen',
+        'studie': 'studie'
+    };
+    const tabName = hashToTab[hash] || 'school';
+    switchTab(tabName);
 });

@@ -2,7 +2,7 @@
 // Automatically detect if running locally or in production
 const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     ? 'http://localhost:3001/api'
-    : '/cms/api'; // Relative path for production
+    : 'https://vzw-de-speelkamer-production.up.railway.app/api';
 
 // Get token from localStorage
 function getToken() {

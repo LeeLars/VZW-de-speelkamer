@@ -120,3 +120,8 @@ function renderLocations() {
 document.addEventListener('DOMContentLoaded', function() {
     renderLocations();
 });
+
+// Re-render when API data is loaded
+window.addEventListener('dataLoaded', function() {
+    renderLocations();
+});
