@@ -19,9 +19,12 @@ Moderne website voor VZW De Speelkamer - Buitenschoolse opvang in Brugge.
 ## 🚀 Features
 
 - ✅ **Responsive Design** - Werkt op alle devices
-- ✅ **Admin CMS** - Beheer activiteiten, team en prijzen
-- ✅ **Mega Menu** - Intuïtieve navigatie
-- ✅ **Activity Management** - Vakantiekampen & vrije dagen
+- ✅ **Custom CMS** - Volledig beheer systeem met backend API
+- ✅ **Vakantiekampen Beheer** - Voeg toe, bewerk en verwijder kampen
+- ✅ **Tarieven Beheer** - Pas alle prijzen aan via CMS
+- ✅ **Team Beheer** - Upload foto's en beheer teamleden
+- ✅ **Beveiligde Login** - JWT authenticatie met wachtwoord beheer
+- ✅ **Image Upload** - Automatische foto opslag in `/images`
 - ✅ **Google Forms Integratie** - Eenvoudige inschrijvingen
 - ✅ **Modern UI** - TailwindCSS styling
 
@@ -94,16 +97,39 @@ vzw-de-speelkamer/
 └── App.tsx            # Main app component
 ```
 
-## 🔐 Admin Panel
+## 🔐 Content Management System (CMS)
 
-**URL:** `/admin`  
-**Wachtwoord:** `speelkamer`
+**URL:** `/cms/` (of `http://localhost:3001` lokaal)  
+**Standaard Login:**
+- Gebruikersnaam: `admin`
+- Wachtwoord: `changeme123` ⚠️ **Wijzig dit direct!**
 
-### Functies:
-- ✏️ Activiteiten beheren (kampen & vrije dagen)
-- 👥 Team leden toevoegen/bewerken
-- 💰 Prijzen aanpassen
-- 📰 Nieuws items beheren
+### CMS Features:
+- ✏️ **Vakantiekampen Beheer** - Voeg kampen toe met data, tijden, prijzen en Google Form links
+- 👥 **Team Beheer** - Upload foto's (max 5MB), beheer teamleden
+- 💰 **Tarieven Beheer** - Pas alle 6 tarieven aan (opvang, studie, bijles)
+- 🔒 **Beveiliging** - JWT tokens, bcrypt wachtwoorden, wachtwoord wijzigen
+- 📸 **Image Upload** - Foto's worden automatisch opgeslagen in `/images/`
+- 💾 **JSON Database** - Eenvoudig te backuppen (`cms/database/db.json`)
+
+### CMS Installatie:
+
+```bash
+# Installeer CMS dependencies
+cd cms
+npm install
+
+# Configureer environment
+cp .env.example .env
+# Edit .env met je eigen waarden!
+
+# Start CMS server
+npm start
+```
+
+CMS draait op: **http://localhost:3001**
+
+📖 **Volledige CMS documentatie**: Zie `cms/README.md` en `DEPLOYMENT.md`
 
 ## 🎯 Belangrijke Bestanden
 

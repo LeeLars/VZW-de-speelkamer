@@ -134,38 +134,6 @@
                 <div id="team-container" class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-16">
                     <!-- Team members will be rendered here by JavaScript -->
                 </div>
-
-                <!-- Team Values -->
-                <div class="bg-gradient-to-br from-sk_mint/20 to-sk_teal/20 rounded-[3rem] p-8 md:p-12 border-2 border-sk_teal/20 mb-12">
-                    <div class="max-w-4xl mx-auto">
-                        <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Onze waarden</h2>
-                        <div class="grid md:grid-cols-3 gap-6">
-                            <div class="bg-white rounded-2xl p-6 text-center hover:shadow-lg transition-shadow">
-                                <div class="w-14 h-14 bg-sk_pink rounded-xl flex items-center justify-center text-white mx-auto mb-4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-                                </div>
-                                <h3 class="font-bold text-gray-800 mb-2">Warmte & Zorg</h3>
-                                <p class="text-gray-600 text-sm">Elk kind voelt zich welkom en gehoord in onze opvang.</p>
-                            </div>
-                            
-                            <div class="bg-white rounded-2xl p-6 text-center hover:shadow-lg transition-shadow">
-                                <div class="w-14 h-14 bg-sk_yellow rounded-xl flex items-center justify-center text-yellow-900 mx-auto mb-4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
-                                </div>
-                                <h3 class="font-bold text-gray-800 mb-2">Plezier & Spel</h3>
-                                <p class="text-gray-600 text-sm">Spelend leren en groeien staat centraal in alles wat we doen.</p>
-                            </div>
-                            
-                            <div class="bg-white rounded-2xl p-6 text-center hover:shadow-lg transition-shadow">
-                                <div class="w-14 h-14 bg-sk_teal rounded-xl flex items-center justify-center text-white mx-auto mb-4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                                </div>
-                                <h3 class="font-bold text-gray-800 mb-2">Samenwerking</h3>
-                                <p class="text-gray-600 text-sm">Nauwe samenwerking met ouders en scholen voor het beste resultaat.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </main>
 
@@ -241,7 +209,16 @@
                 <!-- Bottom Bar -->
                 <div class="border-t border-gray-100 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
                     <p class="text-gray-500 text-sm">&copy; 2025 VZW De Speelkamer. Alle rechten voorbehouden.</p>
-                    <p class="text-gray-500 text-sm">Gemaakt door <a href="https://grafixstudio.be/" target="_blank" class="text-sk_teal hover:text-[#9ebe88] font-medium transition-colors">Grafix Studio</a></p>
+                    <div class="flex items-center gap-4">
+                        <p class="text-gray-500 text-sm">Gemaakt door <a href="https://grafixstudio.be/" target="_blank" class="text-sk_teal hover:text-[#9ebe88] font-medium transition-colors">Grafix Studio</a></p>
+                        <span class="text-gray-300">•</span>
+                        <a href="./cms/" target="_blank" class="text-gray-400 hover:text-sk_teal text-xs transition-colors" title="CMS Login">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="inline-block">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                        </a>
+                    </div>
                 </div>
             </div>
         </footer>

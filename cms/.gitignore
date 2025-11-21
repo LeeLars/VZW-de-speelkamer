@@ -1,0 +1,12 @@
+node_modules/
+.env
+*.db
+*.log
+uploads/
+.DS_Store
+
+# Database (backup before deploying!)
+database/db.json
+
+# Keep example files
+!.env.example
