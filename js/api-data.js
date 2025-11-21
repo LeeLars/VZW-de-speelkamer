@@ -72,10 +72,22 @@ let DATA = {
 // Load data when script loads
 (async function() {
     try {
-        DATA = await loadDataFromAPI();
+        const apiData = await loadDataFromAPI();
+        // Update DATA with API data
+        DATA.locations = apiData.locations;
+        DATA.team = apiData.team;
+        DATA.activities = apiData.activities;
+        DATA.pricing = apiData.pricing;
+        
+        console.log('✅ Data loaded from Railway API:', {
+            locations: DATA.locations.length,
+            team: DATA.team.length,
+            activities: DATA.activities.length
+        });
+        
         // Trigger custom event to notify other scripts that data is loaded
         window.dispatchEvent(new CustomEvent('dataLoaded', { detail: DATA }));
     } catch (error) {
-        console.error('Failed to load API data:', error);
+        console.error('❌ Failed to load API data:', error);
     }
 })();

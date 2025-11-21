@@ -172,7 +172,13 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Re-render when API data is loaded
-window.addEventListener('dataLoaded', function() {
+window.addEventListener('dataLoaded', function(event) {
+    console.log('📊 Opvang: Data loaded event received', event.detail);
+    
+    // Always render activities when data is loaded
+    renderActivities();
+    
+    // Then switch to correct tab
     const hash = window.location.hash.slice(1);
     const hashToTab = {
         'voor-naschools': 'school',

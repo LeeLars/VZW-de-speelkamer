@@ -65,6 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Re-render when API data is loaded
-window.addEventListener('dataLoaded', function() {
+window.addEventListener('dataLoaded', function(event) {
+    console.log('👥 Team: Data loaded event received', event.detail);
     renderTeam();
 });
