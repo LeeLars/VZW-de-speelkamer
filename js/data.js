@@ -2,11 +2,15 @@
 // This file fetches data from the CMS API when available, with fallback to static data
 
 // API Configuration
+// Set PRODUCTION_CMS_URL to your deployed CMS URL (e.g., Heroku, Railway, Render)
+// Leave as null to use static fallback data in production
+const PRODUCTION_CMS_URL = null; // Change to: 'https://your-cms.herokuapp.com/api'
+
 const API_CONFIG = {
     // Detect if running locally or in production
     baseUrl: (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
         ? 'http://localhost:3001/api'
-        : null, // No CMS API in production (GitHub Pages), use static data
+        : PRODUCTION_CMS_URL, // Use production CMS if configured, otherwise fallback
     timeout: 5000 // 5 second timeout
 };
 

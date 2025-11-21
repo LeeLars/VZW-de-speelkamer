@@ -131,6 +131,23 @@ CMS draait op: **http://localhost:3001**
 
 📖 **Volledige CMS documentatie**: Zie `cms/README.md` en `DEPLOYMENT.md`
 
+### CMS in Productie (GitHub Pages):
+
+Om de CMS te gebruiken op GitHub Pages:
+
+**Optie 1: Automatisch Setup Script**
+```bash
+./setup-production-cms.sh
+```
+
+**Optie 2: Handmatig**
+1. Deploy CMS naar Railway/Heroku/Render (zie `GITHUB-CMS-SETUP.md`)
+2. Update `PRODUCTION_CMS_URL` in `js/data.js`
+3. Update CORS in `cms/server.js`
+4. Push naar GitHub
+
+📖 **Gedetailleerde instructies**: Zie `GITHUB-CMS-SETUP.md`
+
 ## 🎯 Belangrijke Bestanden
 
 ### `constants.ts`
