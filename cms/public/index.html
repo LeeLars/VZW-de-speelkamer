@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VZW De Speelkamer - CMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sk_mint: '#B8D7A3',
+                        sk_yellow: '#F0E471',
+                        sk_pink: '#EF9294',
+                        sk_teal: '#4AB1C4',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'ABeeZee', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Login Screen -->
+    <div id="login-screen" class="min-h-screen flex items-center justify-center px-4">
+        <div class="max-w-md w-full">
+            <div class="bg-white rounded-2xl shadow-xl p-8">
+                <div class="text-center mb-8">
+                    <div class="flex items-center justify-center mb-6">
+                        <div class="w-24 h-24 bg-gradient-to-br from-sk_teal to-sk_mint rounded-2xl flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                                <path d="M2 17l10 5 10-5"></path>
+                                <path d="M2 12l10 5 10-5"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <h1 class="text-3xl font-bold text-gray-800">CMS Login</h1>
+                    <p class="text-gray-600 mt-2">Content Management Systeem</p>
+                </div>
+                
+                <form id="login-form" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Gebruikersnaam</label>
+                        <input type="text" id="username" required
+                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Wachtwoord</label>
+                        <input type="password" id="password" required
+                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none transition">
+                    </div>
+                    <div id="login-error" class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm"></div>
+                    <button type="submit" class="w-full bg-sk_teal text-white font-bold py-3 rounded-xl hover:bg-[#3d94a5] transition shadow-lg">
+                        Inloggen
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main CMS Interface -->
+    <div id="cms-interface" class="hidden min-h-screen">
+        <!-- Header -->
+        <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-sk_teal rounded-lg flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                                <path d="M2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                            </svg>
+                        </div>
+                        <h1 class="text-xl font-bold text-gray-800">CMS - De Speelkamer</h1>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span id="user-name" class="text-sm text-gray-600"></span>
+                        <button onclick="logout()" class="text-sm text-red-600 hover:text-red-700 font-medium">
+                            Uitloggen
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <div class="bg-white border-b border-gray-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <nav class="flex gap-8">
+                    <button onclick="switchTab('activities')" data-tab="activities" class="tab-btn py-4 px-2 border-b-2 border-sk_teal text-sk_teal font-bold">
+                        Vakantiekampen
+                    </button>
+                    <button onclick="switchTab('team')" data-tab="team" class="tab-btn py-4 px-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
+                        Team
+                    </button>
+                    <button onclick="switchTab('locations')" data-tab="locations" class="tab-btn py-4 px-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
+                        Locaties
+                    </button>
+                    <button onclick="switchTab('pricing')" data-tab="pricing" class="tab-btn py-4 px-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
+                        Tarieven
+                    </button>
+                    <button onclick="switchTab('settings')" data-tab="settings" class="tab-btn py-4 px-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
+                        Instellingen
+                    </button>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Activities Tab -->
+            <div id="tab-activities" class="tab-content">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Vakantiekampen & Vrije Dagen</h2>
+                    <button onclick="showActivityModal()" class="bg-sk_teal text-white px-6 py-2 rounded-xl font-bold hover:bg-[#3d94a5] transition">
+                        + Nieuw Kamp
+                    </button>
+                </div>
+                <div id="activities-list" class="grid gap-4"></div>
+            </div>
+
+            <!-- Pricing Tab -->
+            <div id="tab-pricing" class="tab-content hidden">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Tarieven Beheren</h2>
+                <div id="pricing-list" class="grid gap-4"></div>
+            </div>
+
+            <!-- Team Tab -->
+            <div id="tab-team" class="tab-content hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Team Leden</h2>
+                    <button onclick="showTeamModal()" class="bg-sk_teal text-white px-6 py-2 rounded-xl font-bold hover:bg-[#3d94a5] transition">
+                        + Nieuw Teamlid
+                    </button>
+                </div>
+                <div id="team-list" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            </div>
+
+            <!-- Locations Tab -->
+            <div id="tab-locations" class="tab-content hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Locaties</h2>
+                    <button onclick="showLocationModal()" class="bg-sk_pink text-white px-6 py-2 rounded-xl font-bold hover:bg-pink-600 transition">
+                        + Nieuwe Locatie
+                    </button>
+                </div>
+                <div id="locations-list" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="tab-settings" class="tab-content hidden">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Instellingen</h2>
+                <div class="bg-white rounded-xl p-6 shadow-sm max-w-2xl">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">Wachtwoord Wijzigen</h3>
+                    <form id="change-password-form" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Huidig Wachtwoord</label>
+                            <input type="password" id="current-password" required
+                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Nieuw Wachtwoord</label>
+                            <input type="password" id="new-password" required minlength="8"
+                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
+                            <p class="text-xs text-gray-500 mt-1">Minimaal 8 karakters</p>
+                        </div>
+                        <div id="password-message" class="hidden"></div>
+                        <button type="submit" class="bg-sk_teal text-white px-6 py-2 rounded-lg font-bold hover:bg-[#3d94a5] transition">
+                            Wachtwoord Wijzigen
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Location Modal -->
+    <div id="location-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b border-gray-200">
+                <h3 id="location-modal-title" class="text-2xl font-bold text-gray-800">Nieuwe Locatie</h3>
+            </div>
+            <form id="location-form" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Naam *</label>
+                    <input type="text" id="location-name" required
+                        class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_pink focus:ring-2 focus:ring-sk_pink/20 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Adres *</label>
+                    <input type="text" id="location-address" required
+                        class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_pink focus:ring-2 focus:ring-sk_pink/20 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Beschrijving</label>
+                    <textarea id="location-description" rows="3"
+                        class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_pink focus:ring-2 focus:ring-sk_pink/20 outline-none"></textarea>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Telefoon</label>
+                        <input type="tel" id="location-phone"
+                            class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_pink focus:ring-2 focus:ring-sk_pink/20 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Email</label>
+                        <input type="email" id="location-email"
+                            class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_pink focus:ring-2 focus:ring-sk_pink/20 outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Afbeelding URL</label>
+                    <input type="text" id="location-image" placeholder="./images/locatie.jpg"
+                        class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_pink focus:ring-2 focus:ring-sk_pink/20 outline-none">
+                    <p class="text-xs text-gray-500 mt-1">Relatief pad naar de afbeelding</p>
+                </div>
+                <div class="flex gap-3 pt-4">
+                    <button type="submit" class="flex-1 bg-sk_pink text-white px-6 py-3 rounded-xl font-bold hover:bg-pink-600 transition">
+                        Opslaan
+                    </button>
+                    <button type="button" onclick="hideLocationModal()" class="px-6 py-3 rounded-xl font-bold text-gray-600 hover:bg-gray-100 transition">
+                        Annuleren
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modals will be added dynamically -->
+    <div id="modal-container"></div>
+
+    <script src="./js/config.js"></script>
+    <script src="./js/auth.js"></script>
+    <script src="./js/activities.js"></script>
+    <script src="./js/pricing.js"></script>
+    <script src="./js/team.js"></script>
+    <script src="./js/locations.js"></script>
+    <script src="./js/app.js"></script>
+</body>
+</html>
