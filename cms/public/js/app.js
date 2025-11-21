@@ -30,5 +30,8 @@ function switchTab(tabName) {
         case 'team':
             loadTeam();
             break;
+        case 'locations':
+            loadLocations();
+            break;
     }
 }

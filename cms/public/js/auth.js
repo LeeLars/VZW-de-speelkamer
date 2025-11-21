@@ -5,6 +5,13 @@ document.getElementById('login-form')?.addEventListener('submit', async (e) => {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
     const errorDiv = document.getElementById('login-error');
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn.innerHTML;
+
+    // Show loading state
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="inline-block animate-spin mr-2">⏳</span> Inloggen...';
+    errorDiv.classList.add('hidden');
 
     try {
         const data = await apiRequest('/auth/login', {
@@ -15,15 +22,30 @@ document.getElementById('login-form')?.addEventListener('submit', async (e) => {
 
         setToken(data.token);
         document.getElementById('user-name').textContent = data.user.username;
-        document.getElementById('login-screen').classList.add('hidden');
-        document.getElementById('cms-interface').classList.remove('hidden');
         
-        // Load initial data
-        loadActivities();
+        // Success animation
+        submitBtn.innerHTML = '✅ Succesvol!';
+        submitBtn.classList.add('bg-green-500');
+        
+        setTimeout(() => {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('cms-interface').classList.remove('hidden');
+            
+            // Load initial data
+            loadActivities();
+        }, 500);
         
     } catch (error) {
-        errorDiv.textContent = error.message || 'Login mislukt';
+        errorDiv.textContent = error.message || 'Login mislukt. Controleer je gebruikersnaam en wachtwoord.';
         errorDiv.classList.remove('hidden');
+        
+        // Reset button
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnText;
+        
+        // Shake animation
+        errorDiv.classList.add('animate-shake');
+        setTimeout(() => errorDiv.classList.remove('animate-shake'), 500);
     }
 });
 
