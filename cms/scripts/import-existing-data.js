@@ -8,61 +8,97 @@
 const path = require('path');
 const fs = require('fs');
 
-// Read the existing data.js file
-const dataJsPath = path.join(__dirname, '../../js/data.js');
+// Import the existing data
+const DATA = require('../../js/data.js');
 const dbPath = path.join(__dirname, '../database/db.json');
 
 console.log('🔄 Importing existing data into CMS...\n');
 
-// This is a manual script - you'll need to copy data from js/data.js
-// and format it for the CMS database structure
+// Read current database
+let db = {};
+try {
+    const dbContent = fs.readFileSync(dbPath, 'utf8');
+    db = JSON.parse(dbContent);
+} catch (error) {
+    console.log('⚠️  Database not found, creating new one...');
+    db = {
+        users: [],
+        activities: [],
+        pricing: [],
+        team_members: [],
+        locations: []
+    };
+}
 
-const exampleData = {
-    users: [
-        // Admin user is already created by init.js
-    ],
-    activities: [
-        // Example format:
-        // {
-        //     id: "camp1",
-        //     title: "Zomerkamp Week 1",
-        //     type: "CAMP",
-        //     start_date: "2024-07-01",
-        //     end_date: "2024-07-05",
-        //     hours: "09:00 - 16:00",
-        //     price: "€115 (week)",
-        //     google_form_url: "https://forms.gle/...",
-        //     description: "Leuke activiteiten voor kinderen",
-        //     created_at: new Date().toISOString(),
-        //     updated_at: new Date().toISOString()
-        // }
-    ],
-    pricing: [
-        // Already initialized with default values
-    ],
-    team_members: [
-        // Example format:
-        // {
-        //     id: "t1",
-        //     name: "Naam",
-        //     role: "Rol",
-        //     bio: "Bio tekst",
-        //     image_url: "./images/team.jpg",
-        //     location_ids: "loc1,loc2",
-        //     created_at: new Date().toISOString(),
-        //     updated_at: new Date().toISOString()
-        // }
-    ],
-    locations: []
-};
+const now = new Date().toISOString();
 
-console.log('ℹ️  This is a template script.');
-console.log('📝 To import your data:');
-console.log('   1. Open js/data.js');
-console.log('   2. Copy your activities and team data');
-console.log('   3. Format them according to the example above');
-console.log('   4. Add them to this script');
-console.log('   5. Run: node scripts/import-existing-data.js\n');
+// Import locations
+console.log('📍 Importing locations...');
+db.locations = DATA.locations.map(loc => ({
+    id: loc.id,
+    name: loc.name,
+    address: loc.address,
+    description: loc.description,
+    image: loc.image,
+    phone: loc.phone,
+    email: loc.email,
+    created_at: now,
+    updated_at: now
+}));
+console.log(`   ✅ Imported ${db.locations.length} locations`);
 
-console.log('💡 Or use the CMS interface to add data manually!\n');
-console.log('✅ CMS is ready at: http://localhost:3001\n');
+// Import team members
+console.log('👥 Importing team members...');
+db.team_members = DATA.team.map(member => ({
+    id: member.id,
+    name: member.name,
+    role: member.role,
+    bio: member.bio || '',
+    image_url: member.imageUrl,
+    location_ids: member.locationIds.join(','),
+    created_at: now,
+    updated_at: now
+}));
+console.log(`   ✅ Imported ${db.team_members.length} team members`);
+
+// Import activities
+console.log('🎪 Importing activities...');
+db.activities = DATA.activities.map(activity => ({
+    id: activity.id,
+    title: activity.title,
+    type: activity.type,
+    start_date: activity.startDate,
+    end_date: activity.endDate || activity.startDate,
+    hours: activity.hours,
+    price: activity.price,
+    google_form_url: activity.googleFormUrl,
+    description: activity.description || '',
+    created_at: now,
+    updated_at: now
+}));
+console.log(`   ✅ Imported ${db.activities.length} activities`);
+
+// Import pricing
+console.log('💰 Importing pricing...');
+db.pricing = [{
+    id: 'pricing1',
+    standard_rate: DATA.pricing.standardRate,
+    noon_rate: DATA.pricing.noonRate,
+    wednesday_afternoon: DATA.pricing.wednesdayAfternoon,
+    full_day: DATA.pricing.fullDay,
+    half_day: DATA.pricing.halfDay,
+    created_at: now,
+    updated_at: now
+}];
+console.log(`   ✅ Imported pricing`);
+
+// Write to database
+fs.writeFileSync(dbPath, JSON.stringify(db, null, 2));
+
+console.log('\n✅ Import completed successfully!');
+console.log(`📊 Summary:`);
+console.log(`   - ${db.locations.length} locations`);
+console.log(`   - ${db.team_members.length} team members`);
+console.log(`   - ${db.activities.length} activities`);
+console.log(`   - Pricing configured`);
+console.log('\n🚀 You can now start the CMS server with: npm start\n');

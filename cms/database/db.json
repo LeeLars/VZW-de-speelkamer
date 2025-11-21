@@ -7,51 +7,199 @@
       "created_at": "2025-11-21T14:16:14.800Z"
     }
   ],
-  "activities": [],
-  "pricing": [
+  "activities": [
     {
-      "id": 1,
-      "category": "standard_rate",
-      "rate": 1.2,
-      "description": "Standaard tarief per begonnen halfuur",
-      "updated_at": "2025-11-21T14:16:14.801Z"
+      "id": "vk1",
+      "title": "Herfstvakantie",
+      "type": "CAMP",
+      "start_date": "2025-10-27",
+      "end_date": "2025-10-31",
+      "hours": "09:00 - 16:00",
+      "price": "€115 (week)",
+      "google_form_url": "https://forms.gle/vEVfsC6qHehb7zvP6",
+      "description": "Een week vol herfstknutsels, buitenspelen en gezelligheid.",
+      "created_at": "2025-11-21T15:56:26.649Z",
+      "updated_at": "2025-11-21T15:56:26.649Z"
     },
     {
-      "id": 2,
-      "category": "noon_rate",
-      "rate": 1.6,
-      "description": "Middagtoezicht",
-      "updated_at": "2025-11-21T14:16:14.801Z"
+      "id": "vk2",
+      "title": "Kerstvakantie",
+      "type": "CAMP",
+      "start_date": "2025-12-22",
+      "end_date": "2025-12-23",
+      "hours": "09:00 - 16:00",
+      "price": "€46 (2 dagen)",
+      "google_form_url": "https://forms.gle/sb4dNoRFMTn85L5F6",
+      "description": "Twee dagen vol kerstsfeer, knutselen en spelletjes.",
+      "created_at": "2025-11-21T15:56:26.649Z",
+      "updated_at": "2025-11-21T15:56:26.649Z"
     },
     {
-      "id": 3,
-      "category": "wednesday_afternoon",
-      "rate": 12,
-      "description": "Woensdagnamiddag",
-      "updated_at": "2025-11-21T14:16:14.801Z"
+      "id": "vk4",
+      "title": "Krokusvakantie",
+      "type": "CAMP",
+      "start_date": "2026-02-16",
+      "end_date": "2026-02-20",
+      "hours": "09:00 - 16:00",
+      "price": "€115 (week)",
+      "google_form_url": "https://forms.gle/YZF4jhJHiRjYUj9h8",
+      "description": "Een week vol winterpret en creatieve activiteiten.",
+      "created_at": "2025-11-21T15:56:26.649Z",
+      "updated_at": "2025-11-21T15:56:26.649Z"
     },
     {
-      "id": 4,
-      "category": "full_day",
-      "rate": 23,
-      "description": "Volle dag",
-      "updated_at": "2025-11-21T14:16:14.801Z"
+      "id": "vk5",
+      "title": "Paasvakantie - Week 1",
+      "type": "CAMP",
+      "start_date": "2026-04-07",
+      "end_date": "2026-04-10",
+      "hours": "09:00 - 16:00",
+      "price": "€92 (4 dagen)",
+      "google_form_url": "https://forms.gle/M4tgGDaWAsdQbS5y5",
+      "description": "Vier dagen vol lentepret en paasactiviteiten.",
+      "created_at": "2025-11-21T15:56:26.649Z",
+      "updated_at": "2025-11-21T15:56:26.649Z"
     },
     {
-      "id": 5,
-      "category": "half_day",
-      "rate": 12,
-      "description": "Halve dag",
-      "updated_at": "2025-11-21T14:16:14.801Z"
+      "id": "vk6",
+      "title": "Paasvakantie - Week 2",
+      "type": "CAMP",
+      "start_date": "2026-04-13",
+      "end_date": "2026-04-17",
+      "hours": "09:00 - 16:00",
+      "price": "€115 (week)",
+      "google_form_url": "https://forms.gle/XueKeMDacTDsiL357",
+      "description": "Een week vol buitenspelen en creatieve workshops.",
+      "created_at": "2025-11-21T15:56:26.649Z",
+      "updated_at": "2025-11-21T15:56:26.649Z"
     },
     {
-      "id": 6,
-      "category": "study_rate",
-      "rate": 2.4,
-      "description": "Studiebegeleiding per uur",
-      "updated_at": "2025-11-21T14:16:14.801Z"
+      "id": "ps1",
+      "title": "Pedagogische studiedag",
+      "type": "FREE_DAY",
+      "start_date": "2025-10-03",
+      "end_date": "2025-10-03",
+      "hours": "08:00 - 18:00",
+      "price": "€12 (halve dag) / €23 (volle dag)",
+      "google_form_url": "https://forms.gle/evfadnRYwcG7F8hj6",
+      "description": "Opvang tijdens de pedagogische studiedag.",
+      "created_at": "2025-11-21T15:56:26.649Z",
+      "updated_at": "2025-11-21T15:56:26.649Z"
+    },
+    {
+      "id": "ps2",
+      "title": "Pedagogische studiedag",
+      "type": "FREE_DAY",
+      "start_date": "2026-02-13",
+      "end_date": "2026-02-13",
+      "hours": "08:00 - 18:00",
+      "price": "€12 (halve dag) / €23 (volle dag)",
+      "google_form_url": "https://forms.gle/YBA47sE6ao1bfHJu6",
+      "description": "Opvang tijdens de pedagogische studiedag.",
+      "created_at": "2025-11-21T15:56:26.649Z",
+      "updated_at": "2025-11-21T15:56:26.649Z"
+    },
+    {
+      "id": "fv1",
+      "title": "Facultatieve vrije dag",
+      "type": "FREE_DAY",
+      "start_date": "2025-11-10",
+      "end_date": "2025-11-10",
+      "hours": "08:00 - 18:00",
+      "price": "€12 (halve dag) / €23 (volle dag)",
+      "google_form_url": "https://forms.gle/kjPC96ZvrsxrnjuP8",
+      "description": "Opvang tijdens de facultatieve vrije dag.",
+      "created_at": "2025-11-21T15:56:26.649Z",
+      "updated_at": "2025-11-21T15:56:26.649Z"
     }
   ],
-  "team_members": [],
-  "locations": []
+  "pricing": [
+    {
+      "id": "pricing1",
+      "standard_rate": 1.2,
+      "noon_rate": 1.6,
+      "wednesday_afternoon": 12,
+      "full_day": 23,
+      "half_day": 12,
+      "created_at": "2025-11-21T15:56:26.649Z",
+      "updated_at": "2025-11-21T15:56:26.649Z"
+    }
+  ],
+  "team_members": [
+    {
+      "id": "t1",
+      "name": "Sarah Pieters",
+      "role": "Algemeen Coördinator",
+      "bio": "Sarah is de drijvende kracht achter De Speelkamer en zorgt voor een warme en professionele werking.",
+      "image_url": "./images/team.jpg",
+      "location_ids": "loc1,loc2,loc3",
+      "created_at": "2025-11-21T15:56:26.649Z",
+      "updated_at": "2025-11-21T15:56:26.649Z"
+    },
+    {
+      "id": "t2",
+      "name": "Tom Maes",
+      "role": "Hoofdbegeleider",
+      "bio": "Tom staat in voor de dagelijkse begeleiding en brengt veel energie en creativiteit mee.",
+      "image_url": "./images/team.jpg",
+      "location_ids": "loc1",
+      "created_at": "2025-11-21T15:56:26.649Z",
+      "updated_at": "2025-11-21T15:56:26.649Z"
+    },
+    {
+      "id": "t3",
+      "name": "Elke De Smet",
+      "role": "Begeleider",
+      "bio": "Elke zorgt voor een veilige en gezellige sfeer waar kinderen zich thuis voelen.",
+      "image_url": "./images/team.jpg",
+      "location_ids": "loc2",
+      "created_at": "2025-11-21T15:56:26.649Z",
+      "updated_at": "2025-11-21T15:56:26.649Z"
+    },
+    {
+      "id": "t4",
+      "name": "Jonas Vermeulen",
+      "role": "Sportbegeleider",
+      "bio": "Jonas brengt beweging en sport in de opvang met veel enthousiasme.",
+      "image_url": "./images/team.jpg",
+      "location_ids": "loc3",
+      "created_at": "2025-11-21T15:56:26.649Z",
+      "updated_at": "2025-11-21T15:56:26.649Z"
+    }
+  ],
+  "locations": [
+    {
+      "id": "loc1",
+      "name": "VBS De Frères",
+      "address": "Mariastraat 7, 8000 Brugge",
+      "description": "Onze hoofdlocatie gelegen in het hartje van Brugge.",
+      "image": "./images/Nieuwstraat.png",
+      "phone": "050 33 63 47",
+      "email": "Inge.Versavel@vbsdefreres.be",
+      "created_at": "2025-11-21T15:56:26.649Z",
+      "updated_at": "2025-11-21T15:56:26.649Z"
+    },
+    {
+      "id": "loc2",
+      "name": "Sint-Andreas",
+      "address": "Gentpoortstraat 1, 8000 Brugge",
+      "description": "Een gezellige locatie met veel speelruimte.",
+      "image": "./images/Gentpoortstraat.png",
+      "phone": "050 33 63 47",
+      "email": "Inge.Versavel@vbsdefreres.be",
+      "created_at": "2025-11-21T15:56:26.649Z",
+      "updated_at": "2025-11-21T15:56:26.649Z"
+    },
+    {
+      "id": "loc3",
+      "name": "Het Kleurenpalet",
+      "address": "Groenestraat 27, 8000 Brugge",
+      "description": "Onze locatie met focus op creativiteit.",
+      "image": "./images/Groenestraat.png",
+      "phone": "050 33 63 47",
+      "email": "Inge.Versavel@vbsdefreres.be",
+      "created_at": "2025-11-21T15:56:26.649Z",
+      "updated_at": "2025-11-21T15:56:26.649Z"
+    }
+  ]
 }
