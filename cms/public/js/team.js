@@ -161,20 +161,41 @@ async function saveTeamMember(isEdit) {
     const memberId = document.getElementById('team-id').value;
     const id = isEdit ? memberId : 't' + Date.now();
     
-    const formData = new FormData();
-    formData.append('id', id);
-    formData.append('name', document.getElementById('team-name').value);
-    formData.append('role', document.getElementById('team-role').value);
-    formData.append('bio', document.getElementById('team-bio').value || '');
-    formData.append('location_ids', document.getElementById('team-locations').value || '');
-    
-    const imageFile = document.getElementById('team-image').files[0];
-    if (imageFile) {
-        formData.append('image', imageFile);
-    }
-
     try {
-        const token = getToken();
+        // Upload image first if selected
+        let image_url = isEdit ? document.getElementById('preview-img')?.src || './images/team.jpg' : './images/team.jpg';
+        const imageFile = document.getElementById('team-image').files[0];
+        
+        if (imageFile) {
+            const uploadFormData = new FormData();
+            uploadFormData.append('image', imageFile);
+            
+            const uploadResponse = await fetch(`${API_BASE_URL}/upload`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${getToken()}`
+                },
+                body: uploadFormData
+            });
+            
+            if (!uploadResponse.ok) {
+                throw new Error('Fout bij uploaden van afbeelding');
+            }
+            
+            const uploadResult = await uploadResponse.json();
+            image_url = uploadResult.path;
+        }
+        
+        // Save team member data
+        const memberData = {
+            id,
+            name: document.getElementById('team-name').value,
+            role: document.getElementById('team-role').value,
+            bio: document.getElementById('team-bio').value || '',
+            location_ids: document.getElementById('team-locations').value || '',
+            image_url
+        };
+        
         const url = isEdit 
             ? `${API_BASE_URL}/team/${memberId}`
             : `${API_BASE_URL}/team`;
@@ -182,9 +203,10 @@ async function saveTeamMember(isEdit) {
         const response = await fetch(url, {
             method: isEdit ? 'PUT' : 'POST',
             headers: {
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${getToken()}`,
+                'Content-Type': 'application/json'
             },
-            body: formData
+            body: JSON.stringify(memberData)
         });
 
         if (!response.ok) {

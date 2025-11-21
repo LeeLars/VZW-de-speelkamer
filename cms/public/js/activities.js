@@ -1,11 +1,59 @@
+// Store all activities for filtering
+let allActivities = [];
+
 // Load all activities
 async function loadActivities() {
     try {
-        const activities = await apiRequest('/activities', { skipAuth: true });
-        renderActivities(activities);
+        allActivities = await apiRequest('/activities', { skipAuth: true });
+        renderActivities(allActivities);
+        setupActivityFilters();
     } catch (error) {
         showToast('Fout bij laden van activiteiten', 'error');
     }
+}
+
+// Setup filter event listeners
+function setupActivityFilters() {
+    const searchInput = document.getElementById('activity-search');
+    const typeFilter = document.getElementById('activity-type-filter');
+    const periodFilter = document.getElementById('activity-period-filter');
+    
+    if (searchInput) searchInput.addEventListener('input', filterActivities);
+    if (typeFilter) typeFilter.addEventListener('change', filterActivities);
+    if (periodFilter) periodFilter.addEventListener('change', filterActivities);
+}
+
+// Filter activities based on search and filters
+function filterActivities() {
+    const searchTerm = document.getElementById('activity-search')?.value.toLowerCase() || '';
+    const typeFilter = document.getElementById('activity-type-filter')?.value || '';
+    const periodFilter = document.getElementById('activity-period-filter')?.value || '';
+    
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    
+    const filtered = allActivities.filter(activity => {
+        // Search filter
+        const matchesSearch = activity.title.toLowerCase().includes(searchTerm) ||
+                            activity.description?.toLowerCase().includes(searchTerm);
+        
+        // Type filter
+        const matchesType = !typeFilter || activity.type === typeFilter;
+        
+        // Period filter
+        let matchesPeriod = true;
+        if (periodFilter === 'upcoming') {
+            const endDate = new Date(activity.end_date || activity.start_date);
+            matchesPeriod = endDate >= now;
+        } else if (periodFilter === 'past') {
+            const endDate = new Date(activity.end_date || activity.start_date);
+            matchesPeriod = endDate < now;
+        }
+        
+        return matchesSearch && matchesType && matchesPeriod;
+    });
+    
+    renderActivities(filtered);
 }
 
 // Render activities list
@@ -38,15 +86,22 @@ function renderActivities(activities) {
                     }</p>
                 </div>
                 <div class="flex gap-2">
+                    <button onclick="duplicateActivity('${activity.id}')" 
+                        class="p-2 text-green-600 hover:bg-green-50 rounded-lg transition" title="Dupliceren">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                    </button>
                     <button onclick="editActivity('${activity.id}')" 
-                        class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition">
+                        class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition" title="Bewerken">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                             <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                         </svg>
                     </button>
                     <button onclick="deleteActivity('${activity.id}')" 
-                        class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition">
+                        class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition" title="Verwijderen">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <polyline points="3 6 5 6 21 6"></polyline>
                             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
@@ -228,6 +283,39 @@ async function saveActivity(isEdit) {
 // Edit activity
 function editActivity(activityId) {
     showActivityModal(activityId);
+}
+
+// Duplicate activity
+async function duplicateActivity(activityId) {
+    try {
+        const activity = allActivities.find(a => a.id === activityId);
+        if (!activity) {
+            showToast('Activiteit niet gevonden', 'error');
+            return;
+        }
+        
+        // Create a copy with modified title
+        const duplicate = {
+            title: `${activity.title} (kopie)`,
+            type: activity.type,
+            start_date: activity.start_date,
+            end_date: activity.end_date,
+            hours: activity.hours,
+            price: activity.price,
+            google_form_url: activity.google_form_url,
+            description: activity.description
+        };
+        
+        await apiRequest('/activities', {
+            method: 'POST',
+            body: JSON.stringify(duplicate)
+        });
+        
+        showToast('Activiteit gedupliceerd!');
+        loadActivities();
+    } catch (error) {
+        showToast(error.message || 'Fout bij dupliceren', 'error');
+    }
 }
 
 // Delete activity

@@ -119,6 +119,11 @@ async function loadLocationData(locationId) {
         document.getElementById('location-phone').value = location.phone || '';
         document.getElementById('location-email').value = location.email || '';
         document.getElementById('location-image').value = location.image || '';
+        
+        if (location.image) {
+            document.getElementById('location-preview-img').src = location.image;
+            document.getElementById('location-image-preview').classList.remove('hidden');
+        }
     } catch (error) {
         showToast('Fout bij laden van locatie', 'error');
     }
@@ -150,16 +155,40 @@ async function deleteLocation(locationId) {
 document.getElementById('location-form')?.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const locationData = {
-        name: document.getElementById('location-name').value,
-        address: document.getElementById('location-address').value,
-        description: document.getElementById('location-description').value,
-        phone: document.getElementById('location-phone').value,
-        email: document.getElementById('location-email').value,
-        image: document.getElementById('location-image').value
-    };
-
     try {
+        // Upload image first if selected
+        let image = document.getElementById('location-image').value || './images/locatie.jpg';
+        const imageFile = document.getElementById('location-image-file').files[0];
+        
+        if (imageFile) {
+            const uploadFormData = new FormData();
+            uploadFormData.append('image', imageFile);
+            
+            const uploadResponse = await fetch(`${API_BASE_URL}/upload`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${getToken()}`
+                },
+                body: uploadFormData
+            });
+            
+            if (!uploadResponse.ok) {
+                throw new Error('Fout bij uploaden van afbeelding');
+            }
+            
+            const uploadResult = await uploadResponse.json();
+            image = uploadResult.path;
+        }
+        
+        const locationData = {
+            name: document.getElementById('location-name').value,
+            address: document.getElementById('location-address').value,
+            description: document.getElementById('location-description').value,
+            phone: document.getElementById('location-phone').value,
+            email: document.getElementById('location-email').value,
+            image
+        };
+
         if (currentLocationId) {
             await apiRequest(`/locations/${currentLocationId}`, {
                 method: 'PUT',
