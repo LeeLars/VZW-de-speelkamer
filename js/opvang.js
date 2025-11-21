@@ -45,10 +45,10 @@ function renderActivities() {
     
     const futureActivities = DATA.activities
         .filter(activity => {
-            const endDate = new Date(activity.endDate || activity.startDate);
+            const endDate = new Date(activity.end_date || activity.start_date);
             return endDate >= now;
         })
-        .sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+        .sort((a, b) => new Date(a.start_date) - new Date(b.start_date));
     
     if (futureActivities.length === 0) {
         container.innerHTML = `
@@ -64,8 +64,8 @@ function renderActivities() {
     }
     
     container.innerHTML = futureActivities.map(activity => {
-        const startDate = new Date(activity.startDate);
-        const endDate = activity.endDate ? new Date(activity.endDate) : null;
+        const startDate = new Date(activity.start_date);
+        const endDate = activity.end_date ? new Date(activity.end_date) : null;
         
         let dateStr;
         if (endDate) {
@@ -108,7 +108,7 @@ function renderActivities() {
                         </div>
                     </div>
                     
-                    <a href="${activity.googleFormUrl}" target="_blank" class="block w-full text-center bg-sk_teal text-white py-3 rounded-xl text-sm font-bold hover:bg-[#3d94a5] transition-colors shadow-md hover:shadow-lg">
+                    <a href="${activity.google_form_url}" target="_blank" class="block w-full text-center bg-sk_teal text-white py-3 rounded-xl text-sm font-bold hover:bg-[#3d94a5] transition-colors shadow-md hover:shadow-lg">
                         📝 Inschrijven via Google Forms
                     </a>
                 </div>
