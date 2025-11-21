@@ -52,9 +52,9 @@ app.use((err, req, res, next) => {
 });
 
 // Start server
-app.listen(PORT, () => {
-    console.log(`\n🚀 CMS Server running on http://localhost:${PORT}`);
-    console.log(`📊 API endpoints available at http://localhost:${PORT}/api`);
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`\n🚀 CMS Server running on port ${PORT}`);
+    console.log(`📊 API endpoints available at /api`);
     console.log(`\n⚠️  Make sure to:`);
     console.log(`   1. Copy .env.example to .env`);
     console.log(`   2. Change the default admin password`);
