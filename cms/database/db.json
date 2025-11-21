@@ -1,0 +1,57 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "$2a$10$qmR7p0Wdy9ME4quTNONLvuJnVQFv44P/jthieN.sHgSkr/CVGZtQm",
+      "created_at": "2025-11-21T14:16:14.800Z"
+    }
+  ],
+  "activities": [],
+  "pricing": [
+    {
+      "id": 1,
+      "category": "standard_rate",
+      "rate": 1.2,
+      "description": "Standaard tarief per begonnen halfuur",
+      "updated_at": "2025-11-21T14:16:14.801Z"
+    },
+    {
+      "id": 2,
+      "category": "noon_rate",
+      "rate": 1.6,
+      "description": "Middagtoezicht",
+      "updated_at": "2025-11-21T14:16:14.801Z"
+    },
+    {
+      "id": 3,
+      "category": "wednesday_afternoon",
+      "rate": 12,
+      "description": "Woensdagnamiddag",
+      "updated_at": "2025-11-21T14:16:14.801Z"
+    },
+    {
+      "id": 4,
+      "category": "full_day",
+      "rate": 23,
+      "description": "Volle dag",
+      "updated_at": "2025-11-21T14:16:14.801Z"
+    },
+    {
+      "id": 5,
+      "category": "half_day",
+      "rate": 12,
+      "description": "Halve dag",
+      "updated_at": "2025-11-21T14:16:14.801Z"
+    },
+    {
+      "id": 6,
+      "category": "study_rate",
+      "rate": 2.4,
+      "description": "Studiebegeleiding per uur",
+      "updated_at": "2025-11-21T14:16:14.801Z"
+    }
+  ],
+  "team_members": [],
+  "locations": []
+}

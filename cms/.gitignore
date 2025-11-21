@@ -5,8 +5,8 @@ node_modules/
 uploads/
 .DS_Store
 
-# Database (backup before deploying!)
-database/db.json
-
 # Keep example files
 !.env.example
+
+# Note: database/db.json is tracked for GitHub Pages deployment
+# Make sure to backup before making changes!
