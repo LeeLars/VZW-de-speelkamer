@@ -1,17 +1,7 @@
-// VZW De Speelkamer - Dynamic Data with CMS Integration
-// This file fetches data from the CMS API when available, with fallback to static data
+// VZW De Speelkamer - Static Data (Fallback)
+// This is used as fallback when CMS API is not available
 
-// API Configuration
-const API_CONFIG = {
-    // Detect if running locally or in production
-    baseUrl: (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-        ? 'http://localhost:3001/api'
-        : null, // No CMS API in production (GitHub Pages), use static data
-    timeout: 5000 // 5 second timeout
-};
-
-// Static fallback data
-const FALLBACK_DATA = {
+const STATIC_DATA = {
     locations: [
         {
             id: 'loc1',
@@ -41,6 +31,7 @@ const FALLBACK_DATA = {
             email: 'Inge.Versavel@vbsdefreres.be'
         }
     ],
+
     team: [
         {
             id: 't1',
@@ -75,6 +66,7 @@ const FALLBACK_DATA = {
             bio: 'Jonas brengt beweging en sport in de opvang met veel enthousiasme.'
         }
     ],
+
     activities: [
         {
             id: 'vk1',
@@ -162,6 +154,7 @@ const FALLBACK_DATA = {
             description: 'Opvang tijdens de facultatieve vrije dag.'
         }
     ],
+
     pricing: {
         standardRate: 1.20,
         noonRate: 1.60,
@@ -169,6 +162,7 @@ const FALLBACK_DATA = {
         fullDay: 23.00,
         halfDay: 12.00
     },
+
     contact: {
         email: 'Inge.Versavel@vbsdefreres.be',
         phone: '050 33 63 47',
@@ -177,167 +171,3 @@ const FALLBACK_DATA = {
         address: 'Mariastraat 7, 8000 Brugge'
     }
 };
-
-// Fetch with timeout
-async function fetchWithTimeout(url, timeout = 5000) {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), timeout);
-    
-    try {
-        const response = await fetch(url, { signal: controller.signal });
-        clearTimeout(timeoutId);
-        return response;
-    } catch (error) {
-        clearTimeout(timeoutId);
-        throw error;
-    }
-}
-
-// Fetch data from CMS API
-async function fetchFromCMS(endpoint) {
-    if (!API_CONFIG.baseUrl) {
-        return null; // No API configured, use fallback
-    }
-    
-    try {
-        const response = await fetchWithTimeout(
-            `${API_CONFIG.baseUrl}/${endpoint}`,
-            API_CONFIG.timeout
-        );
-        
-        if (!response.ok) {
-            console.warn(`CMS API error for ${endpoint}:`, response.status);
-            return null;
-        }
-        
-        return await response.json();
-    } catch (error) {
-        console.warn(`Failed to fetch from CMS (${endpoint}):`, error.message);
-        return null;
-    }
-}
-
-// Transform CMS data to match expected format
-function transformCMSData(cmsData, type) {
-    if (!cmsData) return null;
-    
-    switch (type) {
-        case 'activities':
-            return cmsData.map(activity => ({
-                id: activity.id,
-                title: activity.title,
-                type: activity.type,
-                startDate: activity.start_date,
-                endDate: activity.end_date,
-                hours: activity.hours,
-                price: activity.price,
-                googleFormUrl: activity.google_form_url,
-                description: activity.description || ''
-            }));
-            
-        case 'team':
-            return cmsData.map(member => ({
-                id: member.id,
-                name: member.name,
-                role: member.role,
-                locationIds: member.location_ids ? member.location_ids.split(',') : [],
-                imageUrl: member.image_url || './images/team.jpg',
-                bio: member.bio || ''
-            }));
-            
-        case 'pricing':
-            // CMS returns array, convert to object
-            const pricingObj = {};
-            cmsData.forEach(item => {
-                const key = item.category.replace(/-/g, '_').replace(/\s+/g, '_');
-                pricingObj[key] = parseFloat(item.amount);
-            });
-            return pricingObj;
-            
-        case 'locations':
-            return cmsData.map(loc => ({
-                id: loc.id,
-                name: loc.name,
-                address: loc.address || '',
-                description: loc.description || '',
-                image: loc.image || './images/location.jpg',
-                phone: loc.phone || '050 33 63 47',
-                email: loc.email || 'Inge.Versavel@vbsdefreres.be'
-            }));
-            
-        default:
-            return cmsData;
-    }
-}
-
-// Load all data
-async function loadData() {
-    console.log('🔄 Loading data...');
-    
-    const data = {
-        locations: FALLBACK_DATA.locations,
-        team: FALLBACK_DATA.team,
-        activities: FALLBACK_DATA.activities,
-        pricing: FALLBACK_DATA.pricing,
-        contact: FALLBACK_DATA.contact
-    };
-    
-    // Try to fetch from CMS if available
-    if (API_CONFIG.baseUrl) {
-        console.log('📡 Fetching from CMS API...');
-        
-        // Fetch all data in parallel
-        const [activities, team, pricing, locations] = await Promise.all([
-            fetchFromCMS('activities'),
-            fetchFromCMS('team'),
-            fetchFromCMS('pricing'),
-            fetchFromCMS('locations')
-        ]);
-        
-        // Use CMS data if available, otherwise keep fallback
-        if (activities) {
-            data.activities = transformCMSData(activities, 'activities');
-            console.log('✅ Activities loaded from CMS');
-        } else {
-            console.log('⚠️ Using fallback activities');
-        }
-        
-        if (team) {
-            data.team = transformCMSData(team, 'team');
-            console.log('✅ Team loaded from CMS');
-        } else {
-            console.log('⚠️ Using fallback team');
-        }
-        
-        if (pricing) {
-            data.pricing = transformCMSData(pricing, 'pricing');
-            console.log('✅ Pricing loaded from CMS');
-        } else {
-            console.log('⚠️ Using fallback pricing');
-        }
-        
-        if (locations) {
-            data.locations = transformCMSData(locations, 'locations');
-            console.log('✅ Locations loaded from CMS');
-        } else {
-            console.log('⚠️ Using fallback locations');
-        }
-    } else {
-        console.log('📦 Using static fallback data (no CMS API configured)');
-    }
-    
-    return data;
-}
-
-// Initialize DATA as a promise
-let DATA = null;
-let dataPromise = loadData().then(loadedData => {
-    DATA = loadedData;
-    console.log('✅ Data loaded successfully');
-    return DATA;
-});
-
-// Export for use in other files
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { DATA, dataPromise, loadData };
-}

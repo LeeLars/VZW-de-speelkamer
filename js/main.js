@@ -1,7 +1,14 @@
 // VZW De Speelkamer - Main JavaScript
 
-// Mobile menu toggle
-document.addEventListener('DOMContentLoaded', function() {
+// Wait for data to load before initializing page
+document.addEventListener('DOMContentLoaded', async function() {
+    // Wait for data to be loaded from CMS or fallback
+    if (typeof dataPromise !== 'undefined') {
+        await dataPromise;
+        console.log('✅ Page initialized with loaded data');
+    }
+    
+    // Mobile menu toggle
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
     
@@ -21,6 +28,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Set active navigation link
     updateActiveNav();
+    
+    // Initialize page-specific content if needed
+    if (typeof initializePage === 'function') {
+        initializePage();
+    }
 });
 
 // Update active navigation state
