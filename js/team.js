@@ -16,21 +16,24 @@ function renderTeam() {
             sk_mint: 'from-sk_mint to-[#a3c78e]'
         };
         
-        // Get location names
-        const locationNames = member.locationIds
-            .map(id => {
-                const location = DATA.locations.find(loc => loc.id === id);
-                return location ? location.name : '';
-            })
-            .filter(name => name)
-            .join(', ');
+        // Get location names - handle both camelCase and snake_case
+        const locationIds = member.location_ids || member.locationIds || '';
+        const locationNames = locationIds
+            ? locationIds.split(',')
+                .map(id => {
+                    const location = DATA.locations.find(loc => loc.id === id.trim());
+                    return location ? location.name : '';
+                })
+                .filter(name => name)
+                .join(', ')
+            : '';
         
         return `
             <div class="group bg-white rounded-[2rem] shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
                 <!-- Image -->
                 <div class="relative overflow-hidden h-72">
                     <div class="absolute inset-0 bg-gradient-to-br ${colorClasses[color]} opacity-20"></div>
-                    <img src="${member.imageUrl}" alt="${member.name}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                    <img src="${member.image_url || member.imageUrl}" alt="${member.name}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                     <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
                         <h3 class="text-2xl font-bold text-white mb-1">${member.name}</h3>
                         <p class="text-white/90 font-medium">${member.role}</p>
