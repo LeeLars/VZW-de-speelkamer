@@ -5,11 +5,11 @@ const DATA = {
         {
             id: 'loc1',
             name: 'VBS De Frères',
-            address: 'Nieuwstraat 2, 8000 Brugge',
+            address: 'Mariastraat 7, 8000 Brugge',
             description: 'Onze hoofdlocatie gelegen in het hartje van Brugge.',
             image: './images/Nieuwstraat.png',
-            phone: '050 12 34 56',
-            email: 'info@vzwdespeelkamer.be'
+            phone: '050 33 63 47',
+            email: 'Inge.Versavel@vbsdefreres.be'
         },
         {
             id: 'loc2',
@@ -17,8 +17,8 @@ const DATA = {
             address: 'Gentpoortstraat 1, 8000 Brugge',
             description: 'Een gezellige locatie met veel speelruimte.',
             image: './images/Gentpoortstraat.png',
-            phone: '050 12 34 56',
-            email: 'info@vzwdespeelkamer.be'
+            phone: '050 33 63 47',
+            email: 'Inge.Versavel@vbsdefreres.be'
         },
         {
             id: 'loc3',
@@ -26,8 +26,8 @@ const DATA = {
             address: 'Groenestraat 27, 8000 Brugge',
             description: 'Onze locatie met focus op creativiteit.',
             image: './images/Groenestraat.png',
-            phone: '050 12 34 56',
-            email: 'info@vzwdespeelkamer.be'
+            phone: '050 33 63 47',
+            email: 'Inge.Versavel@vbsdefreres.be'
         }
     ],
 
@@ -163,10 +163,11 @@ const DATA = {
     },
 
     contact: {
-        email: 'info@vzwdespeelkamer.be',
-        phone: '050 12 34 56',
+        email: 'Inge.Versavel@vbsdefreres.be',
+        phone: '050 33 63 47',
+        gsm: '0476 90 81 23',
         facebook: 'https://www.facebook.com/opvangminipalet',
-        address: 'Nieuwstraat 2, 8000 Brugge'
+        address: 'Mariastraat 7, 8000 Brugge'
     }
 };
 
