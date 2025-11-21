@@ -115,16 +115,6 @@
   ],
   "pricing": [
     {
-      "id": "pricing1",
-      "standard_rate": 1.2,
-      "noon_rate": 1.6,
-      "wednesday_afternoon": 12,
-      "full_day": 23,
-      "half_day": 12,
-      "created_at": "2025-11-21T15:56:26.649Z",
-      "updated_at": "2025-11-21T15:56:26.649Z"
-    },
-    {
       "id": 1,
       "category": "standard_rate",
       "rate": 1.2,
