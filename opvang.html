@@ -271,37 +271,22 @@
 
                 <!-- Tab Content: Kampen -->
                 <div id="content-kampen" class="tab-content hidden">
-                    <div class="text-center max-w-4xl mx-auto mb-8">
+                    <div class="text-center max-w-5xl mx-auto mb-8">
                         <h2 class="text-3xl font-bold text-gray-800 mb-4">Themakampen en losse opvangdagen</h2>
                         <p class="text-gray-600 leading-relaxed text-lg mb-6">
                             Schrijf je snel in voor onze kampen en vrije dagen. Beperkt aantal plaatsen!
                         </p>
                         
-                        <!-- Quick Date Filter -->
-                        <div class="flex flex-wrap justify-center gap-2 mb-8">
-                            <button onclick="filterByMonth('all')" id="filter-all" class="month-filter-btn active px-4 py-2 rounded-full text-sm font-bold transition-all bg-sk_teal text-white">
-                                Alle Datums
-                            </button>
-                            <button onclick="filterByMonth('2025-10')" id="filter-2025-10" class="month-filter-btn px-4 py-2 rounded-full text-sm font-bold transition-all bg-gray-100 text-gray-600 hover:bg-gray-200">
-                                Oktober '25
-                            </button>
-                            <button onclick="filterByMonth('2025-11')" id="filter-2025-11" class="month-filter-btn px-4 py-2 rounded-full text-sm font-bold transition-all bg-gray-100 text-gray-600 hover:bg-gray-200">
-                                November '25
-                            </button>
-                            <button onclick="filterByMonth('2025-12')" id="filter-2025-12" class="month-filter-btn px-4 py-2 rounded-full text-sm font-bold transition-all bg-gray-100 text-gray-600 hover:bg-gray-200">
-                                December '25
-                            </button>
-                            <button onclick="filterByMonth('2026-02')" id="filter-2026-02" class="month-filter-btn px-4 py-2 rounded-full text-sm font-bold transition-all bg-gray-100 text-gray-600 hover:bg-gray-200">
-                                Februari '26
-                            </button>
-                            <button onclick="filterByMonth('2026-04')" id="filter-2026-04" class="month-filter-btn px-4 py-2 rounded-full text-sm font-bold transition-all bg-gray-100 text-gray-600 hover:bg-gray-200">
-                                April '26
+                        <!-- Quick Date Filter (dynamically populated) -->
+                        <div id="month-filters" class="flex flex-wrap justify-center gap-2 mb-8">
+                            <button onclick="filterByMonth('all')" id="filter-all" class="month-filter-btn active px-5 py-2.5 rounded-full text-sm font-bold transition-all bg-sk_teal text-white shadow-md hover:shadow-lg">
+                                📅 Alle Datums
                             </button>
                         </div>
                     </div>
                     
-                    <!-- Activities Timeline -->
-                    <div id="activities-container" class="max-w-4xl mx-auto space-y-6"></div>
+                    <!-- Activities Grid -->
+                    <div id="activities-container" class="max-w-6xl mx-auto grid md:grid-cols-2 gap-6"></div>
                     
                     <!-- Empty State -->
                     <div id="activities-empty" class="hidden text-center py-12">
