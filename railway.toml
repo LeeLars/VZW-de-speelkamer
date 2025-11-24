@@ -1,11 +1,11 @@
 [build]
 builder = "NIXPACKS"
-buildCommand = "cd cms && npm install"
+watchPatterns = ["cms/**"]
 
 [deploy]
 startCommand = "cd cms && npm start"
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10
 
-[env]
-NODE_ENV = "production"
+[nixpacks]
+buildCommand = "cd cms && npm ci --only=production"
