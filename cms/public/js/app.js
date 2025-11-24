@@ -33,5 +33,8 @@ function switchTab(tabName) {
         case 'locations':
             loadLocations();
             break;
+        case 'settings':
+            loadUsers();
+            break;
     }
 }

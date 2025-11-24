@@ -23,6 +23,11 @@ function initializeDatabase() {
     const adminUsername = process.env.ADMIN_USERNAME || 'admin';
     const adminPassword = process.env.ADMIN_PASSWORD || 'changeme123';
     
+    // Security warning if using default credentials
+    if (!process.env.ADMIN_PASSWORD) {
+        console.warn('⚠️  WARNING: Using default admin password! Set ADMIN_PASSWORD environment variable in production!');
+    }
+    
     const existingUser = db.get('users').find({ username: adminUsername }).value();
     
     if (!existingUser) {
