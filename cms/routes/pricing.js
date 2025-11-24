@@ -1,13 +1,15 @@
 const express = require('express');
-const { db } = require('../database/init');
+const { query, queryOne, queryAll } = require('../database/db');
 const authMiddleware = require('../middleware/auth');
 
 const router = express.Router();
 
 // Get all pricing (public)
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
     try {
-        const pricing = db.get('pricing').sortBy('category').value();
+        const pricing = await queryAll(
+            'SELECT * FROM pricing ORDER BY category ASC'
+        );
         res.json(pricing);
     } catch (error) {
         console.error('Get pricing error:', error);
@@ -16,9 +18,12 @@ router.get('/', (req, res) => {
 });
 
 // Get single pricing item (public)
-router.get('/:category', (req, res) => {
+router.get('/:category', async (req, res) => {
     try {
-        const pricing = db.get('pricing').find({ category: req.params.category }).value();
+        const pricing = await queryOne(
+            'SELECT * FROM pricing WHERE category = $1',
+            [req.params.category]
+        );
         if (!pricing) {
             return res.status(404).json({ error: 'Pricing not found' });
         }
@@ -30,7 +35,7 @@ router.get('/:category', (req, res) => {
 });
 
 // Update pricing (protected)
-router.put('/:category', authMiddleware, (req, res) => {
+router.put('/:category', authMiddleware, async (req, res) => {
     try {
         const { rate, description } = req.body;
 
@@ -42,19 +47,24 @@ router.put('/:category', authMiddleware, (req, res) => {
             return res.status(400).json({ error: 'Rate must be a positive number' });
         }
 
-        const existing = db.get('pricing').find({ category: req.params.category }).value();
+        const existing = await queryOne(
+            'SELECT * FROM pricing WHERE category = $1',
+            [req.params.category]
+        );
         if (!existing) {
             return res.status(404).json({ error: 'Pricing category not found' });
         }
 
-        const updated = {
-            ...existing,
-            rate: parseFloat(rate),
-            description: description || existing.description,
-            updated_at: new Date().toISOString()
-        };
+        const updated = await queryOne(
+            `UPDATE pricing SET
+                rate = $1,
+                description = COALESCE($2, description),
+                updated_at = CURRENT_TIMESTAMP
+             WHERE category = $3
+             RETURNING *`,
+            [parseFloat(rate), description, req.params.category]
+        );
 
-        db.get('pricing').find({ category: req.params.category }).assign(updated).write();
         res.json(updated);
     } catch (error) {
         console.error('Update pricing error:', error);

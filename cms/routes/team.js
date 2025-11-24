@@ -1,13 +1,15 @@
 const express = require('express');
-const { db } = require('../database/init');
+const { query, queryOne, queryAll } = require('../database/db');
 const authMiddleware = require('../middleware/auth');
 
 const router = express.Router();
 
 // Get all team members (public)
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
     try {
-        const team = db.get('team_members').sortBy('created_at').value();
+        const team = await queryAll(
+            'SELECT * FROM team_members ORDER BY created_at ASC'
+        );
         res.json(team);
     } catch (error) {
         console.error('Get team error:', error);
@@ -16,9 +18,12 @@ router.get('/', (req, res) => {
 });
 
 // Get single team member (public)
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
     try {
-        const member = db.get('team_members').find({ id: req.params.id }).value();
+        const member = await queryOne(
+            'SELECT * FROM team_members WHERE id = $1',
+            [parseInt(req.params.id)]
+        );
         if (!member) {
             return res.status(404).json({ error: 'Team member not found' });
         }
@@ -30,31 +35,21 @@ router.get('/:id', (req, res) => {
 });
 
 // Create team member (protected)
-router.post('/', authMiddleware, (req, res) => {
+router.post('/', authMiddleware, async (req, res) => {
     try {
-        const { id, name, role, bio, location_ids, image_url } = req.body;
+        const { name, role, bio, location_ids, image_url } = req.body;
 
-        if (!id || !name || !role) {
-            return res.status(400).json({ error: 'Missing required fields (id, name, role)' });
+        if (!name || !role) {
+            return res.status(400).json({ error: 'Missing required fields (name, role)' });
         }
 
-        const existing = db.get('team_members').find({ id }).value();
-        if (existing) {
-            return res.status(409).json({ error: 'Team member with this ID already exists' });
-        }
+        const newMember = await queryOne(
+            `INSERT INTO team_members (name, role, bio, location_ids, image_url)
+             VALUES ($1, $2, $3, $4, $5)
+             RETURNING *`,
+            [name, role, bio || null, location_ids || null, image_url || './images/team.jpg']
+        );
 
-        const newMember = {
-            id,
-            name,
-            role,
-            bio: bio || null,
-            image_url: image_url || './images/team.jpg',
-            location_ids: location_ids || null,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-        };
-
-        db.get('team_members').push(newMember).write();
         res.status(201).json(newMember);
     } catch (error) {
         console.error('Create team member error:', error);
@@ -63,26 +58,32 @@ router.post('/', authMiddleware, (req, res) => {
 });
 
 // Update team member (protected)
-router.put('/:id', authMiddleware, (req, res) => {
+router.put('/:id', authMiddleware, async (req, res) => {
     try {
         const { name, role, bio, location_ids, image_url } = req.body;
+        const memberId = parseInt(req.params.id);
 
-        const existing = db.get('team_members').find({ id: req.params.id }).value();
+        const existing = await queryOne(
+            'SELECT * FROM team_members WHERE id = $1',
+            [memberId]
+        );
         if (!existing) {
             return res.status(404).json({ error: 'Team member not found' });
         }
 
-        const updated = {
-            ...existing,
-            name: name || existing.name,
-            role: role || existing.role,
-            bio: bio !== undefined ? bio : existing.bio,
-            image_url: image_url !== undefined ? image_url : existing.image_url,
-            location_ids: location_ids !== undefined ? location_ids : existing.location_ids,
-            updated_at: new Date().toISOString()
-        };
+        const updated = await queryOne(
+            `UPDATE team_members SET
+                name = COALESCE($1, name),
+                role = COALESCE($2, role),
+                bio = $3,
+                location_ids = $4,
+                image_url = $5,
+                updated_at = CURRENT_TIMESTAMP
+             WHERE id = $6
+             RETURNING *`,
+            [name, role, bio !== undefined ? bio : existing.bio, location_ids !== undefined ? location_ids : existing.location_ids, image_url !== undefined ? image_url : existing.image_url, memberId]
+        );
 
-        db.get('team_members').find({ id: req.params.id }).assign(updated).write();
         res.json(updated);
     } catch (error) {
         console.error('Update team member error:', error);
@@ -91,14 +92,22 @@ router.put('/:id', authMiddleware, (req, res) => {
 });
 
 // Delete team member (protected)
-router.delete('/:id', authMiddleware, (req, res) => {
+router.delete('/:id', authMiddleware, async (req, res) => {
     try {
-        const existing = db.get('team_members').find({ id: req.params.id }).value();
+        const memberId = parseInt(req.params.id);
+        
+        const existing = await queryOne(
+            'SELECT * FROM team_members WHERE id = $1',
+            [memberId]
+        );
         if (!existing) {
             return res.status(404).json({ error: 'Team member not found' });
         }
 
-        db.get('team_members').remove({ id: req.params.id }).write();
+        await query(
+            'DELETE FROM team_members WHERE id = $1',
+            [memberId]
+        );
         res.json({ message: 'Team member deleted successfully' });
     } catch (error) {
         console.error('Delete team member error:', error);

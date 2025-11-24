@@ -1,13 +1,15 @@
 const express = require('express');
-const { db } = require('../database/init');
+const { query, queryOne, queryAll } = require('../database/db');
 const authMiddleware = require('../middleware/auth');
 
 const router = express.Router();
 
 // Get all locations (public)
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
     try {
-        const locations = db.get('locations').value();
+        const locations = await queryAll(
+            'SELECT * FROM locations ORDER BY created_at ASC'
+        );
         res.json(locations);
     } catch (error) {
         console.error('Get locations error:', error);
@@ -16,11 +18,12 @@ router.get('/', (req, res) => {
 });
 
 // Get single location (public)
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
     try {
-        const location = db.get('locations')
-            .find({ id: req.params.id })
-            .value();
+        const location = await queryOne(
+            'SELECT * FROM locations WHERE id = $1',
+            [parseInt(req.params.id)]
+        );
         
         if (!location) {
             return res.status(404).json({ error: 'Location not found' });
@@ -34,27 +37,21 @@ router.get('/:id', (req, res) => {
 });
 
 // Create location (protected)
-router.post('/', authMiddleware, (req, res) => {
+router.post('/', authMiddleware, async (req, res) => {
     try {
-        const { name, address, description, image, phone, email } = req.body;
+        const { name, address, description, image_url, phone, email } = req.body;
         
         if (!name || !address) {
             return res.status(400).json({ error: 'Name and address are required' });
         }
         
-        const newLocation = {
-            id: `loc${Date.now()}`,
-            name,
-            address,
-            description: description || '',
-            image: image || './images/location-placeholder.jpg',
-            phone: phone || '',
-            email: email || '',
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-        };
+        const newLocation = await queryOne(
+            `INSERT INTO locations (name, address, description, image_url, phone, email)
+             VALUES ($1, $2, $3, $4, $5, $6)
+             RETURNING *`,
+            [name, address, description || '', image_url || './images/location-placeholder.jpg', phone || '', email || '']
+        );
         
-        db.get('locations').push(newLocation).write();
         res.status(201).json(newLocation);
     } catch (error) {
         console.error('Create location error:', error);
@@ -63,33 +60,34 @@ router.post('/', authMiddleware, (req, res) => {
 });
 
 // Update location (protected)
-router.put('/:id', authMiddleware, (req, res) => {
+router.put('/:id', authMiddleware, async (req, res) => {
     try {
-        const location = db.get('locations')
-            .find({ id: req.params.id })
-            .value();
+        const locationId = parseInt(req.params.id);
+        
+        const location = await queryOne(
+            'SELECT * FROM locations WHERE id = $1',
+            [locationId]
+        );
         
         if (!location) {
             return res.status(404).json({ error: 'Location not found' });
         }
         
-        const { name, address, description, image, phone, email } = req.body;
+        const { name, address, description, image_url, phone, email } = req.body;
         
-        const updatedLocation = {
-            ...location,
-            name: name || location.name,
-            address: address || location.address,
-            description: description !== undefined ? description : location.description,
-            image: image || location.image,
-            phone: phone !== undefined ? phone : location.phone,
-            email: email !== undefined ? email : location.email,
-            updated_at: new Date().toISOString()
-        };
-        
-        db.get('locations')
-            .find({ id: req.params.id })
-            .assign(updatedLocation)
-            .write();
+        const updatedLocation = await queryOne(
+            `UPDATE locations SET
+                name = COALESCE($1, name),
+                address = COALESCE($2, address),
+                description = $3,
+                image_url = COALESCE($4, image_url),
+                phone = $5,
+                email = $6,
+                updated_at = CURRENT_TIMESTAMP
+             WHERE id = $7
+             RETURNING *`,
+            [name, address, description !== undefined ? description : location.description, image_url, phone !== undefined ? phone : location.phone, email !== undefined ? email : location.email, locationId]
+        );
         
         res.json(updatedLocation);
     } catch (error) {
@@ -99,19 +97,23 @@ router.put('/:id', authMiddleware, (req, res) => {
 });
 
 // Delete location (protected)
-router.delete('/:id', authMiddleware, (req, res) => {
+router.delete('/:id', authMiddleware, async (req, res) => {
     try {
-        const location = db.get('locations')
-            .find({ id: req.params.id })
-            .value();
+        const locationId = parseInt(req.params.id);
+        
+        const location = await queryOne(
+            'SELECT * FROM locations WHERE id = $1',
+            [locationId]
+        );
         
         if (!location) {
             return res.status(404).json({ error: 'Location not found' });
         }
         
-        db.get('locations')
-            .remove({ id: req.params.id })
-            .write();
+        await query(
+            'DELETE FROM locations WHERE id = $1',
+            [locationId]
+        );
         
         res.json({ message: 'Location deleted successfully' });
     } catch (error) {

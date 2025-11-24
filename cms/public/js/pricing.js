@@ -22,21 +22,21 @@ function renderPricing(pricing) {
     };
 
     container.innerHTML = pricing.map(item => `
-        <div class="bg-white rounded-xl p-6 shadow-sm">
-            <div class="flex justify-between items-start mb-4">
-                <div>
-                    <h3 class="text-lg font-bold text-gray-800">${categoryNames[item.category] || item.category}</h3>
-                    <p class="text-sm text-gray-600 mt-1">${item.description || ''}</p>
+        <div class="bg-white rounded-xl p-4 sm:p-6 shadow-sm">
+            <div class="flex justify-between items-start gap-3 mb-4">
+                <div class="flex-1 min-w-0">
+                    <h3 class="text-base sm:text-lg font-bold text-gray-800 break-words">${categoryNames[item.category] || item.category}</h3>
+                    <p class="text-xs sm:text-sm text-gray-600 mt-1 break-words">${item.description || ''}</p>
                 </div>
                 <button onclick="editPricing('${item.category}')" 
-                    class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition">
+                    class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                         <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                     </svg>
                 </button>
             </div>
-            <div class="text-3xl font-bold text-sk_teal">
+            <div class="text-2xl sm:text-3xl font-bold text-sk_teal">
                 €${item.rate.toFixed(2)}
             </div>
         </div>
@@ -46,12 +46,12 @@ function renderPricing(pricing) {
 // Edit pricing
 function editPricing(category) {
     const modalHTML = `
-        <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onclick="closeModal(event)">
-            <div class="bg-white rounded-2xl max-w-md w-full" onclick="event.stopPropagation()">
-                <div class="p-6 border-b border-gray-200">
-                    <h2 class="text-2xl font-bold text-gray-800">Tarief Bewerken</h2>
+        <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-2 sm:p-4" onclick="closeModal(event)">
+            <div class="bg-white rounded-xl sm:rounded-2xl max-w-md w-full" onclick="event.stopPropagation()">
+                <div class="p-4 sm:p-6 border-b border-gray-200">
+                    <h2 class="text-lg sm:text-2xl font-bold text-gray-800">Tarief Bewerken</h2>
                 </div>
-                <form id="pricing-form" class="p-6 space-y-4">
+                <form id="pricing-form" class="p-4 sm:p-6 space-y-3 sm:space-y-4">
                     <input type="hidden" id="pricing-category" value="${category}">
                     
                     <div>
@@ -66,11 +66,11 @@ function editPricing(category) {
                             class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none"></textarea>
                     </div>
 
-                    <div class="flex gap-3 pt-4">
-                        <button type="submit" class="flex-1 bg-sk_teal text-white font-bold py-3 rounded-xl hover:bg-[#3d94a5] transition">
+                    <div class="flex flex-col sm:flex-row gap-3 pt-4">
+                        <button type="submit" class="flex-1 bg-sk_teal text-white font-bold py-3 rounded-xl hover:bg-[#3d94a5] transition text-sm sm:text-base">
                             Opslaan
                         </button>
-                        <button type="button" onclick="closeModal()" class="px-6 bg-gray-200 text-gray-700 font-bold py-3 rounded-xl hover:bg-gray-300 transition">
+                        <button type="button" onclick="closeModal()" class="sm:px-6 bg-gray-200 text-gray-700 font-bold py-3 rounded-xl hover:bg-gray-300 transition text-sm sm:text-base">
                             Annuleren
                         </button>
                     </div>

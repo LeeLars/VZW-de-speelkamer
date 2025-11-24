@@ -26,11 +26,15 @@ function renderLocations(locations) {
         return;
     }
 
-    container.innerHTML = locations.map(location => `
+    container.innerHTML = locations.map(location => {
+        const imageUrl = getImageUrl(location.image_url || location.image, './images/location-placeholder.jpg');
+        const hasImage = location.image_url || location.image;
+        
+        return `
         <div class="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition">
             <div class="h-48 bg-gradient-to-br from-sk_pink to-pink-300 relative overflow-hidden">
-                ${location.image ? `
-                    <img src="${location.image}" alt="${location.name}" class="w-full h-full object-cover">
+                ${hasImage ? `
+                    <img src="${imageUrl}" alt="${location.name}" class="w-full h-full object-cover">
                 ` : `
                     <div class="w-full h-full flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
@@ -81,7 +85,8 @@ function renderLocations(locations) {
                 </div>
             </div>
         </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 // Show location modal
@@ -118,17 +123,16 @@ async function loadLocationData(locationId) {
         document.getElementById('location-description').value = location.description || '';
         document.getElementById('location-phone').value = location.phone || '';
         document.getElementById('location-email').value = location.email || '';
-        document.getElementById('location-image').value = location.image || '';
         
-        if (location.image) {
-            // Convert relative path to absolute URL for preview
-            let previewUrl = location.image;
-            if (previewUrl.includes('/uploads/') && !previewUrl.startsWith('http')) {
-                const filename = previewUrl.split('/').pop();
-                previewUrl = `${API_BASE_URL.replace('/api', '')}/uploads/${filename}`;
+        const imageUrl = location.image_url || location.image;
+        if (imageUrl) {
+            const previewUrl = getImageUrl(imageUrl, './images/location-placeholder.jpg');
+            const previewImg = document.getElementById('location-preview-img');
+            const previewContainer = document.getElementById('location-image-preview');
+            if (previewImg && previewContainer) {
+                previewImg.src = previewUrl;
+                previewContainer.classList.remove('hidden');
             }
-            document.getElementById('location-preview-img').src = previewUrl;
-            document.getElementById('location-image-preview').classList.remove('hidden');
         }
     } catch (error) {
         showToast('Fout bij laden van locatie', 'error');
