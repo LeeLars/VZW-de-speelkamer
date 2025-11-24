@@ -15,12 +15,6 @@ const uploadRoutes = require('./routes/upload');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Initialize database (async)
-initializeDatabase().catch(err => {
-    console.error('Failed to initialize database:', err);
-    process.exit(1);
-});
-
 // Middleware
 app.use(cors({
     origin: process.env.CORS_ORIGIN || '*',
@@ -57,14 +51,31 @@ app.use((err, req, res, next) => {
     });
 });
 
-// Start server
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`\n🚀 CMS Server running on port ${PORT}`);
-    console.log(`📊 API endpoints available at /api`);
-    console.log(`\n⚠️  Make sure to:`);
-    console.log(`   1. Copy .env.example to .env`);
-    console.log(`   2. Change the default admin password`);
-    console.log(`   3. Set a secure JWT_SECRET\n`);
-});
+// Start server with async database initialization
+async function startServer() {
+    try {
+        // Initialize database first
+        console.log('🔄 Initializing database...');
+        await initializeDatabase();
+        console.log('✅ Database initialized successfully');
+        
+        // Then start the server
+        app.listen(PORT, '0.0.0.0', () => {
+            console.log(`\n🚀 CMS Server running on port ${PORT}`);
+            console.log(`📊 API endpoints available at /api`);
+            console.log(`\n⚠️  Make sure to:`);
+            console.log(`   1. Copy .env.example to .env`);
+            console.log(`   2. Change the default admin password`);
+            console.log(`   3. Set a secure JWT_SECRET\n`);
+        });
+    } catch (err) {
+        console.error('❌ Failed to start server:', err);
+        console.error('Database connection error. Please check your DATABASE_URL environment variable.');
+        process.exit(1);
+    }
+}
+
+// Start the server
+startServer();
 
 module.exports = app;
