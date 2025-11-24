@@ -4,13 +4,32 @@ const fs = require('fs');
 const path = require('path');
 
 async function initializeDatabase() {
-    console.log('Initializing PostgreSQL database...');
+    console.log('🔄 Initializing PostgreSQL database...');
 
     try {
-        // Read and execute schema
+        // Read schema file
         const schemaPath = path.join(__dirname, 'schema.sql');
         const schema = fs.readFileSync(schemaPath, 'utf8');
-        await query(schema);
+        
+        // Split schema into individual statements and execute them
+        const statements = schema
+            .split(';')
+            .map(s => s.trim())
+            .filter(s => s.length > 0 && !s.startsWith('--'));
+        
+        console.log(`📝 Executing ${statements.length} schema statements...`);
+        
+        for (const statement of statements) {
+            try {
+                await query(statement);
+            } catch (err) {
+                // Ignore "already exists" errors
+                if (!err.message.includes('already exists')) {
+                    throw err;
+                }
+            }
+        }
+        
         console.log('✅ Database schema created');
 
         // Insert default admin user if not exists
