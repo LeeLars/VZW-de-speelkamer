@@ -7,7 +7,11 @@ async function initializeDatabase() {
     console.log('🔄 Initializing PostgreSQL database...');
 
     try {
-        // Read schema file
+        // Test database connection first
+        await query('SELECT NOW()');
+        console.log('✅ Database connection successful');
+
+        // Read and execute schema
         const schemaPath = path.join(__dirname, 'schema.sql');
         const schema = fs.readFileSync(schemaPath, 'utf8');
         
@@ -15,7 +19,7 @@ async function initializeDatabase() {
         const statements = schema
             .split(';')
             .map(s => s.trim())
-            .filter(s => s.length > 0 && !s.startsWith('--'));
+            .filter(s => s.length > 0);
         
         console.log(`📝 Executing ${statements.length} schema statements...`);
         

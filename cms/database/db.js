@@ -24,7 +24,7 @@ async function query(text, params) {
     try {
         const res = await pool.query(text, params);
         const duration = Date.now() - start;
-        // Only log query details in development
+        // Only log in development
         if (process.env.NODE_ENV !== 'production') {
             console.log('Executed query', { text: text.substring(0, 100), duration, rows: res.rowCount });
         }
