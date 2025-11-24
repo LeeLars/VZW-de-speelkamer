@@ -1,5 +1,24 @@
 // Locaties Page JavaScript
 
+// Helper function to get proper image URL
+function getImageUrl(imagePath) {
+    if (!imagePath) return './images/Opvang001.jpg'; // Default fallback
+    
+    // If it's already a full URL, return as is
+    if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+        return imagePath;
+    }
+    
+    // If it's an uploaded image from CMS, use Railway URL
+    if (imagePath.includes('/uploads/')) {
+        const filename = imagePath.split('/').pop();
+        return `https://vzw-de-speelkamer-production.up.railway.app/uploads/${filename}`;
+    }
+    
+    // Otherwise, use local path
+    return imagePath;
+}
+
 // Render locations
 function renderLocations() {
     const container = document.getElementById('locations-container');
@@ -39,7 +58,7 @@ function renderLocations() {
                     <!-- Image -->
                     <div class="lg:w-1/2 relative overflow-hidden">
                         <div class="absolute inset-0 ${colorClass.bgLight} opacity-50"></div>
-                        <img src="${location.image}" alt="${location.name}" class="w-full h-80 lg:h-full object-cover hover:scale-110 transition-transform duration-700" />
+                        <img src="${getImageUrl(location.image)}" alt="${location.name}" class="w-full h-80 lg:h-full object-cover hover:scale-110 transition-transform duration-700" />
                         <div class="absolute top-6 ${isEven ? 'left-6' : 'right-6'}">
                             <div class="${colorClass.bg} text-white px-6 py-3 rounded-full font-bold shadow-lg">
                                 Locatie ${index + 1}
