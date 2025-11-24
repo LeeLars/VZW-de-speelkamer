@@ -51,26 +51,26 @@ app.use((err, req, res, next) => {
     });
 });
 
-// Start server with async database initialization
+// Start server AFTER database is initialized
 async function startServer() {
     try {
-        // Initialize database first
         console.log('🔄 Initializing database...');
         await initializeDatabase();
         console.log('✅ Database initialized successfully');
         
-        // Then start the server
         app.listen(PORT, '0.0.0.0', () => {
             console.log(`\n🚀 CMS Server running on port ${PORT}`);
             console.log(`📊 API endpoints available at /api`);
+            console.log(`🗄️  Database: PostgreSQL (Railway)`);
+            console.log(`☁️  Images: Cloudinary`);
             console.log(`\n⚠️  Make sure to:`);
             console.log(`   1. Copy .env.example to .env`);
             console.log(`   2. Change the default admin password`);
             console.log(`   3. Set a secure JWT_SECRET\n`);
         });
     } catch (err) {
-        console.error('❌ Failed to start server:', err);
-        console.error('Database connection error. Please check your DATABASE_URL environment variable.');
+        console.error('❌ Failed to initialize database:', err);
+        console.error('Stack trace:', err.stack);
         process.exit(1);
     }
 }
