@@ -28,52 +28,19 @@ function getImageUrl(imagePath, fallback = './images/placeholder.jpg') {
     return imagePath || fallback;
 }
 
-// Get token from localStorage or sessionStorage
+// Get token from localStorage
 function getToken() {
-    // Check localStorage first (remember me)
-    let token = localStorage.getItem('cms_token');
-    if (token) {
-        // Check if token has expired
-        const expiry = localStorage.getItem('cms_token_expiry');
-        if (expiry && new Date().getTime() > parseInt(expiry)) {
-            // Token expired, remove it
-            localStorage.removeItem('cms_token');
-            localStorage.removeItem('cms_token_expiry');
-            token = null;
-        }
-    }
-    
-    // If no valid token in localStorage, check sessionStorage
-    if (!token) {
-        token = sessionStorage.getItem('cms_token');
-    }
-    
-    return token;
+    return localStorage.getItem('cms_token');
 }
 
-// Set token in localStorage (with expiry) or sessionStorage
-function setToken(token, rememberMe = false) {
-    if (rememberMe) {
-        // Store in localStorage with 30 day expiry
-        localStorage.setItem('cms_token', token);
-        const expiryDate = new Date().getTime() + (30 * 24 * 60 * 60 * 1000); // 30 days
-        localStorage.setItem('cms_token_expiry', expiryDate.toString());
-        // Remove from sessionStorage if exists
-        sessionStorage.removeItem('cms_token');
-    } else {
-        // Store in sessionStorage (expires when browser closes)
-        sessionStorage.setItem('cms_token', token);
-        // Remove from localStorage if exists
-        localStorage.removeItem('cms_token');
-        localStorage.removeItem('cms_token_expiry');
-    }
+// Set token in localStorage
+function setToken(token) {
+    localStorage.setItem('cms_token', token);
 }
 
-// Remove token from both storages
+// Remove token from localStorage
 function removeToken() {
     localStorage.removeItem('cms_token');
-    localStorage.removeItem('cms_token_expiry');
-    sessionStorage.removeItem('cms_token');
 }
 
 // API request helper
