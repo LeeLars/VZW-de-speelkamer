@@ -39,7 +39,7 @@ function switchTab(tabName) {
 let currentMonthFilter = 'all';
 
 // Filter activities by month
-function filterByMonth(monthStr) {
+window.filterByMonth = function(monthStr) {
     currentMonthFilter = monthStr;
     
     // Update button styles
