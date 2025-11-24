@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const { db, initializeDatabase } = require('./database/init');
+const { initializeDatabase } = require('./database/init');
 
 // Import routes
 const authRoutes = require('./routes/auth');
@@ -15,8 +15,11 @@ const uploadRoutes = require('./routes/upload');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Initialize database
-initializeDatabase();
+// Initialize database (async)
+initializeDatabase().catch(err => {
+    console.error('Failed to initialize database:', err);
+    process.exit(1);
+});
 
 // Middleware
 app.use(cors({
@@ -28,8 +31,7 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve uploaded images
-app.use('/uploads', express.static(path.join(__dirname, '../images/uploads')));
+// Note: Images are now stored on Cloudinary, no local uploads folder needed
 
 // Serve CMS static files
 app.use(express.static(path.join(__dirname, 'public')));

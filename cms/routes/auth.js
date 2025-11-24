@@ -1,13 +1,13 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { db } = require('../database/init');
+const { query, queryOne, queryAll } = require('../database/db');
 const authMiddleware = require('../middleware/auth');
 
 const router = express.Router();
 
 // Login
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
     try {
         const { username, password } = req.body;
 
@@ -15,7 +15,10 @@ router.post('/login', (req, res) => {
             return res.status(400).json({ error: 'Username and password required' });
         }
 
-        const user = db.get('users').find({ username }).value();
+        const user = await queryOne(
+            'SELECT * FROM users WHERE username = $1',
+            [username]
+        );
 
         if (!user) {
             return res.status(401).json({ error: 'Invalid credentials' });
@@ -52,7 +55,7 @@ router.get('/verify', authMiddleware, (req, res) => {
 });
 
 // Change password
-router.post('/change-password', authMiddleware, (req, res) => {
+router.post('/change-password', authMiddleware, async (req, res) => {
     try {
         const { currentPassword, newPassword } = req.body;
 
@@ -64,7 +67,10 @@ router.post('/change-password', authMiddleware, (req, res) => {
             return res.status(400).json({ error: 'New password must be at least 8 characters' });
         }
 
-        const user = db.get('users').find({ id: req.user.id }).value();
+        const user = await queryOne(
+            'SELECT * FROM users WHERE id = $1',
+            [req.user.id]
+        );
 
         const validPassword = bcrypt.compareSync(currentPassword, user.password);
 
@@ -73,7 +79,10 @@ router.post('/change-password', authMiddleware, (req, res) => {
         }
 
         const hashedPassword = bcrypt.hashSync(newPassword, 10);
-        db.get('users').find({ id: req.user.id }).assign({ password: hashedPassword }).write();
+        await query(
+            'UPDATE users SET password = $1 WHERE id = $2',
+            [hashedPassword, req.user.id]
+        );
 
         res.json({ message: 'Password changed successfully' });
     } catch (error) {
@@ -83,15 +92,11 @@ router.post('/change-password', authMiddleware, (req, res) => {
 });
 
 // Get all users (protected - returns usernames only, no passwords)
-router.get('/users', authMiddleware, (req, res) => {
+router.get('/users', authMiddleware, async (req, res) => {
     try {
-        const users = db.get('users')
-            .map(user => ({
-                id: user.id,
-                username: user.username,
-                created_at: user.created_at
-            }))
-            .value();
+        const users = await queryAll(
+            'SELECT id, username, created_at FROM users ORDER BY created_at DESC'
+        );
         
         res.json(users);
     } catch (error) {
@@ -101,7 +106,7 @@ router.get('/users', authMiddleware, (req, res) => {
 });
 
 // Create new user (protected)
-router.post('/users', authMiddleware, (req, res) => {
+router.post('/users', authMiddleware, async (req, res) => {
     try {
         const { username, password } = req.body;
 
@@ -114,26 +119,25 @@ router.post('/users', authMiddleware, (req, res) => {
         }
 
         // Check if username already exists
-        const existing = db.get('users').find({ username }).value();
+        const existing = await queryOne(
+            'SELECT * FROM users WHERE username = $1',
+            [username]
+        );
         if (existing) {
             return res.status(409).json({ error: 'Username already exists' });
         }
 
         const hashedPassword = bcrypt.hashSync(password, 10);
-        const newUser = {
-            id: 'user_' + Date.now(),
-            username,
-            password: hashedPassword,
-            created_at: new Date().toISOString()
-        };
-
-        db.get('users').push(newUser).write();
+        const result = await queryOne(
+            'INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id, username, created_at',
+            [username, hashedPassword]
+        );
 
         res.status(201).json({
             message: 'User created successfully',
             user: {
-                id: newUser.id,
-                username: newUser.username
+                id: result.id,
+                username: result.username
             }
         });
     } catch (error) {
@@ -143,21 +147,27 @@ router.post('/users', authMiddleware, (req, res) => {
 });
 
 // Delete user (protected)
-router.delete('/users/:id', authMiddleware, (req, res) => {
+router.delete('/users/:id', authMiddleware, async (req, res) => {
     try {
-        const userId = req.params.id;
+        const userId = parseInt(req.params.id);
 
         // Prevent deleting yourself
         if (userId === req.user.id) {
             return res.status(400).json({ error: 'Cannot delete your own account' });
         }
 
-        const user = db.get('users').find({ id: userId }).value();
+        const user = await queryOne(
+            'SELECT * FROM users WHERE id = $1',
+            [userId]
+        );
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
 
-        db.get('users').remove({ id: userId }).write();
+        await query(
+            'DELETE FROM users WHERE id = $1',
+            [userId]
+        );
         res.json({ message: 'User deleted successfully' });
     } catch (error) {
         console.error('Delete user error:', error);

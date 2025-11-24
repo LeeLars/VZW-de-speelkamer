@@ -22,12 +22,7 @@ function renderTeam(team) {
     }
 
     container.innerHTML = team.map(member => {
-        // Convert relative path to absolute URL for display
-        let imageUrl = member.image_url || './images/team.jpg';
-        if (imageUrl.includes('/uploads/') && !imageUrl.startsWith('http')) {
-            const filename = imageUrl.split('/').pop();
-            imageUrl = `${API_BASE_URL.replace('/api', '')}/uploads/${filename}`;
-        }
+        const imageUrl = getImageUrl(member.image_url, './images/team.jpg');
         
         return `
         <div class="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition">
@@ -60,12 +55,12 @@ function showTeamModal(memberId = null) {
     const isEdit = memberId !== null;
     
     const modalHTML = `
-        <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onclick="closeModal(event)">
-            <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
-                <div class="p-6 border-b border-gray-200">
-                    <h2 class="text-2xl font-bold text-gray-800">${isEdit ? 'Teamlid Bewerken' : 'Nieuw Teamlid'}</h2>
+        <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-2 sm:p-4" onclick="closeModal(event)">
+            <div class="bg-white rounded-xl sm:rounded-2xl max-w-2xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
+                <div class="p-4 sm:p-6 border-b border-gray-200">
+                    <h2 class="text-lg sm:text-2xl font-bold text-gray-800">${isEdit ? 'Teamlid Bewerken' : 'Nieuw Teamlid'}</h2>
                 </div>
-                <form id="team-form" class="p-6 space-y-4" enctype="multipart/form-data">
+                <form id="team-form" class="p-4 sm:p-6 space-y-3 sm:space-y-4" enctype="multipart/form-data">
                     <input type="hidden" id="team-id" value="${memberId || ''}">
                     
                     <div>
@@ -105,11 +100,11 @@ function showTeamModal(memberId = null) {
                         <img id="preview-img" class="w-32 h-32 object-cover rounded-lg border-2 border-gray-200">
                     </div>
 
-                    <div class="flex gap-3 pt-4">
-                        <button type="submit" class="flex-1 bg-sk_teal text-white font-bold py-3 rounded-xl hover:bg-[#3d94a5] transition">
+                    <div class="flex flex-col sm:flex-row gap-3 pt-4">
+                        <button type="submit" class="flex-1 bg-sk_teal text-white font-bold py-3 rounded-xl hover:bg-[#3d94a5] transition text-sm sm:text-base">
                             ${isEdit ? 'Opslaan' : 'Aanmaken'}
                         </button>
-                        <button type="button" onclick="closeModal()" class="px-6 bg-gray-200 text-gray-700 font-bold py-3 rounded-xl hover:bg-gray-300 transition">
+                        <button type="button" onclick="closeModal()" class="sm:px-6 bg-gray-200 text-gray-700 font-bold py-3 rounded-xl hover:bg-gray-300 transition text-sm sm:text-base">
                             Annuleren
                         </button>
                     </div>
@@ -156,12 +151,7 @@ async function loadTeamMemberData(memberId) {
         document.getElementById('team-locations').value = member.location_ids || '';
         
         if (member.image_url) {
-            // Convert relative path to absolute URL for preview
-            let previewUrl = member.image_url;
-            if (previewUrl.includes('/uploads/') && !previewUrl.startsWith('http')) {
-                const filename = previewUrl.split('/').pop();
-                previewUrl = `${API_BASE_URL.replace('/api', '')}/uploads/${filename}`;
-            }
+            const previewUrl = getImageUrl(member.image_url, './images/team.jpg');
             document.getElementById('preview-img').src = previewUrl;
             document.getElementById('image-preview').classList.remove('hidden');
         }

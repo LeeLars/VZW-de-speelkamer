@@ -1,13 +1,15 @@
 const express = require('express');
-const { db } = require('../database/init');
+const { query, queryOne, queryAll } = require('../database/db');
 const authMiddleware = require('../middleware/auth');
 
 const router = express.Router();
 
 // Get all activities (public)
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
     try {
-        const activities = db.get('activities').sortBy('start_date').value();
+        const activities = await queryAll(
+            'SELECT * FROM activities ORDER BY start_date ASC'
+        );
         res.json(activities);
     } catch (error) {
         console.error('Get activities error:', error);
@@ -16,9 +18,12 @@ router.get('/', (req, res) => {
 });
 
 // Get single activity (public)
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
     try {
-        const activity = db.get('activities').find({ id: req.params.id }).value();
+        const activity = await queryOne(
+            'SELECT * FROM activities WHERE id = $1',
+            [parseInt(req.params.id)]
+        );
         if (!activity) {
             return res.status(404).json({ error: 'Activity not found' });
         }
@@ -30,11 +35,11 @@ router.get('/:id', (req, res) => {
 });
 
 // Create activity (protected)
-router.post('/', authMiddleware, (req, res) => {
+router.post('/', authMiddleware, async (req, res) => {
     try {
-        const { id, title, type, start_date, end_date, hours, price, google_form_url, description } = req.body;
+        const { title, type, start_date, end_date, hours, price, google_form_url, description } = req.body;
 
-        if (!id || !title || !type || !start_date || !hours || !price || !google_form_url) {
+        if (!title || !type || !start_date || !hours || !price || !google_form_url) {
             return res.status(400).json({ error: 'Missing required fields' });
         }
 
@@ -42,26 +47,13 @@ router.post('/', authMiddleware, (req, res) => {
             return res.status(400).json({ error: 'Invalid activity type' });
         }
 
-        const existing = db.get('activities').find({ id }).value();
-        if (existing) {
-            return res.status(409).json({ error: 'Activity with this ID already exists' });
-        }
+        const newActivity = await queryOne(
+            `INSERT INTO activities (title, type, start_date, end_date, hours, price, google_form_url, description)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+             RETURNING *`,
+            [title, type, start_date, end_date || null, hours, price, google_form_url, description || null]
+        );
 
-        const newActivity = {
-            id,
-            title,
-            type,
-            start_date,
-            end_date: end_date || null,
-            hours,
-            price,
-            google_form_url,
-            description: description || null,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-        };
-
-        db.get('activities').push(newActivity).write();
         res.status(201).json(newActivity);
     } catch (error) {
         console.error('Create activity error:', error);
@@ -70,29 +62,35 @@ router.post('/', authMiddleware, (req, res) => {
 });
 
 // Update activity (protected)
-router.put('/:id', authMiddleware, (req, res) => {
+router.put('/:id', authMiddleware, async (req, res) => {
     try {
         const { title, type, start_date, end_date, hours, price, google_form_url, description } = req.body;
+        const activityId = parseInt(req.params.id);
 
-        const existing = db.get('activities').find({ id: req.params.id }).value();
+        const existing = await queryOne(
+            'SELECT * FROM activities WHERE id = $1',
+            [activityId]
+        );
         if (!existing) {
             return res.status(404).json({ error: 'Activity not found' });
         }
 
-        const updated = {
-            ...existing,
-            title: title || existing.title,
-            type: type || existing.type,
-            start_date: start_date || existing.start_date,
-            end_date: end_date !== undefined ? end_date : existing.end_date,
-            hours: hours || existing.hours,
-            price: price || existing.price,
-            google_form_url: google_form_url || existing.google_form_url,
-            description: description !== undefined ? description : existing.description,
-            updated_at: new Date().toISOString()
-        };
+        const updated = await queryOne(
+            `UPDATE activities SET
+                title = COALESCE($1, title),
+                type = COALESCE($2, type),
+                start_date = COALESCE($3, start_date),
+                end_date = $4,
+                hours = COALESCE($5, hours),
+                price = COALESCE($6, price),
+                google_form_url = COALESCE($7, google_form_url),
+                description = $8,
+                updated_at = CURRENT_TIMESTAMP
+             WHERE id = $9
+             RETURNING *`,
+            [title, type, start_date, end_date !== undefined ? end_date : existing.end_date, hours, price, google_form_url, description !== undefined ? description : existing.description, activityId]
+        );
 
-        db.get('activities').find({ id: req.params.id }).assign(updated).write();
         res.json(updated);
     } catch (error) {
         console.error('Update activity error:', error);
@@ -101,14 +99,22 @@ router.put('/:id', authMiddleware, (req, res) => {
 });
 
 // Delete activity (protected)
-router.delete('/:id', authMiddleware, (req, res) => {
+router.delete('/:id', authMiddleware, async (req, res) => {
     try {
-        const existing = db.get('activities').find({ id: req.params.id }).value();
+        const activityId = parseInt(req.params.id);
+        
+        const existing = await queryOne(
+            'SELECT * FROM activities WHERE id = $1',
+            [activityId]
+        );
         if (!existing) {
             return res.status(404).json({ error: 'Activity not found' });
         }
 
-        db.get('activities').remove({ id: req.params.id }).write();
+        await query(
+            'DELETE FROM activities WHERE id = $1',
+            [activityId]
+        );
         res.json({ message: 'Activity deleted successfully' });
     } catch (error) {
         console.error('Delete activity error:', error);

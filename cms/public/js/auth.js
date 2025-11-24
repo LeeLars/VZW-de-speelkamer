@@ -14,12 +14,16 @@ document.getElementById('login-form')?.addEventListener('submit', async (e) => {
     errorDiv.classList.add('hidden');
 
     try {
+        // Debug logging
+        console.log('Login attempt:', { username, passwordLength: password.length });
+        
         const data = await apiRequest('/auth/login', {
             method: 'POST',
             body: JSON.stringify({ username, password }),
             skipAuth: true
         });
 
+        console.log('Login successful:', data.user.username);
         setToken(data.token);
         document.getElementById('user-name').textContent = data.user.username;
         
@@ -36,6 +40,7 @@ document.getElementById('login-form')?.addEventListener('submit', async (e) => {
         }, 500);
         
     } catch (error) {
+        console.error('Login error:', error);
         errorDiv.textContent = error.message || 'Login mislukt. Controleer je gebruikersnaam en wachtwoord.';
         errorDiv.classList.remove('hidden');
         
