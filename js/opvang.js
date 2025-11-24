@@ -174,6 +174,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Re-render when API data is loaded
 window.addEventListener('dataLoaded', function(event) {
     console.log('📊 Opvang: Data loaded event received', event.detail);
+    console.log('📅 Activities from API:', DATA.activities);
     
     // Always render activities when data is loaded
     renderActivities();
