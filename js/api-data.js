@@ -3,24 +3,19 @@
 
 const API_BASE_URL = 'https://vzw-de-speelkamer-production.up.railway.app/api';
 
-// Cache for API data
-let cachedData = null;
-
-// Load all data from API
+// Load all data from API (no caching - always fresh data)
 async function loadDataFromAPI() {
-    if (cachedData) {
-        return cachedData;
-    }
-
     try {
+        // Add cache-busting timestamp to prevent browser caching
+        const timestamp = new Date().getTime();
         const [locations, team, activities, pricing] = await Promise.all([
-            fetch(`${API_BASE_URL}/locations`).then(r => r.json()),
-            fetch(`${API_BASE_URL}/team`).then(r => r.json()),
-            fetch(`${API_BASE_URL}/activities`).then(r => r.json()),
-            fetch(`${API_BASE_URL}/pricing`).then(r => r.json())
+            fetch(`${API_BASE_URL}/locations?_=${timestamp}`, { cache: 'no-store' }).then(r => r.json()),
+            fetch(`${API_BASE_URL}/team?_=${timestamp}`, { cache: 'no-store' }).then(r => r.json()),
+            fetch(`${API_BASE_URL}/activities?_=${timestamp}`, { cache: 'no-store' }).then(r => r.json()),
+            fetch(`${API_BASE_URL}/pricing?_=${timestamp}`, { cache: 'no-store' }).then(r => r.json())
         ]);
 
-        cachedData = {
+        return {
             locations: locations || [],
             team: team || [],
             activities: activities || [],
@@ -39,8 +34,6 @@ async function loadDataFromAPI() {
                 address: 'Mariastraat 7, 8000 Brugge'
             }
         };
-
-        return cachedData;
     } catch (error) {
         console.error('Error loading data from API:', error);
         // Fallback to static data if API fails
