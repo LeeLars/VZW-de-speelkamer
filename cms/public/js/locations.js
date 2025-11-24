@@ -121,7 +121,13 @@ async function loadLocationData(locationId) {
         document.getElementById('location-image').value = location.image || '';
         
         if (location.image) {
-            document.getElementById('location-preview-img').src = location.image;
+            // Convert relative path to absolute URL for preview
+            let previewUrl = location.image;
+            if (previewUrl.includes('/uploads/') && !previewUrl.startsWith('http')) {
+                const filename = previewUrl.split('/').pop();
+                previewUrl = `${API_BASE_URL.replace('/api', '')}/uploads/${filename}`;
+            }
+            document.getElementById('location-preview-img').src = previewUrl;
             document.getElementById('location-image-preview').classList.remove('hidden');
         }
     } catch (error) {
