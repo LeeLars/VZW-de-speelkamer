@@ -82,4 +82,87 @@ router.post('/change-password', authMiddleware, (req, res) => {
     }
 });
 
+// Get all users (protected - returns usernames only, no passwords)
+router.get('/users', authMiddleware, (req, res) => {
+    try {
+        const users = db.get('users')
+            .map(user => ({
+                id: user.id,
+                username: user.username,
+                created_at: user.created_at
+            }))
+            .value();
+        
+        res.json(users);
+    } catch (error) {
+        console.error('Get users error:', error);
+        res.status(500).json({ error: 'Failed to fetch users' });
+    }
+});
+
+// Create new user (protected)
+router.post('/users', authMiddleware, (req, res) => {
+    try {
+        const { username, password } = req.body;
+
+        if (!username || !password) {
+            return res.status(400).json({ error: 'Username and password required' });
+        }
+
+        if (password.length < 8) {
+            return res.status(400).json({ error: 'Password must be at least 8 characters' });
+        }
+
+        // Check if username already exists
+        const existing = db.get('users').find({ username }).value();
+        if (existing) {
+            return res.status(409).json({ error: 'Username already exists' });
+        }
+
+        const hashedPassword = bcrypt.hashSync(password, 10);
+        const newUser = {
+            id: 'user_' + Date.now(),
+            username,
+            password: hashedPassword,
+            created_at: new Date().toISOString()
+        };
+
+        db.get('users').push(newUser).write();
+
+        res.status(201).json({
+            message: 'User created successfully',
+            user: {
+                id: newUser.id,
+                username: newUser.username
+            }
+        });
+    } catch (error) {
+        console.error('Create user error:', error);
+        res.status(500).json({ error: 'Failed to create user' });
+    }
+});
+
+// Delete user (protected)
+router.delete('/users/:id', authMiddleware, (req, res) => {
+    try {
+        const userId = req.params.id;
+
+        // Prevent deleting yourself
+        if (userId === req.user.id) {
+            return res.status(400).json({ error: 'Cannot delete your own account' });
+        }
+
+        const user = db.get('users').find({ id: userId }).value();
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        db.get('users').remove({ id: userId }).write();
+        res.json({ message: 'User deleted successfully' });
+    } catch (error) {
+        console.error('Delete user error:', error);
+        res.status(500).json({ error: 'Failed to delete user' });
+    }
+});
+
 module.exports = router;
