@@ -22,7 +22,7 @@ function switchTab(tabName) {
     // Load data for the selected tab
     switch(tabName) {
         case 'activities':
-            loadActivities();
+            loadPricingOptions().then(() => loadActivities());
             break;
         case 'pricing':
             loadPricing();
