@@ -47,12 +47,14 @@ router.post('/', authMiddleware, upload.single('image'), (req, res) => {
             return res.status(400).json({ error: 'Geen bestand geüpload' });
         }
 
-        // Return the relative path to the uploaded image
-        const imagePath = `./images/uploads/${req.file.filename}`;
+        // Return both relative and absolute paths
+        const relativePath = `./images/uploads/${req.file.filename}`;
+        const absolutePath = `/uploads/${req.file.filename}`;
         
         res.json({
             success: true,
-            path: imagePath,
+            path: relativePath,
+            url: absolutePath,
             filename: req.file.filename
         });
     } catch (error) {
