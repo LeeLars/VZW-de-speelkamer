@@ -21,10 +21,18 @@ function renderTeam(team) {
         return;
     }
 
-    container.innerHTML = team.map(member => `
+    container.innerHTML = team.map(member => {
+        // Convert relative path to absolute URL for display
+        let imageUrl = member.image_url || './images/team.jpg';
+        if (imageUrl.includes('/uploads/') && !imageUrl.startsWith('http')) {
+            const filename = imageUrl.split('/').pop();
+            imageUrl = `${API_BASE_URL.replace('/api', '')}/uploads/${filename}`;
+        }
+        
+        return `
         <div class="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition">
             <div class="aspect-square overflow-hidden bg-gray-100">
-                <img src="${member.image_url}" alt="${member.name}" 
+                <img src="${imageUrl}" alt="${member.name}" 
                     class="w-full h-full object-cover">
             </div>
             <div class="p-4">
@@ -43,7 +51,8 @@ function renderTeam(team) {
                 </div>
             </div>
         </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 // Show team member modal (create/edit)
@@ -147,7 +156,13 @@ async function loadTeamMemberData(memberId) {
         document.getElementById('team-locations').value = member.location_ids || '';
         
         if (member.image_url) {
-            document.getElementById('preview-img').src = member.image_url;
+            // Convert relative path to absolute URL for preview
+            let previewUrl = member.image_url;
+            if (previewUrl.includes('/uploads/') && !previewUrl.startsWith('http')) {
+                const filename = previewUrl.split('/').pop();
+                previewUrl = `${API_BASE_URL.replace('/api', '')}/uploads/${filename}`;
+            }
+            document.getElementById('preview-img').src = previewUrl;
             document.getElementById('image-preview').classList.remove('hidden');
         }
     } catch (error) {
