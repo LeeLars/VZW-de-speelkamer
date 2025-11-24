@@ -4,6 +4,7 @@ document.getElementById('login-form')?.addEventListener('submit', async (e) => {
     
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
+    const rememberMe = document.getElementById('remember-me').checked;
     const errorDiv = document.getElementById('login-error');
     const submitBtn = e.target.querySelector('button[type="submit"]');
     const originalBtnText = submitBtn.innerHTML;
@@ -15,7 +16,7 @@ document.getElementById('login-form')?.addEventListener('submit', async (e) => {
 
     try {
         // Debug logging
-        console.log('Login attempt:', { username, passwordLength: password.length });
+        console.log('Login attempt:', { username, passwordLength: password.length, rememberMe });
         
         const data = await apiRequest('/auth/login', {
             method: 'POST',
@@ -24,7 +25,7 @@ document.getElementById('login-form')?.addEventListener('submit', async (e) => {
         });
 
         console.log('Login successful:', data.user.username);
-        setToken(data.token);
+        setToken(data.token, rememberMe);
         document.getElementById('user-name').textContent = data.user.username;
         
         // Success animation
