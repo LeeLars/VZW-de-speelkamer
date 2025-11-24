@@ -139,7 +139,7 @@ function renderActivities(activities) {
 }
 
 // Show activity modal (create/edit)
-function showActivityModal(activityId = null) {
+function showActivityModal(activityId = null, prefillData = null) {
     const isEdit = activityId !== null;
     
     const modalHTML = `
@@ -227,9 +227,33 @@ function showActivityModal(activityId = null) {
     // Populate price dropdown with pricing options
     populatePriceDropdown();
 
-    // Load activity data if editing
+    // Load activity data if editing or prefilling (duplicate)
     if (isEdit) {
         loadActivityData(activityId);
+    } else if (prefillData) {
+        // Prefill form with duplicate data
+        document.getElementById('activity-title').value = prefillData.title || '';
+        document.getElementById('activity-type').value = prefillData.type || 'CAMP';
+        document.getElementById('activity-start-date').value = formatDateForInput(prefillData.start_date);
+        document.getElementById('activity-end-date').value = formatDateForInput(prefillData.end_date);
+        document.getElementById('activity-hours').value = prefillData.hours || '';
+        document.getElementById('activity-form-url').value = prefillData.google_form_url || '';
+        document.getElementById('activity-description').value = prefillData.description || '';
+        
+        // Handle price field
+        const priceSelect = document.getElementById('activity-price');
+        if (prefillData.price) {
+            // Try to find matching option
+            const matchingOption = Array.from(priceSelect.options).find(opt => opt.value === prefillData.price);
+            if (matchingOption) {
+                priceSelect.value = prefillData.price;
+            } else {
+                // Use custom price
+                priceSelect.value = 'custom';
+                handlePriceChange();
+                document.getElementById('activity-price-custom').value = prefillData.price;
+            }
+        }
     }
 
     // Handle form submission
@@ -361,36 +385,24 @@ function editActivity(activityId) {
 }
 
 // Duplicate activity
-async function duplicateActivity(activityId) {
-    try {
-        const activity = allActivities.find(a => a.id === activityId);
-        if (!activity) {
-            showToast('Activiteit niet gevonden', 'error');
-            return;
-        }
-        
-        // Create a copy with modified title
-        const duplicate = {
-            title: `${activity.title} (kopie)`,
-            type: activity.type,
-            start_date: activity.start_date,
-            end_date: activity.end_date,
-            hours: activity.hours,
-            price: activity.price,
-            google_form_url: activity.google_form_url,
-            description: activity.description
-        };
-        
-        await apiRequest('/activities', {
-            method: 'POST',
-            body: JSON.stringify(duplicate)
-        });
-        
-        showToast('Activiteit gedupliceerd!');
-        loadActivities();
-    } catch (error) {
-        showToast(error.message || 'Fout bij dupliceren', 'error');
+function duplicateActivity(activityId) {
+    const activity = allActivities.find(a => a.id === activityId);
+    if (!activity) {
+        showToast('Activiteit niet gevonden', 'error');
+        return;
     }
+    
+    // Open modal with duplicated data (without ID so it creates new)
+    showActivityModal(null, {
+        title: `${activity.title} (kopie)`,
+        type: activity.type,
+        start_date: activity.start_date,
+        end_date: activity.end_date,
+        hours: activity.hours,
+        price: activity.price,
+        google_form_url: activity.google_form_url,
+        description: activity.description
+    });
 }
 
 // Delete activity
