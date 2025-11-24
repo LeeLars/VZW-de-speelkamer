@@ -80,22 +80,22 @@ function renderActivities(activities) {
     }
 
     container.innerHTML = activities.map(activity => `
-        <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition">
-            <div class="flex justify-between items-start mb-4">
-                <div>
-                    <div class="flex items-center gap-2 mb-2">
-                        <h3 class="text-lg font-bold text-gray-800">${activity.title}</h3>
-                        <span class="px-3 py-1 rounded-full text-xs font-bold ${
+        <div class="activity-card bg-white rounded-xl p-4 sm:p-6 shadow-sm hover:shadow-md transition">
+            <div class="flex flex-col sm:flex-row justify-between items-start gap-4 mb-4">
+                <div class="flex-1 min-w-0">
+                    <div class="flex flex-wrap items-center gap-2 mb-2">
+                        <h3 class="text-base sm:text-lg font-bold text-gray-800 break-words">${activity.title}</h3>
+                        <span class="px-2 sm:px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap ${
                             activity.type === 'CAMP' ? 'bg-sk_yellow text-yellow-900' : 'bg-sk_pink text-white'
                         }">
                             ${activity.type === 'CAMP' ? 'Kamp' : 'Vrije Dag'}
                         </span>
                     </div>
-                    <p class="text-sm text-gray-600">${formatDate(activity.start_date)}${
+                    <p class="text-xs sm:text-sm text-gray-600">${formatDate(activity.start_date)}${
                         activity.end_date ? ' - ' + formatDate(activity.end_date) : ''
                     }</p>
                 </div>
-                <div class="flex gap-2">
+                <div class="flex gap-2 shrink-0">
                     <button onclick="duplicateActivity('${activity.id}')" 
                         class="p-2 text-green-600 hover:bg-green-50 rounded-lg transition" title="Dupliceren">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -119,19 +119,19 @@ function renderActivities(activities) {
                     </button>
                 </div>
             </div>
-            <div class="grid grid-cols-2 gap-4 text-sm">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-xs sm:text-sm">
                 <div>
                     <span class="text-gray-500">Uren:</span>
                     <span class="font-medium ml-2">${activity.hours}</span>
                 </div>
                 <div>
                     <span class="text-gray-500">Prijs:</span>
-                    <span class="font-medium ml-2">${activity.price}</span>
+                    <span class="font-medium ml-2 break-words">${activity.price}</span>
                 </div>
             </div>
-            ${activity.description ? `<p class="text-sm text-gray-600 mt-3">${activity.description}</p>` : ''}
+            ${activity.description ? `<p class="text-xs sm:text-sm text-gray-600 mt-3 break-words">${activity.description}</p>` : ''}
             <a href="${activity.google_form_url}" target="_blank" 
-                class="text-sm text-sk_teal hover:underline mt-2 inline-block">
+                class="text-xs sm:text-sm text-sk_teal hover:underline mt-2 inline-block break-all">
                 Google Form Link →
             </a>
         </div>
