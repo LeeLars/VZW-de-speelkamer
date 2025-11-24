@@ -1,5 +1,19 @@
 const { Pool } = require('pg');
 
+// Check if DATABASE_URL is set
+if (!process.env.DATABASE_URL) {
+    console.error('\n❌ CRITICAL ERROR: DATABASE_URL environment variable is not set!\n');
+    console.error('📋 To fix this in Railway:');
+    console.error('   1. Go to your Railway project dashboard');
+    console.error('   2. Click on your CMS service');
+    console.error('   3. Go to "Variables" tab');
+    console.error('   4. Add: DATABASE_URL = ${{Postgres.DATABASE_URL}}');
+    console.error('   5. Redeploy the service\n');
+    process.exit(1);
+}
+
+console.log('🔗 Connecting to database:', process.env.DATABASE_URL.split('@')[1] || 'localhost');
+
 // Create PostgreSQL connection pool
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
