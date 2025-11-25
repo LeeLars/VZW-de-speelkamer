@@ -1,8 +1,31 @@
+// Seed pricing data
+async function seedPricing() {
+    if (!confirm('Dit zal de standaard tarieven toevoegen aan de database. Doorgaan?')) {
+        return;
+    }
+    
+    try {
+        const result = await apiRequest('/seed/pricing', {
+            method: 'POST'
+        });
+        showToast('Tarieven succesvol toegevoegd!');
+        loadPricing();
+    } catch (error) {
+        showToast(error.message || 'Fout bij toevoegen van tarieven', 'error');
+    }
+}
+
 // Load all pricing
 async function loadPricing() {
     try {
         const pricing = await apiRequest('/pricing', { skipAuth: true });
         renderPricing(pricing);
+        
+        // Hide seed button if pricing exists
+        const seedBtn = document.querySelector('[onclick="seedPricing()"]');
+        if (seedBtn && pricing.length > 0) {
+            seedBtn.style.display = 'none';
+        }
     } catch (error) {
         showToast('Fout bij laden van tarieven', 'error');
     }
