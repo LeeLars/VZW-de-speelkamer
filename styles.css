@@ -112,3 +112,28 @@ html {
 .tab-btn:hover::before {
   left: 100%;
 }
+
+/* Info Icon Button */
+.info-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: rgba(74, 177, 196, 0.1);
+  color: #4AB1C4;
+  transition: all 0.3s ease;
+  cursor: help;
+}
+
+.info-icon-btn:hover {
+  background-color: #4AB1C4;
+  color: white;
+  transform: scale(1.1);
+}
+
+.info-icon-btn svg {
+  width: 16px;
+  height: 16px;
+}
