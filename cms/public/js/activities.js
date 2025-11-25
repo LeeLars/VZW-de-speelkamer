@@ -1,15 +1,5 @@
 // Store all activities for filtering
 let allActivities = [];
-let pricingOptions = [];
-
-// Load pricing options
-async function loadPricingOptions() {
-    try {
-        pricingOptions = await apiRequest('/pricing', { skipAuth: true });
-    } catch (error) {
-        console.error('Fout bij laden van tarieven:', error);
-    }
-}
 
 // Load all activities
 async function loadActivities() {
@@ -188,12 +178,8 @@ function showActivityModal(activityId = null) {
                         </div>
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-2">Prijs *</label>
-                            <select id="activity-price" required onchange="handlePriceChange()"
+                            <input type="text" id="activity-price" required placeholder="Bijv. €12,00 per dag"
                                 class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
-                                <option value="">Selecteer een tarief...</option>
-                            </select>
-                            <input type="text" id="activity-price-custom" placeholder="Voer aangepaste prijs in..."
-                                class="hidden w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none mt-2">
                         </div>
                     </div>
 
@@ -239,45 +225,6 @@ function showActivityModal(activityId = null) {
     });
 }
 
-// Populate price dropdown with pricing options
-function populatePriceDropdown() {
-    const priceSelect = document.getElementById('activity-price');
-    if (!priceSelect) return;
-    
-    // Clear existing options except the first one
-    priceSelect.innerHTML = '<option value="">Selecteer een tarief...</option>';
-    
-    // Add pricing options
-    pricingOptions.forEach(pricing => {
-        const option = document.createElement('option');
-        option.value = `€${pricing.rate.toFixed(2)} - ${pricing.description}`;
-        option.textContent = `€${pricing.rate.toFixed(2)} - ${pricing.description}`;
-        priceSelect.appendChild(option);
-    });
-    
-    // Add custom option
-    const customOption = document.createElement('option');
-    customOption.value = 'custom';
-    customOption.textContent = '--- Aangepaste prijs ---';
-    priceSelect.appendChild(customOption);
-}
-
-// Handle price dropdown change
-function handlePriceChange() {
-    const priceSelect = document.getElementById('activity-price');
-    const customInput = document.getElementById('activity-price-custom');
-    
-    if (priceSelect.value === 'custom') {
-        customInput.classList.remove('hidden');
-        customInput.required = true;
-        priceSelect.required = false;
-    } else {
-        customInput.classList.add('hidden');
-        customInput.required = false;
-        priceSelect.required = true;
-    }
-}
-
 // Load activity data for editing
 async function loadActivityData(activityId) {
     try {
@@ -288,21 +235,7 @@ async function loadActivityData(activityId) {
         document.getElementById('activity-start-date').value = formatDateForInput(activity.start_date);
         document.getElementById('activity-end-date').value = formatDateForInput(activity.end_date);
         document.getElementById('activity-hours').value = activity.hours;
-        
-        // Set price - check if it matches a pricing option
-        const priceSelect = document.getElementById('activity-price');
-        const customInput = document.getElementById('activity-price-custom');
-        const matchingOption = Array.from(priceSelect.options).find(opt => opt.value === activity.price);
-        
-        if (matchingOption) {
-            priceSelect.value = activity.price;
-        } else {
-            priceSelect.value = 'custom';
-            customInput.value = activity.price;
-            customInput.classList.remove('hidden');
-            customInput.required = true;
-        }
-        
+        document.getElementById('activity-price').value = activity.price;
         document.getElementById('activity-form-url').value = activity.google_form_url;
         document.getElementById('activity-description').value = activity.description || '';
     } catch (error) {
@@ -315,11 +248,7 @@ async function loadActivityData(activityId) {
 async function saveActivity(isEdit) {
     const activityId = document.getElementById('activity-id').value;
     const id = isEdit ? activityId : 'act' + Date.now();
-    
-    // Get price value - use custom input if 'custom' is selected
-    const priceSelect = document.getElementById('activity-price');
-    const customInput = document.getElementById('activity-price-custom');
-    const priceValue = priceSelect.value === 'custom' ? customInput.value : priceSelect.value;
+    const priceValue = document.getElementById('activity-price').value;
     
     const data = {
         id,
