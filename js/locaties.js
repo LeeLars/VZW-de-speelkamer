@@ -18,9 +18,14 @@ function renderLocations() {
     const container = document.getElementById('locations-container');
     if (!container) return;
     
+    console.log('🏢 Rendering locations:', DATA.locations);
+    
     const colors = ['sk_teal', 'sk_pink', 'sk_yellow'];
     
     container.innerHTML = DATA.locations.map((location, index) => {
+        const imageUrl = getImageUrl(location.image_url);
+        console.log('📍 Location:', location.name, 'image_url:', location.image_url, 'processed:', imageUrl);
+        
         const color = colors[index % colors.length];
         const colorClasses = {
             sk_teal: {
@@ -52,7 +57,7 @@ function renderLocations() {
                     <!-- Image -->
                     <div class="lg:w-1/2 relative overflow-hidden">
                         <div class="absolute inset-0 ${colorClass.bgLight} opacity-50"></div>
-                        <img src="${getImageUrl(location.image_url)}" alt="${location.name}" class="w-full h-80 lg:h-full object-cover hover:scale-110 transition-transform duration-700" />
+                        <img src="${imageUrl}" alt="${location.name}" class="w-full h-80 lg:h-full object-cover hover:scale-110 transition-transform duration-700" onerror="console.error('❌ Failed to load image:', '${imageUrl}'); this.src='./images/Opvang001.jpg';" />
                         <div class="absolute top-6 ${isEven ? 'left-6' : 'right-6'}">
                             <div class="${colorClass.bg} text-white px-6 py-3 rounded-full font-bold shadow-lg">
                                 Locatie ${index + 1}
