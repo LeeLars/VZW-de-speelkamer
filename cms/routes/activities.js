@@ -43,7 +43,7 @@ router.post('/', authMiddleware, async (req, res) => {
             return res.status(400).json({ error: 'Missing required fields' });
         }
 
-        if (!['CAMP', 'FREE_DAY'].includes(type)) {
+        if (!['CAMP', 'FREE_DAY', 'STUDY_DAY'].includes(type)) {
             return res.status(400).json({ error: 'Invalid activity type' });
         }
 
