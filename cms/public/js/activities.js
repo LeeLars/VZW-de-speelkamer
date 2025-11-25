@@ -153,6 +153,7 @@ function showActivityModal(activityId = null) {
                                 class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
                                 <option value="CAMP">Kamp</option>
                                 <option value="FREE_DAY">Vrije Dag</option>
+                                <option value="STUDY_DAY">Studiedag</option>
                             </select>
                         </div>
                     </div>
@@ -209,9 +210,6 @@ function showActivityModal(activityId = null) {
     `;
 
     document.getElementById('modal-container').innerHTML = modalHTML;
-
-    // Populate price dropdown with pricing options
-    populatePriceDropdown();
 
     // Load activity data if editing
     if (isEdit) {
