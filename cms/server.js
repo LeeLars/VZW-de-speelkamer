@@ -56,8 +56,17 @@ async function startServer() {
     try {
         // Check if DATABASE_URL is set
         if (!process.env.DATABASE_URL) {
-            console.error('❌ DATABASE_URL environment variable is not set!');
-            console.error('⚠️  Please add DATABASE_URL to your Railway environment variables');
+            console.error('\n❌ CRITICAL ERROR: DATABASE_URL environment variable is not set!\n');
+            console.error('📋 To fix this in Railway:');
+            console.error('   1. Go to your Railway project dashboard');
+            console.error('   2. Click on your CMS service');
+            console.error('   3. Go to "Variables" tab');
+            console.error('   4. Add: DATABASE_URL = ${{Postgres.DATABASE_URL}}');
+            console.error('   5. Make sure the Postgres service name matches exactly');
+            console.error('   6. Redeploy the service\n');
+            console.error('💡 Note: The variable reference syntax is case-sensitive!');
+            console.error('   Example: If your Postgres service is named "Postgres", use ${{Postgres.DATABASE_URL}}');
+            console.error('   Example: If your Postgres service is named "postgres", use ${{postgres.DATABASE_URL}}\n');
             process.exit(1);
         }
 
