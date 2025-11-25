@@ -27,14 +27,16 @@ function renderLocations(locations) {
     }
 
     container.innerHTML = locations.map(location => {
-        const imageUrl = getImageUrl(location.image_url || location.image, './images/location-placeholder.jpg');
-        const hasImage = location.image_url || location.image;
+        const imageUrl = getImageUrl(location.image_url, './images/location-placeholder.jpg');
+        const hasImage = location.image_url && !location.image_url.includes('placeholder');
+        
+        console.log('🖼️ Rendering location:', location.name, 'image_url:', location.image_url, 'imageUrl:', imageUrl, 'hasImage:', hasImage);
         
         return `
         <div class="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition">
             <div class="h-48 bg-gradient-to-br from-sk_pink to-pink-300 relative overflow-hidden">
                 ${hasImage ? `
-                    <img src="${imageUrl}" alt="${location.name}" class="w-full h-full object-cover">
+                    <img src="${imageUrl}" alt="${location.name}" class="w-full h-full object-cover" onerror="console.error('❌ Failed to load image:', '${imageUrl}'); this.style.display='none';">
                 ` : `
                     <div class="w-full h-full flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
@@ -76,10 +78,10 @@ function renderLocations(locations) {
                     <p class="text-sm text-gray-600 mb-4 line-clamp-2">${location.description}</p>
                 ` : ''}
                 <div class="flex gap-2">
-                    <button onclick="editLocation('${location.id}')" class="flex-1 bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-600 transition">
+                    <button onclick="editLocation('${location.id}')" class="flex-1 px-4 py-2 text-blue-600 hover:bg-blue-50 rounded-lg transition text-sm font-medium">
                         Bewerken
                     </button>
-                    <button onclick="deleteLocation('${location.id}')" class="bg-red-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-600 transition">
+                    <button onclick="deleteLocation('${location.id}')" class="px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition text-sm font-medium">
                         Verwijderen
                     </button>
                 </div>
@@ -91,51 +93,127 @@ function renderLocations(locations) {
 
 // Show location modal
 function showLocationModal(locationId = null) {
-    currentLocationId = locationId;
-    const modal = document.getElementById('location-modal');
-    const form = document.getElementById('location-form');
-    const title = document.getElementById('location-modal-title');
+    const isEdit = locationId !== null;
+    
+    const modalHTML = `
+        <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-2 sm:p-4" onclick="closeLocationModal(event)">
+            <div class="bg-white rounded-xl sm:rounded-2xl max-w-2xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
+                <div class="p-4 sm:p-6 border-b border-gray-200">
+                    <h2 class="text-lg sm:text-2xl font-bold text-gray-800">${isEdit ? 'Locatie Bewerken' : 'Nieuwe Locatie'}</h2>
+                </div>
+                <form id="location-form" class="p-4 sm:p-6 space-y-3 sm:space-y-4" enctype="multipart/form-data">
+                    <input type="hidden" id="location-id" value="${locationId || ''}">
+                    
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Naam *</label>
+                        <input type="text" id="location-name" required
+                            class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
+                    </div>
 
-    if (locationId) {
-        title.textContent = 'Locatie Bewerken';
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Adres *</label>
+                        <input type="text" id="location-address" required
+                            class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Beschrijving</label>
+                        <textarea id="location-description" rows="3"
+                            class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none"></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Telefoon</label>
+                            <input type="tel" id="location-phone"
+                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Email</label>
+                            <input type="email" id="location-email"
+                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Afbeelding</label>
+                        <input type="file" id="location-image-file" accept="image/*"
+                            class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
+                        <p class="text-xs text-gray-500 mt-1">Max 5MB. Formaten: JPG, PNG, GIF, WebP</p>
+                        ${isEdit ? '<p class="text-xs text-gray-500 mt-1">Laat leeg om huidige foto te behouden</p>' : ''}
+                    </div>
+
+                    <div id="location-image-preview" class="hidden mt-3">
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Preview</label>
+                        <img id="location-preview-img" class="w-32 h-32 object-cover rounded-lg border-2 border-gray-200">
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-3 pt-4">
+                        <button type="submit" class="flex-1 bg-sk_teal text-white font-bold py-3 rounded-xl hover:bg-[#3d94a5] transition text-sm sm:text-base">
+                            ${isEdit ? 'Opslaan' : 'Aanmaken'}
+                        </button>
+                        <button type="button" onclick="closeLocationModal()" class="sm:px-6 bg-gray-200 text-gray-700 font-bold py-3 rounded-xl hover:bg-gray-300 transition text-sm sm:text-base">
+                            Annuleren
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    `;
+
+    document.getElementById('modal-container').innerHTML = modalHTML;
+
+    // Image preview
+    document.getElementById('location-image-file').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('location-preview-img').src = e.target.result;
+                document.getElementById('location-image-preview').classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Load location data if editing
+    if (isEdit) {
         loadLocationData(locationId);
-    } else {
-        title.textContent = 'Nieuwe Locatie';
-        form.reset();
     }
 
-    modal.classList.remove('hidden');
+    // Handle form submission
+    document.getElementById('location-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        saveLocation(isEdit);
+    });
 }
 
-// Hide location modal
-function hideLocationModal() {
-    document.getElementById('location-modal').classList.add('hidden');
-    document.getElementById('location-form').reset();
-    currentLocationId = null;
+// Close location modal
+function closeLocationModal(event) {
+    if (!event || event.target === event.currentTarget) {
+        document.getElementById('modal-container').innerHTML = '';
+    }
 }
 
 // Load location data for editing
 async function loadLocationData(locationId) {
     try {
         const location = await apiRequest(`/locations/${locationId}`);
+        
         document.getElementById('location-name').value = location.name;
         document.getElementById('location-address').value = location.address;
         document.getElementById('location-description').value = location.description || '';
         document.getElementById('location-phone').value = location.phone || '';
         document.getElementById('location-email').value = location.email || '';
         
-        const imageUrl = location.image_url || location.image;
-        if (imageUrl) {
-            const previewUrl = getImageUrl(imageUrl, './images/location-placeholder.jpg');
-            const previewImg = document.getElementById('location-preview-img');
-            const previewContainer = document.getElementById('location-image-preview');
-            if (previewImg && previewContainer) {
-                previewImg.src = previewUrl;
-                previewContainer.classList.remove('hidden');
-            }
+        if (location.image_url) {
+            const previewUrl = getImageUrl(location.image_url, './images/location-placeholder.jpg');
+            document.getElementById('location-preview-img').src = previewUrl;
+            document.getElementById('location-image-preview').classList.remove('hidden');
         }
     } catch (error) {
         showToast('Fout bij laden van locatie', 'error');
+        closeLocationModal();
     }
 }
 
@@ -144,33 +222,19 @@ function editLocation(locationId) {
     showLocationModal(locationId);
 }
 
-// Delete location
-async function deleteLocation(locationId) {
-    if (!confirm('Weet je zeker dat je deze locatie wilt verwijderen?')) {
-        return;
-    }
-
-    try {
-        await apiRequest(`/locations/${locationId}`, {
-            method: 'DELETE'
-        });
-        showToast('Locatie verwijderd!', 'success');
-        loadLocations();
-    } catch (error) {
-        showToast(error.message || 'Fout bij verwijderen', 'error');
-    }
-}
-
-// Save location
-document.getElementById('location-form')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
+// Save location (create or update)
+async function saveLocation(isEdit) {
+    const locationId = document.getElementById('location-id').value;
+    
     try {
         // Upload image first if selected
-        let image = document.getElementById('location-image').value || './images/locatie.jpg';
+        let image_url = isEdit ? document.getElementById('location-preview-img')?.src || null : null;
         const imageFile = document.getElementById('location-image-file').files[0];
         
+        console.log('📸 Location save - isEdit:', isEdit, 'imageFile:', imageFile, 'current image_url:', image_url);
+        
         if (imageFile) {
+            console.log('📤 Uploading new image:', imageFile.name);
             const uploadFormData = new FormData();
             uploadFormData.append('image', imageFile);
             
@@ -183,39 +247,74 @@ document.getElementById('location-form')?.addEventListener('submit', async (e) =
             });
             
             if (!uploadResponse.ok) {
+                const errorText = await uploadResponse.text();
+                console.error('❌ Upload failed:', errorText);
                 throw new Error('Fout bij uploaden van afbeelding');
             }
             
             const uploadResult = await uploadResponse.json();
-            image = uploadResult.path;
+            image_url = uploadResult.path;
+            console.log('✅ Image uploaded successfully:', image_url);
+        } else {
+            console.log('ℹ️ No new image selected, keeping existing:', image_url);
         }
         
+        // Save location data
         const locationData = {
             name: document.getElementById('location-name').value,
             address: document.getElementById('location-address').value,
             description: document.getElementById('location-description').value,
             phone: document.getElementById('location-phone').value,
             email: document.getElementById('location-email').value,
-            image
+            image_url
         };
+        
+        console.log('💾 Saving location data:', locationData);
+        
+        const url = isEdit 
+            ? `${API_BASE_URL}/locations/${locationId}`
+            : `${API_BASE_URL}/locations`;
+        
+        const response = await fetch(url, {
+            method: isEdit ? 'PUT' : 'POST',
+            headers: {
+                'Authorization': `Bearer ${getToken()}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(locationData)
+        });
 
-        if (currentLocationId) {
-            await apiRequest(`/locations/${currentLocationId}`, {
-                method: 'PUT',
-                body: JSON.stringify(locationData)
-            });
-            showToast('Locatie bijgewerkt!', 'success');
-        } else {
-            await apiRequest('/locations', {
-                method: 'POST',
-                body: JSON.stringify(locationData)
-            });
-            showToast('Locatie toegevoegd!', 'success');
+        if (!response.ok) {
+            const error = await response.json();
+            console.error('❌ Save failed:', error);
+            throw new Error(error.error || 'Request failed');
         }
 
-        hideLocationModal();
+        const result = await response.json();
+        console.log('✅ Location saved successfully:', result);
+
+        showToast(isEdit ? 'Locatie bijgewerkt!' : 'Locatie toegevoegd!');
+        closeLocationModal();
         loadLocations();
     } catch (error) {
+        console.error('❌ Error in saveLocation:', error);
         showToast(error.message || 'Fout bij opslaan', 'error');
     }
-});
+}
+
+// Delete location
+async function deleteLocation(locationId) {
+    if (!confirm('Weet je zeker dat je deze locatie wilt verwijderen?')) {
+        return;
+    }
+
+    try {
+        await apiRequest(`/locations/${locationId}`, {
+            method: 'DELETE'
+        });
+        showToast('Locatie verwijderd!');
+        loadLocations();
+    } catch (error) {
+        showToast(error.message || 'Fout bij verwijderen', 'error');
+    }
+}

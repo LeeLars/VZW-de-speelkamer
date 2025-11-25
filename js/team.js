@@ -29,18 +29,6 @@ function renderTeam() {
             sk_mint: 'from-sk_mint to-[#a3c78e]'
         };
         
-        // Get location names - handle both camelCase and snake_case
-        const locationIds = member.location_ids || member.locationIds || '';
-        const locationNames = locationIds
-            ? locationIds.split(',')
-                .map(id => {
-                    const location = DATA.locations.find(loc => loc.id === id.trim());
-                    return location ? location.name : '';
-                })
-                .filter(name => name)
-                .join(', ')
-            : '';
-        
         return `
             <div class="group bg-white rounded-[2rem] shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
                 <!-- Image -->
@@ -55,20 +43,7 @@ function renderTeam() {
                 
                 <!-- Content -->
                 <div class="p-6">
-                    ${member.bio ? `<p class="text-gray-600 text-sm mb-4 leading-relaxed">${member.bio}</p>` : ''}
-                    
-                    ${locationNames ? `
-                        <div class="flex items-start gap-2 bg-gray-50 rounded-xl p-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-gray-400 flex-shrink-0 mt-0.5">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                <circle cx="12" cy="10" r="3"></circle>
-                            </svg>
-                            <div>
-                                <p class="text-xs text-gray-500 font-bold mb-1">Actief op:</p>
-                                <p class="text-sm text-gray-700 font-medium">${locationNames}</p>
-                            </div>
-                        </div>
-                    ` : ''}
+                    ${member.bio ? `<p class="text-gray-600 text-sm leading-relaxed">${member.bio}</p>` : ''}
                 </div>
             </div>
         `;

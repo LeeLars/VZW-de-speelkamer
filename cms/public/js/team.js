@@ -82,13 +82,6 @@ function showTeamModal(memberId = null) {
                     </div>
 
                     <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Locatie IDs (komma gescheiden)</label>
-                        <input type="text" id="team-locations" placeholder="loc1,loc2,loc3"
-                            class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
-                        <p class="text-xs text-gray-500 mt-1">Bijv: loc1,loc2 voor meerdere locaties</p>
-                    </div>
-
-                    <div>
                         <label class="block text-sm font-bold text-gray-700 mb-2">Foto</label>
                         <input type="file" id="team-image" accept="image/*"
                             class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
@@ -148,7 +141,6 @@ async function loadTeamMemberData(memberId) {
         document.getElementById('team-name').value = member.name;
         document.getElementById('team-role').value = member.role;
         document.getElementById('team-bio').value = member.bio || '';
-        document.getElementById('team-locations').value = member.location_ids || '';
         
         if (member.image_url) {
             const previewUrl = getImageUrl(member.image_url, './images/team.jpg');
@@ -197,7 +189,6 @@ async function saveTeamMember(isEdit) {
             name: document.getElementById('team-name').value,
             role: document.getElementById('team-role').value,
             bio: document.getElementById('team-bio').value || '',
-            location_ids: document.getElementById('team-locations').value || '',
             image_url
         };
         

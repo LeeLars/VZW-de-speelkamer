@@ -52,7 +52,7 @@ function renderLocations() {
                     <!-- Image -->
                     <div class="lg:w-1/2 relative overflow-hidden">
                         <div class="absolute inset-0 ${colorClass.bgLight} opacity-50"></div>
-                        <img src="${getImageUrl(location.image)}" alt="${location.name}" class="w-full h-80 lg:h-full object-cover hover:scale-110 transition-transform duration-700" />
+                        <img src="${getImageUrl(location.image_url)}" alt="${location.name}" class="w-full h-80 lg:h-full object-cover hover:scale-110 transition-transform duration-700" />
                         <div class="absolute top-6 ${isEven ? 'left-6' : 'right-6'}">
                             <div class="${colorClass.bg} text-white px-6 py-3 rounded-full font-bold shadow-lg">
                                 Locatie ${index + 1}
