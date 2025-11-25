@@ -4,15 +4,9 @@
 function getImageUrl(imagePath) {
     if (!imagePath) return './images/Opvang001.jpg'; // Default fallback
     
-    // If it's already a full URL, return as is
+    // If it's already a full URL (Cloudinary or other), return as is
     if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
         return imagePath;
-    }
-    
-    // If it's an uploaded image from CMS, use Railway URL
-    if (imagePath.includes('/uploads/')) {
-        const filename = imagePath.split('/').pop();
-        return `https://vzw-de-speelkamer-production.up.railway.app/uploads/${filename}`;
     }
     
     // Otherwise, use local path
