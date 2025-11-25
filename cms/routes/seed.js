@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const { query } = require('../database/db');
-const { authenticateToken } = require('../middleware/auth');
+const authMiddleware = require('../middleware/auth');
 
 // Seed pricing data (protected route - requires authentication)
-router.post('/pricing', authenticateToken, async (req, res) => {
+router.post('/pricing', authMiddleware, async (req, res) => {
     try {
         const pricingData = [
             { category: 'standard_rate', rate: 1.20, description: 'Standaard tarief per begonnen halfuur' },
