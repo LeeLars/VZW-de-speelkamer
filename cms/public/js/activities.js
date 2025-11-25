@@ -245,11 +245,9 @@ async function loadActivityData(activityId) {
 // Save activity (create or update)
 async function saveActivity(isEdit) {
     const activityId = document.getElementById('activity-id').value;
-    const id = isEdit ? activityId : 'act' + Date.now();
     const priceValue = document.getElementById('activity-price').value;
     
     const data = {
-        id,
         title: document.getElementById('activity-title').value,
         type: document.getElementById('activity-type').value,
         start_date: document.getElementById('activity-start-date').value,
