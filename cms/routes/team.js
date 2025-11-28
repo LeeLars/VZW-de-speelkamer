@@ -37,17 +37,17 @@ router.get('/:id', async (req, res) => {
 // Create team member (protected)
 router.post('/', authMiddleware, async (req, res) => {
     try {
-        const { name, role, bio, image_url } = req.body;
+        const { name, role, bio, phone, email, image_url } = req.body;
 
         if (!name || !role) {
             return res.status(400).json({ error: 'Missing required fields (name, role)' });
         }
 
         const newMember = await queryOne(
-            `INSERT INTO team_members (name, role, bio, image_url)
-             VALUES ($1, $2, $3, $4)
+            `INSERT INTO team_members (name, role, bio, phone, email, image_url)
+             VALUES ($1, $2, $3, $4, $5, $6)
              RETURNING *`,
-            [name, role, bio || null, image_url || './images/team.jpg']
+            [name, role, bio || null, phone || null, email || null, image_url || './images/team.jpg']
         );
 
         res.status(201).json(newMember);
@@ -60,7 +60,7 @@ router.post('/', authMiddleware, async (req, res) => {
 // Update team member (protected)
 router.put('/:id', authMiddleware, async (req, res) => {
     try {
-        const { name, role, bio, image_url } = req.body;
+        const { name, role, bio, phone, email, image_url } = req.body;
         const memberId = parseInt(req.params.id);
 
         const existing = await queryOne(
@@ -76,11 +76,21 @@ router.put('/:id', authMiddleware, async (req, res) => {
                 name = COALESCE($1, name),
                 role = COALESCE($2, role),
                 bio = $3,
-                image_url = $4,
+                phone = $4,
+                email = $5,
+                image_url = $6,
                 updated_at = CURRENT_TIMESTAMP
-             WHERE id = $5
+             WHERE id = $7
              RETURNING *`,
-            [name, role, bio !== undefined ? bio : existing.bio, image_url !== undefined ? image_url : existing.image_url, memberId]
+            [
+                name, 
+                role, 
+                bio !== undefined ? bio : existing.bio, 
+                phone !== undefined ? phone : existing.phone,
+                email !== undefined ? email : existing.email,
+                image_url !== undefined ? image_url : existing.image_url, 
+                memberId
+            ]
         );
 
         res.json(updated);
