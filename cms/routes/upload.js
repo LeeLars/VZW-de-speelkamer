@@ -90,21 +90,11 @@ router.delete('/:public_id', authMiddleware, async (req, res) => {
     }
 });
 
-// Document upload (e.g., PDF practical info)
+// Document upload (practical info - any file type)
 const documentUpload = multer({
     storage,
     limits: {
-        fileSize: 15 * 1024 * 1024 // 15MB for PDFs
-    },
-    fileFilter: function (req, file, cb) {
-        const allowedTypes = /pdf/;
-        const mimetype = allowedTypes.test(file.mimetype);
-
-        if (mimetype) {
-            return cb(null, true);
-        } else {
-            cb(new Error('Alleen PDF-bestanden zijn toegestaan voor praktische info'));
-        }
+        fileSize: 15 * 1024 * 1024 // 15MB limit
     }
 });
 
