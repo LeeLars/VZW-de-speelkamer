@@ -238,6 +238,74 @@ function showActivityModal(activityId = null) {
     setupPracticalInfoUploader();
 }
 
+function updatePracticalInfoStatus(url) {
+    const statusEl = document.getElementById('activity-practical-info-status');
+    if (!statusEl) return;
+
+    if (url) {
+        const fileName = decodeURIComponent(url.split('/').pop() || 'bestand');
+        statusEl.textContent = `Huidig bestand: ${fileName}`;
+        statusEl.classList.remove('hidden');
+        statusEl.classList.remove('text-gray-500');
+        statusEl.classList.add('text-green-600');
+    } else {
+        statusEl.textContent = '';
+        statusEl.classList.add('hidden');
+        statusEl.classList.remove('text-green-600');
+        statusEl.classList.add('text-gray-500');
+    }
+}
+
+function setupPracticalInfoUploader() {
+    const fileInput = document.getElementById('activity-practical-info-file');
+    const urlInput = document.getElementById('activity-practical-info');
+    const statusEl = document.getElementById('activity-practical-info-status');
+
+    if (!fileInput || !urlInput || !statusEl) return;
+
+    fileInput.addEventListener('change', async (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        try {
+            statusEl.textContent = 'Bestand uploaden...';
+            statusEl.classList.remove('hidden');
+            statusEl.classList.remove('text-green-600');
+            statusEl.classList.add('text-gray-500');
+
+            const formData = new FormData();
+            formData.append('document', file);
+
+            const response = await fetch(`${API_BASE_URL}/upload/document`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${getToken()}`
+                },
+                body: formData
+            });
+
+            if (!response.ok) {
+                const error = await response.json().catch(() => ({ error: 'Upload mislukt' }));
+                throw new Error(error.error || 'Upload mislukt');
+            }
+
+            const result = await response.json();
+            urlInput.value = result.url;
+            updatePracticalInfoStatus(result.url);
+            showToast('Bestand succesvol geüpload!');
+        } catch (error) {
+            console.error('Practical info upload error:', error);
+            statusEl.textContent = 'Upload mislukt, probeer opnieuw.';
+            statusEl.classList.remove('hidden');
+            statusEl.classList.remove('text-green-600');
+            statusEl.classList.add('text-red-600');
+            showToast(error.message || 'Upload mislukt', 'error');
+        } finally {
+            fileInput.value = '';
+        }
+    });
+}
+
 // Load activity data for editing
 async function loadActivityData(activityId) {
     try {
