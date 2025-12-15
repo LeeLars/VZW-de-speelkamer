@@ -1,0 +1,17 @@
+{
+  "name": "vzw-de-speelkamer-website",
+  "version": "1.0.0",
+  "description": "Website voor VZW De Speelkamer met CMS",
+  "scripts": {
+    "start": "cd cms && npm start",
+    "dev": "cd cms && npm run dev",
+    "install-cms": "cd cms && npm install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LeeLars/VZW-de-speelkamer.git"
+  },
+  "keywords": ["vzw", "opvang", "cms"],
+  "author": "Grafix Studio",
+  "license": "ISC"
+}
