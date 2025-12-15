@@ -211,16 +211,29 @@ function renderActivities() {
                                     </div>
                                 </div>
                                 
-                                <a href="${activity.google_form_url}" target="_blank" 
-                                   class="inline-flex items-center justify-center gap-2 bg-sk_teal text-white px-6 py-3 rounded-xl text-sm font-bold hover:bg-[#3d94a5] transition-all shadow-md hover:shadow-lg hover:scale-105">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                        <polyline points="14 2 14 8 20 8"></polyline>
-                                        <line x1="12" y1="18" x2="12" y2="12"></line>
-                                        <line x1="9" y1="15" x2="15" y2="15"></line>
-                                    </svg>
-                                    Inschrijven
-                                </a>
+                                <div class="flex flex-wrap gap-3">
+                                    <a href="${activity.google_form_url}" target="_blank" 
+                                       class="inline-flex items-center justify-center gap-2 bg-sk_teal text-white px-6 py-3 rounded-xl text-sm font-bold hover:bg-[#3d94a5] transition-all shadow-md hover:shadow-lg hover:scale-105">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                            <polyline points="14 2 14 8 20 8"></polyline>
+                                            <line x1="12" y1="18" x2="12" y2="12"></line>
+                                            <line x1="9" y1="15" x2="15" y2="15"></line>
+                                        </svg>
+                                        Inschrijven
+                                    </a>
+                                    ${activity.practical_info_url ? `
+                                        <a href="${activity.practical_info_url}" target="_blank" rel="noopener noreferrer"
+                                           class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold border border-sk_yellow/60 text-yellow-900 bg-white hover:bg-sk_yellow/10 transition-all shadow-sm hover:shadow-md">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M12 11v6"></path>
+                                                <path d="M12 5h.01"></path>
+                                                <path d="M5 19h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2z"></path>
+                                            </svg>
+                                            Praktische info
+                                        </a>
+                                    ` : ''}
+                                </div>
                             </div>
                         </div>
                     `;

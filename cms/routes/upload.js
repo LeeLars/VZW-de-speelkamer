@@ -90,4 +90,55 @@ router.delete('/:public_id', authMiddleware, async (req, res) => {
     }
 });
 
+// Document upload (e.g., PDF practical info)
+const documentUpload = multer({
+    storage,
+    limits: {
+        fileSize: 15 * 1024 * 1024 // 15MB for PDFs
+    },
+    fileFilter: function (req, file, cb) {
+        const allowedTypes = /pdf/;
+        const mimetype = allowedTypes.test(file.mimetype);
+
+        if (mimetype) {
+            return cb(null, true);
+        } else {
+            cb(new Error('Alleen PDF-bestanden zijn toegestaan voor praktische info'));
+        }
+    }
+});
+
+router.post('/document', authMiddleware, documentUpload.single('document'), async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ error: 'Geen bestand geüpload' });
+        }
+
+        const result = await new Promise((resolve, reject) => {
+            const uploadStream = cloudinary.uploader.upload_stream(
+                {
+                    folder: 'vzw-speelkamer/practical-info',
+                    resource_type: 'raw'
+                },
+                (error, result) => {
+                    if (error) reject(error);
+                    else resolve(result);
+                }
+            );
+            uploadStream.end(req.file.buffer);
+        });
+
+        res.json({
+            success: true,
+            path: result.secure_url,
+            url: result.secure_url,
+            public_id: result.public_id,
+            filename: result.original_filename
+        });
+    } catch (error) {
+        console.error('Document upload error:', error);
+        res.status(500).json({ error: 'Fout bij uploaden van document' });
+    }
+});
+
 module.exports = router;

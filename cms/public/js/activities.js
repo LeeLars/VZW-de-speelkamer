@@ -196,6 +196,19 @@ function showActivityModal(activityId = null) {
                             class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none"></textarea>
                     </div>
 
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Praktische info (PDF)</label>
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <input type="url" id="activity-practical-info" placeholder="https://voorbeeld.com/bestand.pdf"
+                                class="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
+                            <label class="relative inline-flex items-center justify-center px-5 py-2.5 rounded-xl bg-sk_yellow/20 text-yellow-900 font-bold cursor-pointer hover:bg-sk_yellow/30 transition">
+                                <input type="file" id="activity-practical-info-file" accept="application/pdf" class="absolute inset-0 opacity-0 cursor-pointer">
+                                PDF uploaden
+                            </label>
+                        </div>
+                        <p id="activity-practical-info-status" class="text-xs text-gray-500 mt-2 hidden"></p>
+                    </div>
+
                     <div class="flex flex-col sm:flex-row gap-3 pt-4">
                         <button type="submit" class="flex-1 bg-sk_teal text-white font-bold py-3 rounded-xl hover:bg-[#3d94a5] transition text-sm sm:text-base">
                             ${isEdit ? 'Opslaan' : 'Aanmaken'}
@@ -221,6 +234,8 @@ function showActivityModal(activityId = null) {
         e.preventDefault();
         saveActivity(isEdit);
     });
+
+    setupPracticalInfoUploader();
 }
 
 // Load activity data for editing
@@ -236,6 +251,8 @@ async function loadActivityData(activityId) {
         document.getElementById('activity-price').value = activity.price;
         document.getElementById('activity-form-url').value = activity.google_form_url;
         document.getElementById('activity-description').value = activity.description || '';
+        document.getElementById('activity-practical-info').value = activity.practical_info_url || '';
+        updatePracticalInfoStatus(activity.practical_info_url);
     } catch (error) {
         showToast('Fout bij laden van activiteit', 'error');
         closeModal();
@@ -255,7 +272,8 @@ async function saveActivity(isEdit) {
         hours: document.getElementById('activity-hours').value,
         price: priceValue,
         google_form_url: document.getElementById('activity-form-url').value,
-        description: document.getElementById('activity-description').value || null
+        description: document.getElementById('activity-description').value || null,
+        practical_info_url: document.getElementById('activity-practical-info').value || null
     };
 
     try {
@@ -303,7 +321,8 @@ async function duplicateActivity(activityId) {
             hours: activity.hours,
             price: activity.price,
             google_form_url: activity.google_form_url,
-            description: activity.description
+            description: activity.description,
+            practical_info_url: activity.practical_info_url
         };
         
         await apiRequest('/activities', {

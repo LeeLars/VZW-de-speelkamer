@@ -37,7 +37,17 @@ router.get('/:id', async (req, res) => {
 // Create activity (protected)
 router.post('/', authMiddleware, async (req, res) => {
     try {
-        const { title, type, start_date, end_date, hours, price, google_form_url, description } = req.body;
+        const { 
+            title, 
+            type, 
+            start_date, 
+            end_date, 
+            hours, 
+            price, 
+            google_form_url, 
+            description,
+            practical_info_url 
+        } = req.body;
 
         if (!title || !type || !start_date || !hours || !price || !google_form_url) {
             return res.status(400).json({ error: 'Missing required fields' });
@@ -48,10 +58,22 @@ router.post('/', authMiddleware, async (req, res) => {
         }
 
         const newActivity = await queryOne(
-            `INSERT INTO activities (title, type, start_date, end_date, hours, price, google_form_url, description)
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-             RETURNING *`,
-            [title, type, start_date, end_date || null, hours, price, google_form_url, description || null]
+            `INSERT INTO activities (
+                title, type, start_date, end_date, hours, price, google_form_url, description, practical_info_url
+            )
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+            RETURNING *`,
+            [
+                title,
+                type,
+                start_date,
+                end_date || null,
+                hours,
+                price,
+                google_form_url,
+                description || null,
+                practical_info_url || null
+            ]
         );
 
         res.status(201).json(newActivity);
@@ -64,7 +86,17 @@ router.post('/', authMiddleware, async (req, res) => {
 // Update activity (protected)
 router.put('/:id', authMiddleware, async (req, res) => {
     try {
-        const { title, type, start_date, end_date, hours, price, google_form_url, description } = req.body;
+        const { 
+            title, 
+            type, 
+            start_date, 
+            end_date, 
+            hours, 
+            price, 
+            google_form_url, 
+            description,
+            practical_info_url 
+        } = req.body;
         const activityId = parseInt(req.params.id);
 
         const existing = await queryOne(
@@ -85,10 +117,22 @@ router.put('/:id', authMiddleware, async (req, res) => {
                 price = COALESCE($6, price),
                 google_form_url = COALESCE($7, google_form_url),
                 description = $8,
+                practical_info_url = COALESCE($9, practical_info_url),
                 updated_at = CURRENT_TIMESTAMP
-             WHERE id = $9
+             WHERE id = $10
              RETURNING *`,
-            [title, type, start_date, end_date !== undefined ? end_date : existing.end_date, hours, price, google_form_url, description !== undefined ? description : existing.description, activityId]
+            [
+                title,
+                type,
+                start_date,
+                end_date !== undefined ? end_date : existing.end_date,
+                hours,
+                price,
+                google_form_url,
+                description !== undefined ? description : existing.description,
+                practical_info_url !== undefined ? practical_info_url : existing.practical_info_url,
+                activityId
+            ]
         );
 
         res.json(updated);
