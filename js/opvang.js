@@ -198,9 +198,12 @@ function renderActivities() {
                                 
                                 <div class="flex flex-wrap items-center gap-4 mb-4 text-sm text-gray-600">
                                     <div class="flex items-center gap-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <circle cx="12" cy="12" r="10"></circle>
-                                            <polyline points="12 6 12 12 16 14"></polyline>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="2" width="6" height="4" rx="2"></rect>
+                                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                                            <path d="M9 14h6"></path>
+                                            <path d="M9 18h6"></path>
+                                            <path d="M9 10h6"></path>
                                         </svg>
                                         <span>${activity.hours}</span>
                                     </div>
