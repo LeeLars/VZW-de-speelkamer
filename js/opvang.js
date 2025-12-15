@@ -180,6 +180,7 @@ function renderActivities() {
                     const accentColor = isCamp ? 'sk_yellow' : 'sk_pink';
                     const badgeColor = isCamp ? 'bg-sk_yellow text-yellow-900' : 'bg-sk_pink text-white';
                     const badgeText = isCamp ? '🏕️ Kamp' : '📅 Vrije dag';
+                    const practicalInfoArg = JSON.stringify(activity.practical_info_url);
                     
                     return `
                         <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border-l-4 border-${accentColor} ml-[-2px]">
@@ -197,9 +198,12 @@ function renderActivities() {
                                 
                                 <div class="flex flex-wrap items-center gap-4 mb-4 text-sm text-gray-600">
                                     <div class="flex items-center gap-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <circle cx="12" cy="12" r="10"></circle>
-                                            <polyline points="12 6 12 12 16 14"></polyline>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="2" width="6" height="4" rx="2"></rect>
+                                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                                            <path d="M9 14h6"></path>
+                                            <path d="M9 18h6"></path>
+                                            <path d="M9 10h6"></path>
                                         </svg>
                                         <span>${activity.hours}</span>
                                     </div>
@@ -223,15 +227,17 @@ function renderActivities() {
                                         Inschrijven
                                     </a>
                                     ${activity.practical_info_url ? `
-                                        <a href="${activity.practical_info_url}" target="_blank" rel="noopener noreferrer"
-                                           class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold border border-sk_yellow/60 text-yellow-900 bg-white hover:bg-sk_yellow/10 transition-all shadow-sm hover:shadow-md">
+                                        <button type="button"
+                                            onclick="openPracticalInfo(${practicalInfoArg})"
+                                            class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold border border-sk_yellow/60 text-yellow-900 bg-white hover:bg-sk_yellow/10 transition-all shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-sk_yellow/50">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M12 11v6"></path>
-                                                <path d="M12 5h.01"></path>
-                                                <path d="M5 19h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2z"></path>
+                                                <path d="M8 2h8l4 4v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"></path>
+                                                <path d="M8 2v4h8"></path>
+                                                <path d="M9 12h6"></path>
+                                                <path d="M9 16h6"></path>
                                             </svg>
                                             Praktische info
-                                        </a>
+                                        </button>
                                     ` : ''}
                                 </div>
                             </div>
@@ -241,6 +247,20 @@ function renderActivities() {
             </div>
         </div>
     `).join('');
+}
+
+function openPracticalInfo(url) {
+    if (!url) return;
+    const popup = window.open(
+        url,
+        'practicalInfo',
+        'width=900,height=700,menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=yes'
+    );
+    if (popup) {
+        popup.focus();
+    } else {
+        window.open(url, '_blank', 'noopener');
+    }
 }
 
 // Initialize on page load
