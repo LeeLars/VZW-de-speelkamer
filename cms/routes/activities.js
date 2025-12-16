@@ -50,19 +50,23 @@ router.post('/', authMiddleware, async (req, res) => {
             practical_info_url 
         } = req.body;
 
-        if (!title || !type || !start_date || !hours || !price || !google_form_url) {
-            return res.status(400).json({ error: 'Missing required fields' });
-        }
-
-        if (!['CAMP', 'FREE_DAY', 'STUDY_DAY'].includes(type)) {
+        const resolvedType = type || 'CAMP';
+        if (!['CAMP', 'FREE_DAY', 'STUDY_DAY'].includes(resolvedType)) {
             return res.status(400).json({ error: 'Invalid activity type' });
         }
+
+        const resolvedStartDate = start_date || new Date().toISOString().slice(0, 10);
+        const resolvedEndDate = end_date || null;
+        const resolvedTitle = title || '';
+        const resolvedHours = hours || '';
+        const resolvedPrice = price || '';
+        const resolvedFormUrl = google_form_url || '#';
 
         if (status && !['geopend', 'volzet'].includes(status)) {
             return res.status(400).json({ error: 'Invalid status' });
         }
 
-        const resolvedStatus = type === 'CAMP' ? (status || 'geopend') : null;
+        const resolvedStatus = resolvedType === 'CAMP' ? (status || 'geopend') : null;
 
         const newActivity = await queryOne(
             `INSERT INTO activities (
@@ -71,13 +75,13 @@ router.post('/', authMiddleware, async (req, res) => {
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
             RETURNING *`,
             [
-                title,
-                type,
-                start_date,
-                end_date || null,
-                hours,
-                price,
-                google_form_url,
+                resolvedTitle,
+                resolvedType,
+                resolvedStartDate,
+                resolvedEndDate,
+                resolvedHours,
+                resolvedPrice,
+                resolvedFormUrl,
                 resolvedStatus,
                 description || null,
                 practical_info_url || null
@@ -125,6 +129,8 @@ router.put('/:id', authMiddleware, async (req, res) => {
             ? (status !== undefined ? status : (existing.status || 'geopend'))
             : null;
 
+        const resolvedStartDate = start_date || existing.start_date;
+
         const updated = await queryOne(
             `UPDATE activities SET
                 title = COALESCE($1, title),
@@ -141,13 +147,13 @@ router.put('/:id', authMiddleware, async (req, res) => {
              WHERE id = $11
              RETURNING *`,
             [
-                title,
-                type,
-                start_date,
+                title !== undefined && title !== '' ? title : null,
+                type !== undefined && type !== '' ? type : null,
+                resolvedStartDate,
                 end_date !== undefined ? end_date : existing.end_date,
-                hours,
-                price,
-                google_form_url,
+                hours !== undefined && hours !== '' ? hours : null,
+                price !== undefined && price !== '' ? price : null,
+                google_form_url !== undefined && google_form_url !== '' ? google_form_url : null,
                 resolvedStatus,
                 description !== undefined ? description : existing.description,
                 practical_info_url !== undefined ? practical_info_url : existing.practical_info_url,

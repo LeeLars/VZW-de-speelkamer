@@ -50,6 +50,19 @@ async function initializeDatabase() {
             SET status = 'geopend'
             WHERE status IS NULL
         `);
+
+        // Ensure safe defaults on content columns so empty saves do not fail
+        await query(`ALTER TABLE activities ALTER COLUMN title SET DEFAULT ''`);
+        await query(`ALTER TABLE activities ALTER COLUMN type SET DEFAULT 'CAMP'`);
+        await query(`ALTER TABLE activities ALTER COLUMN start_date SET DEFAULT CURRENT_DATE`);
+        await query(`ALTER TABLE activities ALTER COLUMN hours SET DEFAULT ''`);
+        await query(`ALTER TABLE activities ALTER COLUMN price SET DEFAULT ''`);
+        await query(`ALTER TABLE activities ALTER COLUMN google_form_url SET DEFAULT '#'`);
+        await query(`ALTER TABLE team_members ALTER COLUMN name SET DEFAULT 'Teamlid'`);
+        await query(`ALTER TABLE team_members ALTER COLUMN role SET DEFAULT ''`);
+        await query(`ALTER TABLE locations ALTER COLUMN name SET DEFAULT 'Locatie'`);
+        await query(`ALTER TABLE locations ALTER COLUMN address SET DEFAULT ''`);
+        await query(`ALTER TABLE pricing ALTER COLUMN rate SET DEFAULT 0`);
         await query(`
             ALTER TABLE team_members
             ADD COLUMN IF NOT EXISTS intro TEXT

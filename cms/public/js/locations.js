@@ -118,18 +118,18 @@ function showLocationModal(locationId = null) {
                 <div class="p-4 sm:p-6 border-b border-gray-200">
                     <h2 class="text-lg sm:text-2xl font-bold text-gray-800">${isEdit ? 'Locatie Bewerken' : 'Nieuwe Locatie'}</h2>
                 </div>
-                <form id="location-form" class="p-4 sm:p-6 space-y-3 sm:space-y-4" enctype="multipart/form-data">
+                <form id="location-form" class="p-4 sm:p-6 space-y-3 sm:space-y-4" enctype="multipart/form-data" novalidate>
                     <input type="hidden" id="location-id" value="${locationId || ''}">
                     
                     <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Naam *</label>
-                        <input type="text" id="location-name" required
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Naam</label>
+                        <input type="text" id="location-name"
                             class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
                     </div>
 
                     <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Adres *</label>
-                        <input type="text" id="location-address" required
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Adres</label>
+                        <input type="text" id="location-address"
                             class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
                     </div>
 

@@ -51,12 +51,12 @@ function editPricing(category) {
                 <div class="p-4 sm:p-6 border-b border-gray-200">
                     <h2 class="text-lg sm:text-2xl font-bold text-gray-800">Tarief Bewerken</h2>
                 </div>
-                <form id="pricing-form" class="p-4 sm:p-6 space-y-3 sm:space-y-4">
+                <form id="pricing-form" class="p-4 sm:p-6 space-y-3 sm:space-y-4" novalidate>
                     <input type="hidden" id="pricing-category" value="${category}">
                     
                     <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Tarief (€) *</label>
-                        <input type="number" id="pricing-rate" step="0.01" min="0" required
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Tarief (€)</label>
+                        <input type="number" id="pricing-rate" step="0.01" min="0"
                             class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
                     </div>
 
@@ -106,10 +106,17 @@ async function loadPricingData(category) {
 // Save pricing
 async function savePricing() {
     const category = document.getElementById('pricing-category').value;
+    const rateRaw = document.getElementById('pricing-rate').value;
     const data = {
-        rate: parseFloat(document.getElementById('pricing-rate').value),
         description: document.getElementById('pricing-description').value || null
     };
+
+    if (rateRaw !== '' && rateRaw !== null && rateRaw !== undefined) {
+        const parsed = parseFloat(rateRaw);
+        if (!isNaN(parsed)) {
+            data.rate = parsed;
+        }
+    }
 
     try {
         await apiRequest(`/pricing/${category}`, {

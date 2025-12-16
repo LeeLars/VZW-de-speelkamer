@@ -39,17 +39,16 @@ router.post('/', authMiddleware, async (req, res) => {
     try {
         const { name, role, intro, phone, phone2, email, email2, image_url } = req.body;
 
-        if (!name || !role) {
-            return res.status(400).json({ error: 'Missing required fields (name, role)' });
-        }
+        const resolvedName = name || 'Teamlid';
+        const resolvedRole = role || '';
 
         const newMember = await queryOne(
             `INSERT INTO team_members (name, role, intro, phone, phone2, email, email2, image_url)
              VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
              RETURNING *`,
             [
-                name,
-                role,
+                resolvedName,
+                resolvedRole,
                 intro || null,
                 phone || null,
                 phone2 || null,

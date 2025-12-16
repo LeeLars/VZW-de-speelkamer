@@ -40,18 +40,17 @@ router.get('/:id', async (req, res) => {
 router.post('/', authMiddleware, async (req, res) => {
     try {
         const { name, address, description, image_url, phone, phone2, email, email2 } = req.body;
-        
-        if (!name || !address) {
-            return res.status(400).json({ error: 'Name and address are required' });
-        }
+
+        const resolvedName = name || 'Locatie';
+        const resolvedAddress = address || '';
         
         const newLocation = await queryOne(
             `INSERT INTO locations (name, address, description, image_url, phone, phone2, email, email2)
              VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
              RETURNING *`,
             [
-                name,
-                address,
+                resolvedName,
+                resolvedAddress,
                 description || '',
                 image_url || './images/location-placeholder.jpg',
                 phone || '',

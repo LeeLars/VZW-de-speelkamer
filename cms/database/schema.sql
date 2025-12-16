@@ -11,15 +11,15 @@ CREATE TABLE IF NOT EXISTS users (
 -- Activities table
 CREATE TABLE IF NOT EXISTS activities (
     id SERIAL PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    type VARCHAR(50) NOT NULL,
-    start_date DATE NOT NULL,
+    title VARCHAR(255) NOT NULL DEFAULT '',
+    type VARCHAR(50) NOT NULL DEFAULT 'CAMP',
+    start_date DATE NOT NULL DEFAULT CURRENT_DATE,
     end_date DATE,
-    hours VARCHAR(100) NOT NULL,
-    price VARCHAR(255) NOT NULL,
+    hours VARCHAR(100) NOT NULL DEFAULT '',
+    price VARCHAR(255) NOT NULL DEFAULT '',
     status VARCHAR(20) NOT NULL DEFAULT 'geopend',
     description TEXT,
-    google_form_url TEXT NOT NULL,
+    google_form_url TEXT NOT NULL DEFAULT '#',
     practical_info_url TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS activities (
 CREATE TABLE IF NOT EXISTS pricing (
     id SERIAL PRIMARY KEY,
     category VARCHAR(100) UNIQUE NOT NULL,
-    rate DECIMAL(10, 2) NOT NULL,
+    rate DECIMAL(10, 2) NOT NULL DEFAULT 0,
     description TEXT,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -37,8 +37,8 @@ CREATE TABLE IF NOT EXISTS pricing (
 -- Team members table
 CREATE TABLE IF NOT EXISTS team_members (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    role VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL DEFAULT 'Teamlid',
+    role VARCHAR(255) NOT NULL DEFAULT '',
     intro TEXT,
     bio TEXT,
     phone VARCHAR(50),
@@ -54,8 +54,8 @@ CREATE TABLE IF NOT EXISTS team_members (
 -- Locations table
 CREATE TABLE IF NOT EXISTS locations (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    address TEXT NOT NULL,
+    name VARCHAR(255) NOT NULL DEFAULT 'Locatie',
+    address TEXT NOT NULL DEFAULT '',
     description TEXT,
     phone VARCHAR(50),
     phone2 VARCHAR(50),

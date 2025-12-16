@@ -39,20 +39,19 @@ router.put('/:category', authMiddleware, async (req, res) => {
     try {
         const { rate, description } = req.body;
 
-        if (rate === undefined) {
-            return res.status(400).json({ error: 'Rate is required' });
-        }
-
-        if (isNaN(rate) || rate < 0) {
-            return res.status(400).json({ error: 'Rate must be a positive number' });
-        }
-
         const existing = await queryOne(
             'SELECT * FROM pricing WHERE category = $1',
             [req.params.category]
         );
         if (!existing) {
             return res.status(404).json({ error: 'Pricing category not found' });
+        }
+
+        const hasRate = rate !== undefined && rate !== null && rate !== '';
+        const resolvedRate = hasRate ? parseFloat(rate) : existing.rate;
+
+        if (hasRate && (isNaN(resolvedRate) || resolvedRate < 0)) {
+            return res.status(400).json({ error: 'Rate must be a positive number' });
         }
 
         const updated = await queryOne(
@@ -62,7 +61,7 @@ router.put('/:category', authMiddleware, async (req, res) => {
                 updated_at = CURRENT_TIMESTAMP
              WHERE category = $3
              RETURNING *`,
-            [parseFloat(rate), description, req.params.category]
+            [resolvedRate, description, req.params.category]
         );
 
         res.json(updated);
