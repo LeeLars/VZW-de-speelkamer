@@ -167,26 +167,20 @@ function getSiteImageUrl(key, fallback) {
 }
 
 function hydrateSiteImages() {
-    console.log('🖼️ hydrateSiteImages called, DATA.siteImages:', DATA.siteImages);
     const elements = document.querySelectorAll('[data-site-image]');
-    console.log('🖼️ Found elements with data-site-image:', elements.length);
     elements.forEach(el => {
         const key = el.getAttribute('data-site-image');
         if (!key) return;
         const fallback = el.getAttribute('data-site-image-fallback') || (el.tagName === 'IMG' ? el.getAttribute('src') : null);
-        const image = getSiteImageByKey(key);
-        const url = image && image.image_url ? image.image_url : fallback;
-        console.log(`🖼️ Key: ${key}, Found image:`, image, `Using URL: ${url}`);
+        const url = getSiteImageUrl(key, fallback);
         if (!url) return;
 
         if (el.tagName === 'IMG') {
             if (el.getAttribute('src') !== url) {
                 el.setAttribute('src', url);
-                console.log(`🖼️ Updated IMG src for ${key}`);
             }
         } else {
             el.style.backgroundImage = `url('${url}')`;
-            console.log(`🖼️ Updated background-image for ${key}`);
         }
     });
 }
