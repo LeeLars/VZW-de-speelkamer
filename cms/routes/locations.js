@@ -39,17 +39,26 @@ router.get('/:id', async (req, res) => {
 // Create location (protected)
 router.post('/', authMiddleware, async (req, res) => {
     try {
-        const { name, address, description, image_url, phone, email } = req.body;
+        const { name, address, description, image_url, phone, phone2, email, email2 } = req.body;
         
         if (!name || !address) {
             return res.status(400).json({ error: 'Name and address are required' });
         }
         
         const newLocation = await queryOne(
-            `INSERT INTO locations (name, address, description, image_url, phone, email)
-             VALUES ($1, $2, $3, $4, $5, $6)
+            `INSERT INTO locations (name, address, description, image_url, phone, phone2, email, email2)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
              RETURNING *`,
-            [name, address, description || '', image_url || './images/location-placeholder.jpg', phone || '', email || '']
+            [
+                name,
+                address,
+                description || '',
+                image_url || './images/location-placeholder.jpg',
+                phone || '',
+                phone2 || '',
+                email || '',
+                email2 || ''
+            ]
         );
         
         res.status(201).json(newLocation);
@@ -73,7 +82,7 @@ router.put('/:id', authMiddleware, async (req, res) => {
             return res.status(404).json({ error: 'Location not found' });
         }
         
-        const { name, address, description, image_url, phone, email } = req.body;
+        const { name, address, description, image_url, phone, phone2, email, email2 } = req.body;
         
         const updatedLocation = await queryOne(
             `UPDATE locations SET
@@ -82,11 +91,23 @@ router.put('/:id', authMiddleware, async (req, res) => {
                 description = $3,
                 image_url = COALESCE($4, image_url),
                 phone = $5,
-                email = $6,
+                phone2 = $6,
+                email = $7,
+                email2 = $8,
                 updated_at = CURRENT_TIMESTAMP
-             WHERE id = $7
+             WHERE id = $9
              RETURNING *`,
-            [name, address, description !== undefined ? description : location.description, image_url, phone !== undefined ? phone : location.phone, email !== undefined ? email : location.email, locationId]
+            [
+                name,
+                address,
+                description !== undefined ? description : location.description,
+                image_url,
+                phone !== undefined ? phone : location.phone,
+                phone2 !== undefined ? phone2 : location.phone2,
+                email !== undefined ? email : location.email,
+                email2 !== undefined ? email2 : location.email2,
+                locationId
+            ]
         );
         
         res.json(updatedLocation);

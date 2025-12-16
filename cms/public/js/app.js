@@ -33,6 +33,9 @@ function switchTab(tabName) {
         case 'locations':
             loadLocations();
             break;
+        case 'contact':
+            loadContactSettings();
+            break;
         case 'media':
             loadSiteImages();
             break;

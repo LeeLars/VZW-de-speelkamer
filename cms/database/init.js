@@ -45,7 +45,37 @@ async function initializeDatabase() {
             ALTER TABLE team_members
             ADD COLUMN IF NOT EXISTS intro TEXT
         `);
-        console.log('✅ Verified optional columns (activities.practical_info_url, team_members.intro)');
+        await query(`
+            ALTER TABLE team_members
+            ADD COLUMN IF NOT EXISTS phone2 VARCHAR(50)
+        `);
+        await query(`
+            ALTER TABLE team_members
+            ADD COLUMN IF NOT EXISTS email2 VARCHAR(255)
+        `);
+        await query(`
+            ALTER TABLE locations
+            ADD COLUMN IF NOT EXISTS phone2 VARCHAR(50)
+        `);
+        await query(`
+            ALTER TABLE locations
+            ADD COLUMN IF NOT EXISTS email2 VARCHAR(255)
+        `);
+        await query(`
+            CREATE TABLE IF NOT EXISTS contact_info (
+                id INTEGER PRIMARY KEY DEFAULT 1,
+                email VARCHAR(255),
+                email2 VARCHAR(255),
+                phone VARCHAR(50),
+                phone2 VARCHAR(50),
+                gsm VARCHAR(50),
+                gsm2 VARCHAR(50),
+                facebook TEXT,
+                address TEXT,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+        console.log('✅ Verified optional columns (activities.practical_info_url, team_members.intro, team_members.phone2/email2, locations.phone2/email2, contact_info table)');
 
         // Insert default admin user if not exists
         const adminUsername = process.env.ADMIN_USERNAME || 'admin';

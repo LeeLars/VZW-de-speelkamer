@@ -57,9 +57,25 @@ CREATE TABLE IF NOT EXISTS locations (
     address TEXT NOT NULL,
     description TEXT,
     phone VARCHAR(50),
+    phone2 VARCHAR(50),
     email VARCHAR(255),
+    email2 VARCHAR(255),
     image_url TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Contact page settings (single row)
+CREATE TABLE IF NOT EXISTS contact_info (
+    id INTEGER PRIMARY KEY DEFAULT 1,
+    email VARCHAR(255),
+    email2 VARCHAR(255),
+    phone VARCHAR(50),
+    phone2 VARCHAR(50),
+    gsm VARCHAR(50),
+    gsm2 VARCHAR(50),
+    facebook TEXT,
+    address TEXT,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
