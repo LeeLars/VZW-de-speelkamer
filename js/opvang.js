@@ -259,19 +259,28 @@ function renderActivities() {
 
 function openPracticalInfo(url) {
     if (!url) return;
-    // Open in new tab for preview instead of download popup
-    const viewerUrl = `https://docs.google.com/gview?embedded=1&url=${encodeURIComponent(url)}`;
-    const popup = window.open(viewerUrl, '_blank', 'noopener,noreferrer');
-    if (popup) {
-        popup.focus();
+
+    let safeUrl = '';
+    try {
+        const parsed = new URL(url, window.location.href);
+        if (!['http:', 'https:'].includes(parsed.protocol)) return;
+        safeUrl = parsed.toString();
+    } catch {
         return;
     }
 
     const modal = document.getElementById('practical-file-modal');
     const frame = document.getElementById('practical-file-frame');
-    if (!modal || !frame) return;
+    if (!modal || !frame) {
+        window.open(safeUrl, '_blank', 'noopener,noreferrer');
+        return;
+    }
 
-    frame.src = viewerUrl;
+    const previewUrl = (typeof API_BASE_URL !== 'undefined')
+        ? `${API_BASE_URL}/upload/document/preview?url=${encodeURIComponent(safeUrl)}`
+        : safeUrl;
+
+    frame.src = previewUrl;
     modal.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
 }
