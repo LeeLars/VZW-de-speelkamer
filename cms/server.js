@@ -23,17 +23,23 @@ const allowedOrigins = process.env.CORS_ORIGIN
     ? process.env.CORS_ORIGIN.split(',').map(o => o.trim()).filter(Boolean)
     : [
         'https://leelars.github.io',
-        'http://localhost:3000',
-        'http://localhost:3001',
-        'http://127.0.0.1:3000',
-        'http://127.0.0.1:3001'
+        'https://vzw-de-speelkamer-production.up.railway.app'
     ];
 
 const corsOptions = {
     origin: (origin, cb) => {
         // Allow server-to-server requests, CLI tools, or same-origin requests without an Origin header
         if (!origin) return cb(null, true);
+
+        // Allow explicit allowlist
         if (allowedOrigins.includes(origin)) return cb(null, true);
+
+        // Allow localhost on any port (dev)
+        if (/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) return cb(null, true);
+
+        // Allow Railway hosted origins (CMS runs on Railway)
+        if (/^https?:\/\/.*\.up\.railway\.app$/.test(origin)) return cb(null, true);
+
         return cb(new Error(`CORS blocked: ${origin}`));
     },
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
