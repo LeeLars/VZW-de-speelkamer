@@ -193,59 +193,65 @@
                         </div>
 
                         <!-- Wednesday & Practical Info -->
-                        <div class="space-y-6">
+                        <div class="flex flex-col gap-6 h-full">
                             <!-- Wednesday Card -->
-                            <div class="bg-white rounded-[2.5rem] p-8 shadow-xl border border-white hover:-translate-y-1 transition-transform duration-500">
-                                <div class="flex items-center gap-4 mb-6">
-                                    <div class="flex-shrink-0 w-12 h-12 min-w-[3rem] bg-sk_yellow/20 rounded-xl flex items-center justify-center text-yellow-700">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                            <div class="flex-1 bg-white rounded-[2.5rem] p-8 md:p-10 shadow-xl border border-white relative overflow-hidden hover:-translate-y-1 transition-transform duration-500">
+                                <div class="absolute top-0 right-0 w-56 h-56 bg-sk_yellow/10 rounded-full -mr-12 -mt-12 blur-2xl"></div>
+                                <div class="relative z-10 flex flex-col h-full">
+                                    <div class="flex items-center gap-4 mb-6">
+                                        <div class="flex-shrink-0 w-12 h-12 min-w-[3rem] bg-sk_yellow/20 rounded-xl flex items-center justify-center text-yellow-700">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                        </div>
+                                        <h3 class="text-xl font-bold text-gray-800">Woensdagnamiddag</h3>
                                     </div>
-                                    <h3 class="text-xl font-bold text-gray-800">Woensdagnamiddag</h3>
-                                </div>
-                                <p class="text-gray-600 mb-4 leading-relaxed">
-                                    Op woensdag kunnen de leerlingen op school blijven eten. De activiteiten starten om 13:00 en duren tot 16:00. Aansluitend is er opvang tot 19:00.
-                                </p>
-                                <div class="bg-sk_yellow/10 rounded-xl p-4">
-                                    <p class="text-sm font-bold text-gray-800">Tarief: 2,40</p>
-                                    <p class="text-xs text-gray-500 mt-1">Per uur</p>
+                                    <p class="text-gray-600 mb-4 leading-relaxed">
+                                        Op woensdag kunnen de leerlingen op school blijven eten. De activiteiten starten om 13:00 en duren tot 16:00. Aansluitend is er opvang tot 19:00.
+                                    </p>
+                                    <div class="bg-sk_yellow/10 rounded-xl p-4 mt-auto">
+                                        <p class="text-sm font-bold text-gray-800">Tarief: 2,40</p>
+                                        <p class="text-xs text-gray-500 mt-1">Per uur</p>
+                                    </div>
                                 </div>
                             </div>
 
                             <!-- Practical Info Card -->
-                            <div class="bg-white rounded-[2.5rem] p-8 shadow-xl border border-white hover:-translate-y-1 transition-transform duration-500">
-                                <div class="flex items-center gap-4 mb-6">
-                                    <div class="flex-shrink-0 w-12 h-12 min-w-[3rem] bg-sk_pink/20 rounded-xl flex items-center justify-center text-pink-700">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2h8l4 4v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"></path><path d="M8 2v4h8"></path><path d="M9 12h6"></path><path d="M9 16h6"></path></svg>
+                            <div class="flex-1 bg-white rounded-[2.5rem] p-8 md:p-10 shadow-xl border border-white relative overflow-hidden hover:-translate-y-1 transition-transform duration-500">
+                                <div class="absolute top-0 right-0 w-56 h-56 bg-sk_pink/10 rounded-full -mr-12 -mt-12 blur-2xl"></div>
+                                <div class="relative z-10 flex flex-col h-full">
+                                    <div class="flex items-center gap-4 mb-6">
+                                        <div class="flex-shrink-0 w-12 h-12 min-w-[3rem] bg-sk_pink/20 rounded-xl flex items-center justify-center text-pink-700">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2h8l4 4v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"></path><path d="M8 2v4h8"></path><path d="M9 12h6"></path><path d="M9 16h6"></path></svg>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h3 class="text-xl font-bold text-gray-800">Praktisch</h3>
+                                            <p class="text-sm text-gray-500 mt-1">Klik hier voor praktische informatie</p>
+                                        </div>
                                     </div>
-                                    <div class="flex-1">
-                                        <h3 class="text-xl font-bold text-gray-800">Praktisch</h3>
-                                        <p class="text-sm text-gray-500 mt-1">Klik hier voor praktische informatie</p>
-                                    </div>
+                                    <ul class="space-y-2 text-sm text-gray-700 flex-1">
+                                        <li class="flex items-center gap-2">
+                                            <span class="text-green-600 font-bold">✓</span>
+                                            Geen voorafgaande inschrijving nodig
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <span class="text-green-600 font-bold">✓</span>
+                                            Scansysteem bij aankomst en vertrek
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <span class="text-green-600 font-bold">✓</span>
+                                            Factuur via email
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <span class="text-green-600 font-bold">✓</span>
+                                            Betaling wordt aangeraden via domiciliëring
+                                        </li>
+                                    </ul>
                                 </div>
-                                <ul class="space-y-2 text-sm text-gray-700">
-                                    <li class="flex items-center gap-2">
-                                        <span class="text-green-600 font-bold">✓</span>
-                                        Geen voorafgaande inschrijving nodig
-                                    </li>
-                                    <li class="flex items-center gap-2">
-                                        <span class="text-green-600 font-bold">✓</span>
-                                        Scansysteem bij aankomst en vertrek
-                                    </li>
-                                    <li class="flex items-center gap-2">
-                                        <span class="text-green-600 font-bold">✓</span>
-                                        Factuur via email
-                                    </li>
-                                    <li class="flex items-center gap-2">
-                                        <span class="text-green-600 font-bold">✓</span>
-                                        Betaling wordt aangeraden via domiciliëring
-                                    </li>
-                                </ul>
                             </div>
                         </div>
                     </div>
 
                     <div class="max-w-5xl mx-auto mt-10">
-                        <div class="bg-white rounded-[2.5rem] p-8 md:p-10 shadow-xl border border-white">
+                        <div class="bg-white rounded-[2.5rem] p-8 md:p-10 shadow-xl border border-white hover:-translate-y-1 transition-transform duration-500">
                             <div class="flex items-center gap-4 mb-6">
                                 <div class="flex-shrink-0 w-12 h-12 min-w-[3rem] bg-sk_mint/30 rounded-xl flex items-center justify-center text-green-800">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
