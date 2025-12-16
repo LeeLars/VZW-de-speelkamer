@@ -179,16 +179,16 @@ function showAddUserModal() {
                 <div class="p-4 sm:p-6 border-b border-gray-200">
                     <h3 class="text-lg sm:text-2xl font-bold text-gray-800">Nieuwe Gebruiker Toevoegen</h3>
                 </div>
-                <form id="add-user-form" class="p-4 sm:p-6 space-y-3 sm:space-y-4">
+                <form id="add-user-form" class="p-4 sm:p-6 space-y-3 sm:space-y-4" novalidate>
                     <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Gebruikersnaam *</label>
-                        <input type="text" id="new-username" required
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Gebruikersnaam</label>
+                        <input type="text" id="new-username"
                             class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Wachtwoord *</label>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Wachtwoord</label>
                         <div class="relative">
-                            <input type="password" id="new-user-password" required minlength="8"
+                            <input type="password" id="new-user-password"
                                 class="w-full px-4 py-2 pr-12 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
                             <button type="button" onclick="togglePasswordVisibility('new-user-password', 'toggle-new-user-icon')" 
                                 class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 transition">

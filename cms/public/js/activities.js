@@ -149,18 +149,18 @@ function showActivityModal(activityId = null) {
                 <div class="p-4 sm:p-6 border-b border-gray-200">
                     <h2 class="text-lg sm:text-2xl font-bold text-gray-800">${isEdit ? 'Activiteit Bewerken' : 'Nieuwe Activiteit'}</h2>
                 </div>
-                <form id="activity-form" class="p-4 sm:p-6 space-y-3 sm:space-y-4">
+                <form id="activity-form" class="p-4 sm:p-6 space-y-3 sm:space-y-4" novalidate>
                     <input type="hidden" id="activity-id" value="${activityId || ''}">
                     
                     <div class="grid md:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Titel *</label>
-                            <input type="text" id="activity-title" required
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Titel</label>
+                            <input type="text" id="activity-title"
                                 class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
                         </div>
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Type *</label>
-                            <select id="activity-type" required
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Type</label>
+                            <select id="activity-type"
                                 class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
                                 <option value="CAMP">Kamp</option>
                                 <option value="FREE_DAY">Vrije Dag</option>
@@ -183,8 +183,8 @@ function showActivityModal(activityId = null) {
 
                     <div class="grid md:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Startdatum *</label>
-                            <input type="date" id="activity-start-date" required
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Startdatum</label>
+                            <input type="date" id="activity-start-date"
                                 class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
                         </div>
                         <div>
@@ -196,20 +196,20 @@ function showActivityModal(activityId = null) {
 
                     <div class="grid md:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Uren *</label>
-                            <input type="text" id="activity-hours" required placeholder="09:00 - 16:00"
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Uren</label>
+                            <input type="text" id="activity-hours" placeholder="09:00 - 16:00"
                                 class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
                         </div>
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Prijs *</label>
-                            <input type="text" id="activity-price" required placeholder="Bijv. €12,00 per dag"
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Prijs</label>
+                            <input type="text" id="activity-price" placeholder="Bijv. €12,00 per dag"
                                 class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Google Form URL *</label>
-                        <input type="url" id="activity-form-url" required placeholder="https://forms.gle/..."
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Google Form URL</label>
+                        <input type="url" id="activity-form-url" placeholder="https://forms.gle/..."
                             class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
                     </div>
 
