@@ -37,22 +37,27 @@ function renderTeam() {
         return `
             <div class="group bg-white rounded-[2.5rem] shadow-xl border border-white hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 h-full">
                 <div class="flex flex-col ${variant === 'featured' ? 'lg:flex-row lg:items-center lg:gap-10' : ''} h-full p-6 sm:p-8 ${variant === 'featured' ? '' : 'text-center'}">
-                    <!-- Image + Basic Info -->
+                    <!-- Image + Basic Info + Intro -->
                     <div class="flex ${variant === 'featured' ? 'flex-col lg:flex-row lg:items-center gap-6' : 'flex-col items-center'} gap-4">
                         <div class="relative w-40 h-40 rounded-full overflow-hidden flex-shrink-0 ring-4 ring-white shadow-lg bg-gray-100">
                             <img src="${getImageUrl(member.image_url || member.imageUrl)}" alt="${member.name}" class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105" />
                         </div>
-                        <div class="${variant === 'featured' ? 'space-y-1 text-left' : 'space-y-1'}">
+                        <div class="${variant === 'featured' ? 'space-y-3 text-left' : 'space-y-1'}">
                             <h3 class="text-2xl font-bold text-gray-900">${member.name}</h3>
                             ${member.role ? `<p class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide ${accent}">${member.role}</p>` : ''}
+                            ${member.intro ? `
+                            <div class="intro-section">
+                                <p class="intro-text mt-2 text-gray-700 text-base leading-relaxed font-medium line-clamp-5 overflow-hidden max-h-[5rem] transition-all duration-300">${member.intro}</p>
+                                <button class="intro-toggle mt-2 text-sk_teal hover:text-sk_teal/80 text-sm font-medium transition-colors" data-expanded="false">
+                                    Meer info
+                                </button>
+                            </div>
+                        ` : ''}
                         </div>
                     </div>
                     
-                    <!-- Intro -->
-                    ${member.intro ? `<p class="mt-4 text-gray-700 text-base leading-relaxed font-medium ${variant === 'featured' ? 'lg:mt-0' : ''}">${member.intro}</p>` : ''}
-                    
                     ${(member.phone || member.email) ? `
-                        <div class="mt-auto pt-6 border-t border-dashed border-gray-200 flex flex-col gap-3 ${variant === 'featured' ? 'text-left' : 'text-left sm:text-center'}">
+                        <div class="mt-auto pt-6 border-t border-dashed border-gray-200 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 ${variant === 'featured' ? 'text-left' : 'text-left sm:text-center'}">
                             ${member.phone ? `
                                 <a href="tel:${member.phone.replace(/\s/g, '')}" class="flex items-center gap-3 text-sm text-gray-700 hover:text-sk_teal transition-colors group/contact ${variant === 'featured' ? '' : 'justify-center'}">
                                     <span class="w-10 h-10 rounded-2xl bg-sk_teal/10 text-sk_teal flex items-center justify-center">
@@ -91,6 +96,27 @@ function renderTeam() {
     gridContainer.innerHTML = rest.map((member, index) => createCard(member, index + featured.length, 'grid')).join('') || `
         <div class="col-span-full text-gray-500 italic">Voeg meer teamleden toe om deze sectie te vullen.</div>
     `;
+
+    // Add event listeners for intro toggles
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('intro-toggle')) {
+            const button = e.target;
+            const introText = button.previousElementSibling;
+            const isExpanded = button.dataset.expanded === 'true';
+            
+            if (isExpanded) {
+                introText.classList.add('max-h-[5rem]', 'line-clamp-5', 'overflow-hidden');
+                introText.classList.remove('max-h-none');
+                button.textContent = 'Meer info';
+                button.dataset.expanded = 'false';
+            } else {
+                introText.classList.remove('max-h-[5rem]', 'line-clamp-5', 'overflow-hidden');
+                introText.classList.add('max-h-none');
+                button.textContent = 'Minder info';
+                button.dataset.expanded = 'true';
+            }
+        }
+    });
 }
 
 // Initialize on page load
