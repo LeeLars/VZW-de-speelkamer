@@ -61,8 +61,22 @@ CREATE TABLE IF NOT EXISTS locations (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Site images table (hero & homepage visuals)
+CREATE TABLE IF NOT EXISTS site_images (
+    id SERIAL PRIMARY KEY,
+    section VARCHAR(100) NOT NULL,
+    image_key VARCHAR(100) UNIQUE NOT NULL,
+    title VARCHAR(255),
+    description TEXT,
+    image_url TEXT NOT NULL,
+    priority INTEGER DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Create indexes for better performance
 CREATE INDEX IF NOT EXISTS idx_activities_type ON activities(type);
 CREATE INDEX IF NOT EXISTS idx_activities_start_date ON activities(start_date);
 CREATE INDEX IF NOT EXISTS idx_users_username ON users(username);
 CREATE INDEX IF NOT EXISTS idx_pricing_category ON pricing(category);
+CREATE INDEX IF NOT EXISTS idx_site_images_section ON site_images(section);

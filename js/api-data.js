@@ -8,11 +8,12 @@ async function loadDataFromAPI() {
     try {
         // Add cache-busting timestamp to prevent browser caching
         const timestamp = new Date().getTime();
-        const [locations, team, activities, pricing] = await Promise.all([
+        const [locations, team, activities, pricing, siteImages] = await Promise.all([
             fetch(`${API_BASE_URL}/locations?_=${timestamp}`, { cache: 'no-store' }).then(r => r.json()),
             fetch(`${API_BASE_URL}/team?_=${timestamp}`, { cache: 'no-store' }).then(r => r.json()),
             fetch(`${API_BASE_URL}/activities?_=${timestamp}`, { cache: 'no-store' }).then(r => r.json()),
-            fetch(`${API_BASE_URL}/pricing?_=${timestamp}`, { cache: 'no-store' }).then(r => r.json())
+            fetch(`${API_BASE_URL}/pricing?_=${timestamp}`, { cache: 'no-store' }).then(r => r.json()),
+            fetch(`${API_BASE_URL}/site-images?_=${timestamp}`, { cache: 'no-store' }).then(r => r.json())
         ]);
 
         return {
@@ -26,6 +27,7 @@ async function loadDataFromAPI() {
                 fullDay: 23.00,
                 halfDay: 12.00
             },
+            siteImages: siteImages || [],
             contact: {
                 email: 'Inge.Versavel@vbsdefreres.be',
                 phone: '050 33 63 47',
@@ -53,6 +55,7 @@ let DATA = {
         fullDay: 23.00,
         halfDay: 12.00
     },
+    siteImages: [],
     contact: {
         email: 'Inge.Versavel@vbsdefreres.be',
         phone: '050 33 63 47',
@@ -71,11 +74,13 @@ let DATA = {
         DATA.team = apiData.team;
         DATA.activities = apiData.activities;
         DATA.pricing = apiData.pricing;
+        DATA.siteImages = apiData.siteImages || [];
         
         console.log('✅ Data loaded from Railway API:', {
             locations: DATA.locations.length,
             team: DATA.team.length,
-            activities: DATA.activities.length
+            activities: DATA.activities.length,
+            siteImages: DATA.siteImages.length
         });
         
         // Trigger custom event to notify other scripts that data is loaded

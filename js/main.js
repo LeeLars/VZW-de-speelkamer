@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Set active navigation link
     updateActiveNav();
+    hydrateSiteImages();
 });
 
 // Update active navigation state
@@ -119,3 +120,35 @@ window.addEventListener('load', () => {
     updateActiveNav();
     console.log('VZW De Speelkamer website loaded successfully! 🎉');
 });
+
+// ===== Site images helpers =====
+function getSiteImageByKey(key) {
+    if (!key) return null;
+    return (DATA.siteImages || []).find(image => image.image_key === key);
+}
+
+function getSiteImageUrl(key, fallback) {
+    const image = getSiteImageByKey(key);
+    return image && image.image_url ? image.image_url : fallback;
+}
+
+function hydrateSiteImages() {
+    const elements = document.querySelectorAll('[data-site-image]');
+    elements.forEach(el => {
+        const key = el.getAttribute('data-site-image');
+        if (!key) return;
+        const fallback = el.getAttribute('data-site-image-fallback') || (el.tagName === 'IMG' ? el.getAttribute('src') : null);
+        const url = getSiteImageUrl(key, fallback);
+        if (!url) return;
+
+        if (el.tagName === 'IMG') {
+            if (el.getAttribute('src') !== url) {
+                el.setAttribute('src', url);
+            }
+        } else {
+            el.style.backgroundImage = `url('${url}')`;
+        }
+    });
+}
+
+window.addEventListener('dataLoaded', hydrateSiteImages);
