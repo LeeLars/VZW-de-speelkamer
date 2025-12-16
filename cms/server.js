@@ -11,6 +11,7 @@ const pricingRoutes = require('./routes/pricing');
 const teamRoutes = require('./routes/team');
 const locationsRoutes = require('./routes/locations');
 const uploadRoutes = require('./routes/upload');
+const siteImagesRoutes = require('./routes/siteImages');
 const seedRoutes = require('./routes/seed');
 
 const app = express();
@@ -38,6 +39,7 @@ app.use('/api/pricing', pricingRoutes);
 app.use('/api/team', teamRoutes);
 app.use('/api/locations', locationsRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/site-images', siteImagesRoutes);
 app.use('/api/seed', seedRoutes);
 
 // Health check
