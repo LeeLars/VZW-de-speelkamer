@@ -29,7 +29,11 @@ function renderFooterLocations() {
     const container = document.getElementById('footer-locations-list');
     if (!container) return;
 
-    const locations = (window.DATA && Array.isArray(window.DATA.locations)) ? window.DATA.locations : [];
+    const locations = (typeof DATA !== 'undefined' && Array.isArray(DATA.locations))
+        ? DATA.locations
+        : (window.DATA && Array.isArray(window.DATA.locations))
+            ? window.DATA.locations
+            : [];
     if (!locations.length) {
         container.innerHTML = '<li class="text-gray-500 text-sm">Locaties laden...</li>';
         return;
@@ -37,11 +41,9 @@ function renderFooterLocations() {
 
     container.innerHTML = locations.map(location => {
         const name = location?.name || '';
-        const address = location?.address || '';
-        const label = address ? `${name} – ${address}` : name;
         return `
             <li>
-                <a href="../locaties/" class="text-gray-600 hover:text-sk_teal text-sm transition-colors">${label}</a>
+                <a href="../locaties/" class="text-gray-600 hover:text-sk_teal text-sm transition-colors">${name}</a>
             </li>
         `;
     }).join('');
@@ -49,18 +51,42 @@ function renderFooterLocations() {
 
 // Update active navigation state
 function updateActiveNav() {
-    const currentPath = window.location.pathname.replace(/^\//, '').replace(/\/$/, '');
+    const normalizePageSlug = (pathname) => {
+        const parts = String(pathname || '')
+            .split('/')
+            .filter(Boolean);
+
+        // GitHub Pages project sites include the repo name as the first segment
+        if (parts[0] && parts[0].toLowerCase() === 'vzw-de-speelkamer') {
+            parts.shift();
+        }
+
+        // If we're at the site root, treat it as home
+        if (!parts.length) return 'home';
+
+        return parts[parts.length - 1].toLowerCase();
+    };
+
+    const currentSlug = normalizePageSlug(window.location.pathname);
     const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
     
     navLinks.forEach(link => {
         const href = link.getAttribute('href');
-        let linkSlug;
-        if (href.startsWith('../')) {
-            linkSlug = href.split('/')[2];
-        } else {
-            linkSlug = href.replace(/^\//, '');
+        if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) {
+            link.classList.remove('active');
+            link.removeAttribute('aria-current');
+            return;
         }
-        const isActive = linkSlug === currentPath;
+
+        let linkSlug = '';
+        try {
+            const targetPath = new URL(href, window.location.href).pathname;
+            linkSlug = normalizePageSlug(targetPath);
+        } catch {
+            linkSlug = '';
+        }
+
+        const isActive = linkSlug && linkSlug === currentSlug;
         link.classList.toggle('active', isActive);
 
         if (isActive) {
