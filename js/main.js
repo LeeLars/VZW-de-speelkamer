@@ -25,15 +25,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Update active navigation state
 function updateActiveNav() {
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const currentSlug = window.location.pathname.replace(/^\//, '') || 'home';
     const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
     
     navLinks.forEach(link => {
-        link.classList.remove('active');
-        const href = link.getAttribute('href');
-        if (href === currentPage || (currentPage === '' && href === 'index.html')) {
-            link.classList.add('active');
-        }
+        const linkSlug = link.getAttribute('href').replace(/^\//, '');
+        link.classList.toggle('active', linkSlug === currentSlug);
     });
 }
 
