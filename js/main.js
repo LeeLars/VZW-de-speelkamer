@@ -25,12 +25,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Update active navigation state
 function updateActiveNav() {
-    const currentSlug = window.location.pathname.replace(/^\//, '') || 'home';
+    const currentPath = window.location.pathname.replace(/^\//, '').replace(/\/$/, '');
     const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
     
     navLinks.forEach(link => {
-        const linkSlug = link.getAttribute('href').replace(/^\//, '');
-        link.classList.toggle('active', linkSlug === currentSlug);
+        const href = link.getAttribute('href');
+        let linkSlug;
+        if (href.startsWith('../')) {
+            linkSlug = href.split('/')[2];
+        } else {
+            linkSlug = href.replace(/^\//, '');
+        }
+        link.classList.toggle('active', linkSlug === currentPath);
     });
 }
 
