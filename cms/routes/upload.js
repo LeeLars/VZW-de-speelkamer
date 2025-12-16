@@ -1,6 +1,8 @@
 const express = require('express');
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
+const http = require('http');
+const https = require('https');
 const authMiddleware = require('../middleware/auth');
 
 const router = express.Router();
@@ -128,6 +130,85 @@ router.post('/document', authMiddleware, documentUpload.single('document'), asyn
     } catch (error) {
         console.error('Document upload error:', error);
         res.status(500).json({ error: 'Fout bij uploaden van document' });
+    }
+});
+
+// Public document preview proxy (iframe-friendly)
+router.get('/document/preview', async (req, res) => {
+    try {
+        const rawUrl = req.query.url;
+        if (!rawUrl || typeof rawUrl !== 'string') {
+            return res.status(400).json({ error: 'Missing url' });
+        }
+
+        let parsed;
+        try {
+            parsed = new URL(rawUrl);
+        } catch {
+            return res.status(400).json({ error: 'Invalid url' });
+        }
+
+        if (!['http:', 'https:'].includes(parsed.protocol)) {
+            return res.status(400).json({ error: 'Invalid url protocol' });
+        }
+
+        // Basic SSRF protection: only allow Cloudinary hosted assets
+        if (!/\.cloudinary\.com$/i.test(parsed.hostname)) {
+            return res.status(400).json({ error: 'Only cloudinary urls are allowed' });
+        }
+
+        const requestHeaders = {};
+        if (req.headers.range) {
+            requestHeaders.Range = req.headers.range;
+        }
+
+        const fetchStream = (targetUrl, redirects = 0) => new Promise((resolve, reject) => {
+            const u = new URL(targetUrl);
+            const lib = u.protocol === 'https:' ? https : http;
+
+            const request = lib.get(u, { headers: requestHeaders }, (upstream) => {
+                const status = upstream.statusCode || 0;
+                const shouldRedirect = [301, 302, 303, 307, 308].includes(status);
+                const location = upstream.headers.location;
+
+                if (shouldRedirect && location && redirects < 5) {
+                    upstream.resume();
+                    const next = new URL(location, u).toString();
+                    fetchStream(next, redirects + 1).then(resolve).catch(reject);
+                    return;
+                }
+
+                resolve(upstream);
+            });
+
+            request.on('error', reject);
+        });
+
+        const upstream = await fetchStream(parsed.toString());
+        const status = upstream.statusCode || 502;
+        if (status < 200 || status >= 300) {
+            upstream.resume();
+            return res.status(status).json({ error: 'Failed to fetch document' });
+        }
+
+        res.status(status);
+
+        const contentType = upstream.headers['content-type'] || 'application/octet-stream';
+        const contentLength = upstream.headers['content-length'];
+        const contentRange = upstream.headers['content-range'];
+        const acceptRanges = upstream.headers['accept-ranges'];
+
+        res.setHeader('Content-Type', contentType);
+        if (contentLength) res.setHeader('Content-Length', contentLength);
+        if (contentRange) res.setHeader('Content-Range', contentRange);
+        if (acceptRanges) res.setHeader('Accept-Ranges', acceptRanges);
+        res.setHeader('Content-Disposition', 'inline');
+        res.setHeader('Cache-Control', 'no-store');
+
+        upstream.pipe(res);
+    } catch (error) {
+        console.error('Document preview error:', error);
+        res.status(500).json({ error: 'Failed to preview document' });
     }
 });
 

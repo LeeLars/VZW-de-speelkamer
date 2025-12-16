@@ -70,13 +70,14 @@ function renderActivities(activities) {
     }
 
     container.innerHTML = activities.map(activity => {
-        const isCamp = activity.type === 'CAMP';
         const status = (activity.status || 'geopend').toLowerCase();
-        const statusBadge = isCamp ? `
+        const statusBadge = `
             <span class="px-2 sm:px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap ${
                 status === 'volzet' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'
             }">${status === 'volzet' ? 'Volzet' : 'Geopend'}</span>
-        ` : '';
+        `;
+
+        const typeLabel = activity.type === 'CAMP' ? 'Kamp' : activity.type === 'STUDY_DAY' ? 'Studiedag' : 'Vrije Dag';
 
         return `
         <div class="activity-card bg-white rounded-xl p-4 sm:p-6 shadow-sm hover:shadow-md transition">
@@ -87,7 +88,7 @@ function renderActivities(activities) {
                         <span class="px-2 sm:px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap ${
                             activity.type === 'CAMP' ? 'bg-sk_yellow text-yellow-900' : 'bg-sk_pink text-white'
                         }">
-                            ${activity.type === 'CAMP' ? 'Kamp' : 'Vrije Dag'}
+                            ${typeLabel}
                         </span>
                         ${statusBadge}
                     </div>
@@ -261,8 +262,7 @@ function showActivityModal(activityId = null) {
     const typeEl = document.getElementById('activity-type');
     const statusRowEl = document.getElementById('activity-status-row');
     const syncStatusVisibility = () => {
-        const isCamp = typeEl?.value === 'CAMP';
-        statusRowEl?.classList.toggle('hidden', !isCamp);
+        statusRowEl?.classList.remove('hidden');
     };
     typeEl?.addEventListener('change', syncStatusVisibility);
     syncStatusVisibility();
@@ -379,15 +379,10 @@ async function saveActivity(isEdit) {
         hours: document.getElementById('activity-hours').value,
         price: priceValue,
         google_form_url: document.getElementById('activity-form-url').value,
+        status: statusValue || 'geopend',
         description: document.getElementById('activity-description').value || null,
         practical_info_url: document.getElementById('activity-practical-info').value || null
     };
-
-    if (typeValue === 'CAMP') {
-        data.status = statusValue || 'geopend';
-    } else {
-        data.status = null;
-    }
 
     try {
         if (isEdit) {
