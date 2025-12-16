@@ -263,6 +263,52 @@ function openPracticalInfo(url) {
     }
 }
 
+// Practical Info Modal functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('practical-info-modal');
+    const openBtn = document.getElementById('practical-info-btn');
+    const closeBtn = document.getElementById('close-modal-btn');
+    const closeBottomBtn = document.getElementById('close-modal-bottom-btn');
+
+    if (openBtn && modal) {
+        openBtn.addEventListener('click', function() {
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        });
+    }
+
+    function closeModal() {
+        if (modal) {
+            modal.classList.add('hidden');
+            document.body.style.overflow = ''; // Restore scrolling
+        }
+    }
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeModal);
+    }
+
+    if (closeBottomBtn) {
+        closeBottomBtn.addEventListener('click', closeModal);
+    }
+
+    // Close modal when clicking outside
+    if (modal) {
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+    }
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+            closeModal();
+        }
+    });
+});
+
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
     // Check if there's a hash in the URL to switch to specific tab
