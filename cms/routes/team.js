@@ -37,21 +37,20 @@ router.get('/:id', async (req, res) => {
 // Create team member (protected)
 router.post('/', authMiddleware, async (req, res) => {
     try {
-        const { name, role, intro, bio, phone, email, image_url } = req.body;
+        const { name, role, intro, phone, email, image_url } = req.body;
 
         if (!name || !role) {
             return res.status(400).json({ error: 'Missing required fields (name, role)' });
         }
 
         const newMember = await queryOne(
-            `INSERT INTO team_members (name, role, intro, bio, phone, email, image_url)
-             VALUES ($1, $2, $3, $4, $5, $6, $7)
+            `INSERT INTO team_members (name, role, intro, phone, email, image_url)
+             VALUES ($1, $2, $3, $4, $5, $6)
              RETURNING *`,
             [
                 name,
                 role,
                 intro || null,
-                bio || null,
                 phone || null,
                 email || null,
                 image_url || './images/team.jpg'
@@ -68,7 +67,7 @@ router.post('/', authMiddleware, async (req, res) => {
 // Update team member (protected)
 router.put('/:id', authMiddleware, async (req, res) => {
     try {
-        const { name, role, intro, bio, phone, email, image_url } = req.body;
+        const { name, role, intro, phone, email, image_url } = req.body;
         const memberId = parseInt(req.params.id);
 
         const existing = await queryOne(
@@ -84,18 +83,16 @@ router.put('/:id', authMiddleware, async (req, res) => {
                 name = COALESCE($1, name),
                 role = COALESCE($2, role),
                 intro = $3,
-                bio = $4,
-                phone = $5,
-                email = $6,
-                image_url = $7,
+                phone = $4,
+                email = $5,
+                image_url = $6,
                 updated_at = CURRENT_TIMESTAMP
-             WHERE id = $8
+             WHERE id = $7
              RETURNING *`,
             [
                 name, 
                 role, 
                 intro !== undefined ? intro : existing.intro,
-                bio !== undefined ? bio : existing.bio, 
                 phone !== undefined ? phone : existing.phone,
                 email !== undefined ? email : existing.email,
                 image_url !== undefined ? image_url : existing.image_url, 
