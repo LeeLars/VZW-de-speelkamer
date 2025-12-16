@@ -66,7 +66,7 @@ router.post('/', authMiddleware, async (req, res) => {
             return res.status(400).json({ error: 'Invalid status' });
         }
 
-        const resolvedStatus = resolvedType === 'CAMP' ? (status || 'geopend') : '';
+        const resolvedStatus = status || 'geopend';
 
         const newActivity = await queryOne(
             `INSERT INTO activities (
@@ -148,14 +148,12 @@ router.put('/:id', authMiddleware, async (req, res) => {
         const resolvedDescription = description !== undefined ? description : existing.description;
         const resolvedPracticalUrl = pick(practical_info_url, existing.practical_info_url);
 
-        // Status: for CAMP use provided or existing, for other types use empty string (not null due to DB constraint)
-        let resolvedStatus = '';
-        if (resolvedType === 'CAMP') {
-            if (status !== undefined && status !== '') {
-                resolvedStatus = status;
-            } else {
-                resolvedStatus = existing.status || 'geopend';
-            }
+        // Status: use provided status or existing, default to 'geopend' for all types
+        let resolvedStatus = 'geopend';
+        if (status !== undefined && status !== '') {
+            resolvedStatus = status;
+        } else if (existing.status) {
+            resolvedStatus = existing.status;
         }
 
         const updated = await queryOne(
