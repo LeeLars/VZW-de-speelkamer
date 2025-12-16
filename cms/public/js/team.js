@@ -36,7 +36,6 @@ function renderTeam(team) {
                     <p class="text-sm text-sk_teal font-medium">${member.role}</p>
                 </div>
                 ${member.intro ? `<p class="text-sm text-gray-700 italic leading-relaxed">“${member.intro}”</p>` : ''}
-                ${member.bio ? `<p class="text-sm text-gray-600 line-clamp-2">${member.bio}</p>` : ''}
                 <div class="text-xs text-gray-500 space-y-1">
                     ${member.phone ? `<p>📞 ${member.phone}</p>` : ''}
                     ${member.email ? `<p>✉️ ${member.email}</p>` : ''}
@@ -87,12 +86,6 @@ function showTeamModal(memberId = null) {
                         <textarea id="team-intro" rows="2" placeholder="Vertel kort wie je bent..."
                             class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none"></textarea>
                         <p class="text-xs text-gray-500 mt-1">Dit korte tekstje wordt bovenaan het teamkaartje getoond.</p>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Bio</label>
-                        <textarea id="team-bio" rows="3"
-                            class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none"></textarea>
                     </div>
 
                     <div>
@@ -167,7 +160,6 @@ async function loadTeamMemberData(memberId) {
         document.getElementById('team-name').value = member.name;
         document.getElementById('team-role').value = member.role;
         document.getElementById('team-intro').value = member.intro || '';
-        document.getElementById('team-bio').value = member.bio || '';
         document.getElementById('team-phone').value = member.phone || '';
         document.getElementById('team-email').value = member.email || '';
         
@@ -218,7 +210,6 @@ async function saveTeamMember(isEdit) {
             name: document.getElementById('team-name').value,
             role: document.getElementById('team-role').value,
             intro: document.getElementById('team-intro').value || '',
-            bio: document.getElementById('team-bio').value || '',
             phone: document.getElementById('team-phone').value || '',
             email: document.getElementById('team-email').value || '',
             image_url

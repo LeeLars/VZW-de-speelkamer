@@ -31,11 +31,11 @@ function renderTeam() {
         
         return `
             <div class="group bg-white rounded-[2.5rem] shadow-xl border border-white hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 h-full">
-                <div class="flex flex-col lg:flex-row gap-6 lg:gap-10 items-stretch h-full p-6 sm:p-8">
+                <div class="flex flex-col gap-6 lg:gap-10 items-center h-full p-6 sm:p-8">
                     <!-- Image -->
-                    <div class="relative w-full lg:w-72 xl:w-80 rounded-[1.5rem] overflow-hidden flex-shrink-0 h-64 sm:h-72 lg:h-auto">
+                    <div class="relative w-36 h-36 rounded-full overflow-hidden flex-shrink-0">
                         <div class="absolute inset-0 bg-gradient-to-br ${colorClasses[color]} opacity-30 mix-blend-multiply"></div>
-                        <img src="${getImageUrl(member.image_url || member.imageUrl)}" alt="${member.name}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                        <img src="${getImageUrl(member.image_url || member.imageUrl)}" alt="${member.name}" class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105" />
                     </div>
                     
                     <!-- Content -->
@@ -47,7 +47,6 @@ function renderTeam() {
                                 ${member.role ? `<p class="text-sk_teal font-semibold text-sm uppercase tracking-wide">${member.role}</p>` : ''}
                             </div>
                             ${member.intro ? `<p class="text-gray-700 text-base leading-relaxed font-medium">${member.intro}</p>` : ''}
-                            ${member.bio ? `<p class="text-gray-600 text-sm leading-relaxed">${member.bio}</p>` : ''}
                         </div>
                         
                         ${(member.phone || member.email) ? `
