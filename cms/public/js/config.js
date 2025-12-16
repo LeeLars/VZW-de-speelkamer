@@ -59,29 +59,35 @@ async function apiRequest(endpoint, options = {}) {
         headers['Authorization'] = `Bearer ${token}`;
     }
 
+    let response;
     try {
-        const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+        response = await fetch(`${API_BASE_URL}${endpoint}`, {
             ...options,
             headers
         });
-
-        const data = await response.json().catch(() => ({}));
-
-        if (response.status === 401 && !options.skipAuth) {
-            removeToken();
-            document.getElementById('login-screen')?.classList.remove('hidden');
-            document.getElementById('cms-interface')?.classList.add('hidden');
-        }
-
-        if (!response.ok) {
-            throw new Error(data.error || 'Request failed');
-        }
-
-        return data;
-    } catch (error) {
-        console.error('API Error:', error);
-        throw error;
+    } catch (networkError) {
+        // True network/CORS error: fetch itself threw (no response at all)
+        console.error('Network/CORS error:', networkError);
+        throw new Error('Netwerkfout: kon server niet bereiken');
     }
+
+    // We have a response - parse body
+    const data = await response.json().catch(() => ({}));
+
+    if (response.status === 401 && !options.skipAuth) {
+        removeToken();
+        document.getElementById('login-screen')?.classList.remove('hidden');
+        document.getElementById('cms-interface')?.classList.add('hidden');
+    }
+
+    if (!response.ok) {
+        // HTTP error (4xx/5xx) - show real error, not "CORS blocked"
+        const errorMsg = data.error || `Server error: ${response.status} ${response.statusText}`;
+        console.error('HTTP Error:', response.status, response.statusText, data);
+        throw new Error(errorMsg);
+    }
+
+    return data;
 }
 
 // Show toast notification

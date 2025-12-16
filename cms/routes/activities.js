@@ -95,7 +95,7 @@ router.post('/', authMiddleware, async (req, res) => {
     }
 });
 
-// Update activity (protected)
+// Update activity (protected) - PATCH-like: only update provided non-empty fields
 router.put('/:id', authMiddleware, async (req, res) => {
     try {
         const { 
@@ -112,6 +112,10 @@ router.put('/:id', authMiddleware, async (req, res) => {
         } = req.body;
         const activityId = parseInt(req.params.id);
 
+        if (isNaN(activityId)) {
+            return res.status(400).json({ error: 'Invalid activity ID' });
+        }
+
         const existing = await queryOne(
             'SELECT * FROM activities WHERE id = $1',
             [activityId]
@@ -120,51 +124,74 @@ router.put('/:id', authMiddleware, async (req, res) => {
             return res.status(404).json({ error: 'Activity not found' });
         }
 
-        if (status && !['geopend', 'volzet'].includes(status)) {
+        // Validate status only if provided and non-empty
+        if (status && status !== '' && !['geopend', 'volzet'].includes(status)) {
             return res.status(400).json({ error: 'Invalid status' });
         }
 
-        const resolvedType = type || existing.type;
-        const resolvedStatus = resolvedType === 'CAMP'
-            ? (status !== undefined ? status : (existing.status || 'geopend'))
-            : null;
+        // Helper: use new value only if provided and non-empty, else keep existing
+        const pick = (newVal, existingVal) => {
+            if (newVal === undefined || newVal === null || newVal === '') {
+                return existingVal;
+            }
+            return newVal;
+        };
 
-        const resolvedStartDate = start_date || existing.start_date;
+        // Resolve all fields with PATCH semantics
+        const resolvedTitle = pick(title, existing.title);
+        const resolvedType = pick(type, existing.type);
+        const resolvedStartDate = pick(start_date, existing.start_date);
+        const resolvedEndDate = end_date !== undefined ? (end_date || null) : existing.end_date;
+        const resolvedHours = pick(hours, existing.hours);
+        const resolvedPrice = pick(price, existing.price);
+        const resolvedFormUrl = pick(google_form_url, existing.google_form_url);
+        const resolvedDescription = description !== undefined ? description : existing.description;
+        const resolvedPracticalUrl = pick(practical_info_url, existing.practical_info_url);
+
+        // Status: only for CAMP type
+        let resolvedStatus = null;
+        if (resolvedType === 'CAMP') {
+            if (status !== undefined && status !== '') {
+                resolvedStatus = status;
+            } else {
+                resolvedStatus = existing.status || 'geopend';
+            }
+        }
 
         const updated = await queryOne(
             `UPDATE activities SET
-                title = COALESCE($1, title),
-                type = COALESCE($2, type),
-                start_date = COALESCE($3, start_date),
+                title = $1,
+                type = $2,
+                start_date = $3,
                 end_date = $4,
-                hours = COALESCE($5, hours),
-                price = COALESCE($6, price),
-                google_form_url = COALESCE($7, google_form_url),
+                hours = $5,
+                price = $6,
+                google_form_url = $7,
                 status = $8,
                 description = $9,
-                practical_info_url = COALESCE($10, practical_info_url),
+                practical_info_url = $10,
                 updated_at = CURRENT_TIMESTAMP
              WHERE id = $11
              RETURNING *`,
             [
-                title !== undefined && title !== '' ? title : null,
-                type !== undefined && type !== '' ? type : null,
+                resolvedTitle,
+                resolvedType,
                 resolvedStartDate,
-                end_date !== undefined ? end_date : existing.end_date,
-                hours !== undefined && hours !== '' ? hours : null,
-                price !== undefined && price !== '' ? price : null,
-                google_form_url !== undefined && google_form_url !== '' ? google_form_url : null,
+                resolvedEndDate,
+                resolvedHours,
+                resolvedPrice,
+                resolvedFormUrl,
                 resolvedStatus,
-                description !== undefined ? description : existing.description,
-                practical_info_url !== undefined ? practical_info_url : existing.practical_info_url,
+                resolvedDescription,
+                resolvedPracticalUrl,
                 activityId
             ]
         );
 
         res.json(updated);
     } catch (error) {
-        console.error('Update activity error:', error);
-        res.status(500).json({ error: 'Failed to update activity' });
+        console.error('Update activity error:', error.message, error.stack);
+        res.status(500).json({ error: `Failed to update activity: ${error.message}` });
     }
 });
 
