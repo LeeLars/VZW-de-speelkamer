@@ -37,7 +37,7 @@ function renderTeam() {
         return `
             <div class="group bg-white rounded-[2.5rem] shadow-xl border border-white hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 h-full team-member">
                 <div class="flex flex-col h-full p-6 sm:p-8 ${variant === 'featured' ? '' : 'text-center'}">
-                    <div class="flex flex-col ${variant === 'featured' ? 'lg:flex-row lg:items-center lg:gap-10' : ''}">
+                    <div class="flex flex-col ${variant === 'featured' ? 'lg:flex-row lg:items-start lg:gap-10' : ''}">
                         <!-- Image + Basic Info -->
                         <div class="flex ${variant === 'featured' ? 'flex-col lg:flex-row lg:items-center gap-6' : 'flex-col items-center'} gap-4 ${variant === 'featured' ? 'flex-1 min-w-0' : ''}">
                             <div class="relative w-40 h-40 rounded-full overflow-hidden flex-shrink-0 ring-4 ring-white shadow-lg bg-gray-100">
@@ -46,13 +46,13 @@ function renderTeam() {
                             <div class="${variant === 'featured' ? 'space-y-1 text-left' : 'space-y-1'} min-w-0 w-full">
                                 <h3 class="text-2xl font-bold text-gray-900">${member.name}</h3>
                                 ${member.role ? `<p class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide ${accent}">${member.role}</p>` : ''}
-                                ${member.intro && variant !== 'featured' ? `<p class="mt-4 text-gray-700 text-base leading-relaxed font-medium max-h-20 overflow-hidden transition-all duration-300 w-full max-w-full break-words [overflow-wrap:anywhere]" style="height: 5rem">${member.intro}</p>` : ''}
+                                ${member.intro && variant !== 'featured' ? `<p data-intro class="mt-4 text-gray-700 text-base leading-relaxed font-medium overflow-hidden transition-[max-height] duration-300 w-full max-w-full break-words [overflow-wrap:anywhere]" style="max-height: 5rem">${member.intro}</p>` : ''}
                                 ${member.intro && variant !== 'featured' ? `<button class="text-sk_teal text-sm font-semibold mt-2 toggle-intro">Meer info</button>` : ''}
                             </div>
                         </div>
 
                         ${(member.phone || member.email) ? `
-                            <div class="mt-auto pt-6 border-t border-dashed border-gray-200 ${variant === 'featured' ? 'flex flex-col gap-3 text-left flex-shrink-0 w-full lg:w-64' : 'grid grid-cols-1 sm:grid-cols-2 gap-3 text-left sm:text-center'}">
+                            <div class="mt-auto pt-6 border-t border-dashed border-gray-200 ${variant === 'featured' ? 'flex flex-col gap-3 text-left flex-shrink-0 w-full lg:w-64 lg:pt-0 lg:border-t-0 lg:border-l lg:border-dashed lg:border-gray-200 lg:pl-6' : 'grid grid-cols-1 sm:grid-cols-2 gap-3 text-left sm:text-center'}">
                                 ${member.phone ? `
                                     <a href="tel:${member.phone.replace(/\s/g, '')}" class="flex items-center gap-3 text-sm text-gray-700 hover:text-sk_teal transition-colors group/contact min-w-0 ${variant === 'featured' ? '' : 'justify-center sm:justify-start'}">
                                         <span class="w-10 h-10 rounded-2xl bg-sk_teal/10 text-sk_teal flex items-center justify-center">
@@ -80,7 +80,7 @@ function renderTeam() {
 
                     ${member.intro && variant === 'featured' ? `
                         <div class="pt-6">
-                            <p class="text-gray-700 text-base leading-relaxed font-medium max-h-20 overflow-hidden transition-all duration-300 w-full max-w-full break-words [overflow-wrap:anywhere]" style="height: 5rem">${member.intro}</p>
+                            <p data-intro class="text-gray-700 text-base leading-relaxed font-medium overflow-hidden transition-[max-height] duration-300 w-full max-w-full break-words [overflow-wrap:anywhere]" style="max-height: 5rem">${member.intro}</p>
                             <button class="text-sk_teal text-sm font-semibold mt-2 toggle-intro">Meer info</button>
                         </div>
                     ` : ''}
@@ -103,16 +103,17 @@ function renderTeam() {
 
 function initIntroToggles() {
     document.querySelectorAll('.team-member').forEach((card) => {
-        const intro = card.querySelector('p.max-h-20');
+        const intro = card.querySelector('p[data-intro]');
         const button = card.querySelector('.toggle-intro');
         if (!intro || !button) return;
 
-        intro.style.height = '5rem';
+        intro.style.maxHeight = '5rem';
         button.textContent = 'Meer info';
         button.dataset.expanded = 'false';
 
         requestAnimationFrame(() => {
-            const isOverflowing = intro.scrollHeight > intro.clientHeight + 1;
+            const collapsedPx = 5 * 16;
+            const isOverflowing = intro.scrollHeight > collapsedPx + 1;
             button.classList.toggle('hidden', !isOverflowing);
         });
 
@@ -120,16 +121,16 @@ function initIntroToggles() {
             button.addEventListener('click', (e) => {
                 const btn = e.currentTarget;
                 const c = btn.closest('.team-member');
-                const p = c?.querySelector('p.max-h-20');
+                const p = c?.querySelector('p[data-intro]');
                 if (!p) return;
 
                 const expanded = btn.dataset.expanded === 'true';
                 if (expanded) {
-                    p.style.height = '5rem';
+                    p.style.maxHeight = '5rem';
                     btn.textContent = 'Meer info';
                     btn.dataset.expanded = 'false';
                 } else {
-                    p.style.height = 'auto';
+                    p.style.maxHeight = `${p.scrollHeight}px`;
                     btn.textContent = 'Minder info';
                     btn.dataset.expanded = 'true';
                 }
