@@ -146,6 +146,28 @@ async function initializeDatabase() {
             }
         }
 
+        // Insert default site images if not exists (with placeholder URLs)
+        const defaultSiteImages = [
+            { section: 'HOME_HERO', image_key: 'home_hero_main', title: 'Home Hero - Hoofdbeeld', image_url: '../images/Opvang001.jpg', priority: 1 },
+            { section: 'HOME_HERO', image_key: 'home_hero_secondary', title: 'Home Hero - Tweede beeld', image_url: '../images/Opvang006.jpg', priority: 2 },
+            { section: 'HOME_ABOUT', image_key: 'home_about_image', title: 'Home - Team afbeelding', image_url: '../images/team.jpg', priority: 1 },
+            { section: 'OPVANG_HERO', image_key: 'opvang_hero_image', title: 'Opvang Hero', image_url: '../images/hero-opvang.jpg', priority: 1 }
+        ];
+
+        for (const img of defaultSiteImages) {
+            const exists = await queryOne(
+                'SELECT * FROM site_images WHERE image_key = $1',
+                [img.image_key]
+            );
+            if (!exists) {
+                await query(
+                    'INSERT INTO site_images (section, image_key, title, image_url, priority) VALUES ($1, $2, $3, $4, $5)',
+                    [img.section, img.image_key, img.title, img.image_url, img.priority]
+                );
+                console.log(`✅ Created default site image: ${img.image_key}`);
+            }
+        }
+
         console.log('✅ Database initialization complete!');
     } catch (error) {
         console.error('❌ Database initialization error:', error);
