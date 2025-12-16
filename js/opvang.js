@@ -260,7 +260,20 @@ function renderActivities() {
 function openPracticalInfo(url) {
     if (!url) return;
     // Open in new tab for preview instead of download popup
-    window.open(url, '_blank', 'noopener,noreferrer');
+    const viewerUrl = `https://docs.google.com/gview?embedded=1&url=${encodeURIComponent(url)}`;
+    const popup = window.open(viewerUrl, '_blank', 'noopener,noreferrer');
+    if (popup) {
+        popup.focus();
+        return;
+    }
+
+    const modal = document.getElementById('practical-file-modal');
+    const frame = document.getElementById('practical-file-frame');
+    if (!modal || !frame) return;
+
+    frame.src = viewerUrl;
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
 }
 
 // Practical Info Modal functionality
@@ -269,6 +282,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const openBtn = document.getElementById('practical-info-btn');
     const closeBtn = document.getElementById('close-modal-btn');
     const closeBottomBtn = document.getElementById('close-modal-bottom-btn');
+
+    const practicalFileModal = document.getElementById('practical-file-modal');
+    const practicalFileFrame = document.getElementById('practical-file-frame');
+    const closePracticalFileBtn = document.getElementById('close-practical-file-modal-btn');
 
     if (openBtn && modal) {
         openBtn.addEventListener('click', function() {
@@ -281,6 +298,15 @@ document.addEventListener('DOMContentLoaded', function() {
         if (modal) {
             modal.classList.add('hidden');
             document.body.style.overflow = ''; // Restore scrolling
+        }
+    }
+
+    function closePracticalFileModal() {
+        if (!practicalFileModal) return;
+        practicalFileModal.classList.add('hidden');
+        document.body.style.overflow = '';
+        if (practicalFileFrame) {
+            practicalFileFrame.src = '';
         }
     }
 
@@ -301,10 +327,26 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    if (practicalFileModal) {
+        practicalFileModal.addEventListener('click', function(e) {
+            if (e.target === practicalFileModal) {
+                closePracticalFileModal();
+            }
+        });
+    }
+
+    if (closePracticalFileBtn) {
+        closePracticalFileBtn.addEventListener('click', closePracticalFileModal);
+    }
+
     // Close modal with Escape key
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
             closeModal();
+        }
+
+        if (e.key === 'Escape' && practicalFileModal && !practicalFileModal.classList.contains('hidden')) {
+            closePracticalFileModal();
         }
     });
 });
@@ -350,7 +392,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Listen for hash changes (when clicking mega menu links)
     window.addEventListener('hashchange', function() {
         const newHash = window.location.hash.slice(1);
-        const newTabName = hashToHash[newHash];
+        const newTabName = hashToTab[newHash];
         if (newTabName) {
             switchTab(newTabName);
             setTimeout(() => {

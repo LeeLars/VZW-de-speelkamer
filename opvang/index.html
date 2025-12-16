@@ -355,6 +355,21 @@
             </div>
         </div>
 
+        <div id="practical-file-modal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white rounded-[2rem] w-full max-w-5xl mx-4 h-[85vh] overflow-hidden shadow-2xl" onclick="event.stopPropagation()">
+                <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+                    <h3 class="text-lg sm:text-xl font-bold text-gray-800">Praktische info</h3>
+                    <button type="button" id="close-practical-file-modal-btn" class="text-gray-400 hover:text-gray-600 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+                <iframe id="practical-file-frame" class="w-full h-full" src="" title="Praktische info preview"></iframe>
+            </div>
+        </div>
+
         <!-- Footer -->
         <footer class="bg-white border-t border-gray-100">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
