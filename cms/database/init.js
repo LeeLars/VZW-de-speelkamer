@@ -148,10 +148,10 @@ async function initializeDatabase() {
 
         // Insert default site images if not exists (with placeholder URLs)
         const defaultSiteImages = [
-            { section: 'HOME_HERO', image_key: 'home_hero_main', title: 'Home Hero - Hoofdbeeld', image_url: '../images/Opvang001.jpg', priority: 1 },
-            { section: 'HOME_HERO', image_key: 'home_hero_secondary', title: 'Home Hero - Tweede beeld', image_url: '../images/Opvang006.jpg', priority: 2 },
-            { section: 'HOME_ABOUT', image_key: 'home_about_image', title: 'Home - Team afbeelding', image_url: '../images/team.jpg', priority: 1 },
-            { section: 'OPVANG_HERO', image_key: 'opvang_hero_image', title: 'Opvang Hero', image_url: '../images/hero-opvang.jpg', priority: 1 }
+            { section: 'home_hero', image_key: 'home_hero_main', title: 'Home Hero – Hoofdbeeld', image_url: '../images/Opvang001.jpg', priority: 1 },
+            { section: 'home_hero', image_key: 'home_hero_secondary', title: 'Home Hero – Tweede beeld', image_url: '../images/Opvang006.jpg', priority: 2 },
+            { section: 'home_about', image_key: 'home_about_image', title: 'Home – Team afbeelding', image_url: '../images/team.jpg', priority: 1 },
+            { section: 'opvang_hero', image_key: 'opvang_hero_image', title: 'Opvang – Hero afbeelding', image_url: '../images/hero-opvang.jpg', priority: 1 }
         ];
 
         for (const img of defaultSiteImages) {
