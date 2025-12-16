@@ -45,6 +45,7 @@ router.post('/', authMiddleware, async (req, res) => {
             hours, 
             price, 
             google_form_url, 
+            status,
             description,
             practical_info_url 
         } = req.body;
@@ -57,11 +58,17 @@ router.post('/', authMiddleware, async (req, res) => {
             return res.status(400).json({ error: 'Invalid activity type' });
         }
 
+        if (status && !['geopend', 'volzet'].includes(status)) {
+            return res.status(400).json({ error: 'Invalid status' });
+        }
+
+        const resolvedStatus = type === 'CAMP' ? (status || 'geopend') : null;
+
         const newActivity = await queryOne(
             `INSERT INTO activities (
-                title, type, start_date, end_date, hours, price, google_form_url, description, practical_info_url
+                title, type, start_date, end_date, hours, price, google_form_url, status, description, practical_info_url
             )
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
             RETURNING *`,
             [
                 title,
@@ -71,6 +78,7 @@ router.post('/', authMiddleware, async (req, res) => {
                 hours,
                 price,
                 google_form_url,
+                resolvedStatus,
                 description || null,
                 practical_info_url || null
             ]
@@ -94,6 +102,7 @@ router.put('/:id', authMiddleware, async (req, res) => {
             hours, 
             price, 
             google_form_url, 
+            status,
             description,
             practical_info_url 
         } = req.body;
@@ -107,6 +116,15 @@ router.put('/:id', authMiddleware, async (req, res) => {
             return res.status(404).json({ error: 'Activity not found' });
         }
 
+        if (status && !['geopend', 'volzet'].includes(status)) {
+            return res.status(400).json({ error: 'Invalid status' });
+        }
+
+        const resolvedType = type || existing.type;
+        const resolvedStatus = resolvedType === 'CAMP'
+            ? (status !== undefined ? status : (existing.status || 'geopend'))
+            : null;
+
         const updated = await queryOne(
             `UPDATE activities SET
                 title = COALESCE($1, title),
@@ -116,10 +134,11 @@ router.put('/:id', authMiddleware, async (req, res) => {
                 hours = COALESCE($5, hours),
                 price = COALESCE($6, price),
                 google_form_url = COALESCE($7, google_form_url),
-                description = $8,
-                practical_info_url = COALESCE($9, practical_info_url),
+                status = $8,
+                description = $9,
+                practical_info_url = COALESCE($10, practical_info_url),
                 updated_at = CURRENT_TIMESTAMP
-             WHERE id = $10
+             WHERE id = $11
              RETURNING *`,
             [
                 title,
@@ -129,6 +148,7 @@ router.put('/:id', authMiddleware, async (req, res) => {
                 hours,
                 price,
                 google_form_url,
+                resolvedStatus,
                 description !== undefined ? description : existing.description,
                 practical_info_url !== undefined ? practical_info_url : existing.practical_info_url,
                 activityId

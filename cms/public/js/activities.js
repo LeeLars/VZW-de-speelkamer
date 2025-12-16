@@ -69,7 +69,16 @@ function renderActivities(activities) {
         return;
     }
 
-    container.innerHTML = activities.map(activity => `
+    container.innerHTML = activities.map(activity => {
+        const isCamp = activity.type === 'CAMP';
+        const status = (activity.status || 'geopend').toLowerCase();
+        const statusBadge = isCamp ? `
+            <span class="px-2 sm:px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap ${
+                status === 'volzet' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'
+            }">${status === 'volzet' ? 'Volzet' : 'Geopend'}</span>
+        ` : '';
+
+        return `
         <div class="activity-card bg-white rounded-xl p-4 sm:p-6 shadow-sm hover:shadow-md transition">
             <div class="flex flex-col sm:flex-row justify-between items-start gap-4 mb-4">
                 <div class="flex-1 min-w-0">
@@ -80,6 +89,7 @@ function renderActivities(activities) {
                         }">
                             ${activity.type === 'CAMP' ? 'Kamp' : 'Vrije Dag'}
                         </span>
+                        ${statusBadge}
                     </div>
                     <p class="text-xs sm:text-sm text-gray-600">${formatDate(activity.start_date)}${
                         activity.end_date ? ' - ' + formatDate(activity.end_date) : ''
@@ -125,7 +135,8 @@ function renderActivities(activities) {
                 Google Form Link →
             </a>
         </div>
-    `).join('');
+    `;
+    }).join('');
 }
 
 // Show activity modal (create/edit)
@@ -156,6 +167,18 @@ function showActivityModal(activityId = null) {
                                 <option value="STUDY_DAY">Studiedag</option>
                             </select>
                         </div>
+                    </div>
+
+                    <div id="activity-status-row" class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Status</label>
+                            <select id="activity-status"
+                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
+                                <option value="geopend">Geopend</option>
+                                <option value="volzet">Volzet</option>
+                            </select>
+                        </div>
+                        <div></div>
                     </div>
 
                     <div class="grid md:grid-cols-2 gap-4">
@@ -234,6 +257,15 @@ function showActivityModal(activityId = null) {
         e.preventDefault();
         saveActivity(isEdit);
     });
+
+    const typeEl = document.getElementById('activity-type');
+    const statusRowEl = document.getElementById('activity-status-row');
+    const syncStatusVisibility = () => {
+        const isCamp = typeEl?.value === 'CAMP';
+        statusRowEl?.classList.toggle('hidden', !isCamp);
+    };
+    typeEl?.addEventListener('change', syncStatusVisibility);
+    syncStatusVisibility();
 
     setupPracticalInfoUploader();
 }
@@ -320,6 +352,10 @@ async function loadActivityData(activityId) {
         document.getElementById('activity-form-url').value = activity.google_form_url;
         document.getElementById('activity-description').value = activity.description || '';
         document.getElementById('activity-practical-info').value = activity.practical_info_url || '';
+        const statusEl = document.getElementById('activity-status');
+        if (statusEl) {
+            statusEl.value = (activity.status || 'geopend').toLowerCase();
+        }
         updatePracticalInfoStatus(activity.practical_info_url);
     } catch (error) {
         showToast('Fout bij laden van activiteit', 'error');
@@ -332,9 +368,12 @@ async function saveActivity(isEdit) {
     const activityId = document.getElementById('activity-id').value;
     const priceValue = document.getElementById('activity-price').value;
     
+    const typeValue = document.getElementById('activity-type').value;
+    const statusValue = document.getElementById('activity-status')?.value;
+
     const data = {
         title: document.getElementById('activity-title').value,
-        type: document.getElementById('activity-type').value,
+        type: typeValue,
         start_date: document.getElementById('activity-start-date').value,
         end_date: document.getElementById('activity-end-date').value || null,
         hours: document.getElementById('activity-hours').value,
@@ -343,6 +382,12 @@ async function saveActivity(isEdit) {
         description: document.getElementById('activity-description').value || null,
         practical_info_url: document.getElementById('activity-practical-info').value || null
     };
+
+    if (typeValue === 'CAMP') {
+        data.status = statusValue || 'geopend';
+    } else {
+        data.status = null;
+    }
 
     try {
         if (isEdit) {

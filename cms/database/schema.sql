@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS activities (
     end_date DATE,
     hours VARCHAR(100) NOT NULL,
     price VARCHAR(255) NOT NULL,
+    status VARCHAR(20) NOT NULL DEFAULT 'geopend',
     description TEXT,
     google_form_url TEXT NOT NULL,
     practical_info_url TEXT,

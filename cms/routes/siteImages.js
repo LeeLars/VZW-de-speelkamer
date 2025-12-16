@@ -110,6 +110,57 @@ router.put('/:id', authMiddleware, async (req, res) => {
     }
 });
 
+// Replace site image by key (protected)
+router.put('/by-key/:image_key', authMiddleware, async (req, res) => {
+    try {
+        const imageKey = req.params.image_key;
+        const { section, image_url } = req.body;
+
+        if (!imageKey) {
+            return res.status(400).json({ error: 'image_key is required' });
+        }
+        if (!image_url) {
+            return res.status(400).json({ error: 'image_url is required' });
+        }
+
+        const existing = await queryOne(
+            'SELECT * FROM site_images WHERE image_key = $1',
+            [imageKey]
+        );
+
+        if (existing) {
+            const updated = await queryOne(
+                `UPDATE site_images SET
+                    image_url = $1,
+                    updated_at = CURRENT_TIMESTAMP
+                 WHERE id = $2
+                 RETURNING *`,
+                [image_url, existing.id]
+            );
+            return res.json(updated);
+        }
+
+        if (!section) {
+            return res.status(400).json({ error: 'section is required for new image keys' });
+        }
+
+        const created = await queryOne(
+            `INSERT INTO site_images (section, image_key, image_url, priority)
+             VALUES ($1, $2, $3, 0)
+             RETURNING *`,
+            [section, imageKey, image_url]
+        );
+
+        return res.status(201).json(created);
+    } catch (error) {
+        if (error && error.message && error.message.includes('duplicate key')) {
+            return res.status(400).json({ error: 'Image key moet uniek zijn' });
+        }
+        console.error('Replace site image by key error:', error);
+        return res.status(500).json({ error: 'Failed to replace site image' });
+    }
+});
+
 // Delete site image
 router.delete('/:id', authMiddleware, async (req, res) => {
     try {

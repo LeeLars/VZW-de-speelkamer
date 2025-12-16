@@ -42,6 +42,15 @@ async function initializeDatabase() {
             ADD COLUMN IF NOT EXISTS practical_info_url TEXT
         `);
         await query(`
+            ALTER TABLE activities
+            ADD COLUMN IF NOT EXISTS status VARCHAR(20) NOT NULL DEFAULT 'geopend'
+        `);
+        await query(`
+            UPDATE activities
+            SET status = 'geopend'
+            WHERE status IS NULL
+        `);
+        await query(`
             ALTER TABLE team_members
             ADD COLUMN IF NOT EXISTS intro TEXT
         `);
@@ -75,7 +84,7 @@ async function initializeDatabase() {
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
-        console.log('✅ Verified optional columns (activities.practical_info_url, team_members.intro, team_members.phone2/email2, locations.phone2/email2, contact_info table)');
+        console.log('✅ Verified optional columns (activities.practical_info_url, activities.status, team_members.intro, team_members.phone2/email2, locations.phone2/email2, contact_info table)');
 
         // Insert default admin user if not exists
         const adminUsername = process.env.ADMIN_USERNAME || 'admin';

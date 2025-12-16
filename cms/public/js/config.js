@@ -1,8 +1,9 @@
 // API Configuration
-// Automatically detect if running locally or in production
+// Default to same-origin so CMS + API work reliably regardless of the hostname the CMS is served from.
+// Local dev can still use the backend at :3001.
 const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     ? 'http://localhost:3001/api'
-    : 'https://vzw-de-speelkamer-production.up.railway.app/api';
+    : `${window.location.origin}/api`;
 
 // Helper function to get proper image URL (supports both Cloudinary and local paths)
 function getImageUrl(imagePath, fallback = './images/placeholder.jpg') {
@@ -51,7 +52,10 @@ async function apiRequest(endpoint, options = {}) {
         ...options.headers
     };
 
-    if (token && !options.skipAuth) {
+    if (!options.skipAuth) {
+        if (!token) {
+            throw new Error('No token provided');
+        }
         headers['Authorization'] = `Bearer ${token}`;
     }
 
@@ -61,7 +65,13 @@ async function apiRequest(endpoint, options = {}) {
             headers
         });
 
-        const data = await response.json();
+        const data = await response.json().catch(() => ({}));
+
+        if (response.status === 401 && !options.skipAuth) {
+            removeToken();
+            document.getElementById('login-screen')?.classList.remove('hidden');
+            document.getElementById('cms-interface')?.classList.add('hidden');
+        }
 
         if (!response.ok) {
             throw new Error(data.error || 'Request failed');
