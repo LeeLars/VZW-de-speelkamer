@@ -101,7 +101,8 @@ function renderTeam() {
     document.addEventListener('click', (e) => {
         if (e.target.classList.contains('intro-toggle')) {
             const button = e.target;
-            const introText = button.previousElementSibling;
+            const introSection = button.closest('.intro-section');
+            const introText = introSection.querySelector('.intro-text');
             const isExpanded = button.dataset.expanded === 'true';
             
             if (isExpanded) {
