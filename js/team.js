@@ -51,7 +51,7 @@ function renderTeam() {
                             </div>
                         </div>
 
-                        ${(member.phone || member.email) ? `
+                        ${(member.phone || member.phone2 || member.email || member.email2) ? `
                             <div class="mt-auto pt-6 border-t border-dashed border-gray-200 ${variant === 'featured' ? 'flex flex-col gap-3 text-left flex-shrink-0 w-full lg:w-64 lg:pt-0 lg:border-t-0 lg:border-l lg:border-dashed lg:border-gray-200 lg:pl-6' : 'grid grid-cols-1 sm:grid-cols-2 gap-3 text-left sm:text-center'}">
                                 ${member.phone ? `
                                     <a href="tel:${member.phone.replace(/\s/g, '')}" class="flex items-center gap-3 text-sm text-gray-700 hover:text-sk_teal transition-colors group/contact min-w-0 ${variant === 'featured' ? '' : 'justify-center sm:justify-start'}">
@@ -63,6 +63,16 @@ function renderTeam() {
                                         <span class="font-semibold group-hover:underline min-w-0 break-words [overflow-wrap:anywhere]">${member.phone}</span>
                                     </a>
                                 ` : ''}
+                                ${member.phone2 ? `
+                                    <a href="tel:${member.phone2.replace(/\s/g, '')}" class="flex items-center gap-3 text-sm text-gray-700 hover:text-sk_teal transition-colors group/contact min-w-0 ${variant === 'featured' ? '' : 'justify-center sm:justify-start'}">
+                                        <span class="w-10 h-10 rounded-2xl bg-sk_teal/10 text-sk_teal flex items-center justify-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                            </svg>
+                                        </span>
+                                        <span class="font-semibold group-hover:underline min-w-0 break-words [overflow-wrap:anywhere]">${member.phone2}</span>
+                                    </a>
+                                ` : ''}
                                 ${member.email ? `
                                     <a href="mailto:${member.email}" class="flex items-center gap-3 text-sm text-gray-700 hover:text-sk_teal transition-colors group/contact min-w-0 ${variant === 'featured' ? '' : 'justify-center sm:justify-start'}">
                                         <span class="w-10 h-10 aspect-square rounded-2xl bg-sk_teal/10 text-sk_teal flex items-center justify-center flex-shrink-0">
@@ -72,6 +82,17 @@ function renderTeam() {
                                             </svg>
                                         </span>
                                         <span class="font-semibold min-w-0 w-full max-w-full break-words [overflow-wrap:anywhere] group-hover:underline">${member.email}</span>
+                                    </a>
+                                ` : ''}
+                                ${member.email2 ? `
+                                    <a href="mailto:${member.email2}" class="flex items-center gap-3 text-sm text-gray-700 hover:text-sk_teal transition-colors group/contact min-w-0 ${variant === 'featured' ? '' : 'justify-center sm:justify-start'}">
+                                        <span class="w-10 h-10 aspect-square rounded-2xl bg-sk_teal/10 text-sk_teal flex items-center justify-center flex-shrink-0">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                                <polyline points="22,6 12,13 2,6"></polyline>
+                                            </svg>
+                                        </span>
+                                        <span class="font-semibold min-w-0 w-full max-w-full break-words [overflow-wrap:anywhere] group-hover:underline">${member.email2}</span>
                                     </a>
                                 ` : ''}
                             </div>
