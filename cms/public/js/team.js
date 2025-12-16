@@ -193,7 +193,6 @@ async function loadTeamMemberData(memberId) {
 // Save team member (create or update)
 async function saveTeamMember(isEdit) {
     const memberId = document.getElementById('team-id').value;
-    const id = isEdit ? memberId : 't' + Date.now();
     
     try {
         // Upload image first if selected
@@ -222,7 +221,6 @@ async function saveTeamMember(isEdit) {
         
         // Save team member data
         const memberData = {
-            id,
             name: document.getElementById('team-name').value,
             role: document.getElementById('team-role').value,
             intro: document.getElementById('team-intro').value || '',

@@ -180,6 +180,12 @@ function renderActivities() {
                     const accentColor = isCamp ? 'sk_yellow' : 'sk_pink';
                     const badgeColor = isCamp ? 'bg-sk_yellow text-yellow-900' : 'bg-sk_pink text-white';
                     const badgeText = isCamp ? '🏕️ Kamp' : '📅 Vrije dag';
+                    const statusValue = (activity.status || 'geopend').toLowerCase();
+                    const hasStatus = isCamp;
+                    const isVolzet = isCamp && statusValue === 'volzet';
+                    const statusBadge = hasStatus ? `
+                        <span class="px-3 py-1 rounded-lg text-xs font-bold ${isVolzet ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}">${isVolzet ? 'Volzet' : 'Geopend'}</span>
+                    ` : '';
                     const practicalInfoArg = JSON.stringify(activity.practical_info_url);
                     
                     return `
@@ -189,6 +195,7 @@ function renderActivities() {
                                     <div class="flex-1">
                                         <div class="flex items-center gap-3 mb-2">
                                             <span class="px-3 py-1 rounded-lg text-xs font-bold ${badgeColor}">${badgeText}</span>
+                                            ${statusBadge}
                                             <span class="text-sm font-bold text-gray-500">${dateStr}</span>
                                         </div>
                                         <h4 class="text-xl font-bold text-gray-800 mb-2">${activity.title}</h4>
@@ -217,7 +224,7 @@ function renderActivities() {
                                 
                                 <div class="flex flex-wrap gap-3">
                                     <a href="${activity.google_form_url}" target="_blank" 
-                                       class="inline-flex items-center justify-center gap-2 bg-sk_teal text-white px-6 py-3 rounded-xl text-sm font-bold hover:bg-[#3d94a5] transition-all shadow-md hover:shadow-lg hover:scale-105">
+                                       class="inline-flex items-center justify-center gap-2 bg-sk_teal text-white px-6 py-3 rounded-xl text-sm font-bold hover:bg-[#3d94a5] transition-all shadow-md hover:shadow-lg hover:scale-105 ${isVolzet ? 'opacity-50 cursor-not-allowed pointer-events-none hover:shadow-md hover:scale-100' : ''}">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                             <polyline points="14 2 14 8 20 8"></polyline>

@@ -21,8 +21,31 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Set active navigation link
     updateActiveNav();
+    renderFooterLocations();
     hydrateSiteImages();
 });
+
+function renderFooterLocations() {
+    const container = document.getElementById('footer-locations-list');
+    if (!container) return;
+
+    const locations = (window.DATA && Array.isArray(window.DATA.locations)) ? window.DATA.locations : [];
+    if (!locations.length) {
+        container.innerHTML = '<li class="text-gray-500 text-sm">Locaties laden...</li>';
+        return;
+    }
+
+    container.innerHTML = locations.map(location => {
+        const name = location?.name || '';
+        const address = location?.address || '';
+        const label = address ? `${name} – ${address}` : name;
+        return `
+            <li>
+                <a href="../locaties/" class="text-gray-600 hover:text-sk_teal text-sm transition-colors">${label}</a>
+            </li>
+        `;
+    }).join('');
+}
 
 // Update active navigation state
 function updateActiveNav() {
@@ -37,7 +60,14 @@ function updateActiveNav() {
         } else {
             linkSlug = href.replace(/^\//, '');
         }
-        link.classList.toggle('active', linkSlug === currentPath);
+        const isActive = linkSlug === currentPath;
+        link.classList.toggle('active', isActive);
+
+        if (isActive) {
+            link.setAttribute('aria-current', 'page');
+        } else {
+            link.removeAttribute('aria-current');
+        }
     });
 }
 
@@ -119,6 +149,10 @@ function showError(elementId, message) {
 window.addEventListener('load', () => {
     updateActiveNav();
     console.log('VZW De Speelkamer website loaded successfully! 🎉');
+});
+
+window.addEventListener('dataLoaded', () => {
+    renderFooterLocations();
 });
 
 // ===== Site images helpers =====

@@ -21,8 +21,11 @@ body {
   }
 }
 
-/* Active navigation state */
-.nav-link.active {
+/* Active navigation state (must match hover state) */
+.nav-link.active,
+.nav-link[aria-current="page"],
+.mobile-nav-link.active,
+.mobile-nav-link[aria-current="page"] {
   color: #4AB1C4;
   background-color: rgba(184, 215, 163, 0.25);
 }
