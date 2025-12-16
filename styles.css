@@ -23,9 +23,8 @@ body {
 
 /* Active navigation state */
 .nav-link.active {
-  background-color: rgba(184, 215, 163, 0.2);
-  color: #4AB1C4;
-  font-weight: bold;
+  color: #9ebe88;
+  background-color: rgba(184, 215, 163, 0.25);
 }
 
 /* Smooth scrolling */

@@ -30,13 +30,18 @@ function renderTeam(team) {
                 <img src="${imageUrl}" alt="${member.name}" 
                     class="w-full h-full object-cover">
             </div>
-            <div class="p-4">
-                <h3 class="text-lg font-bold text-gray-800">${member.name}</h3>
-                <p class="text-sm text-sk_teal font-medium">${member.role}</p>
-                ${member.bio ? `<p class="text-sm text-gray-600 mt-2 line-clamp-2">${member.bio}</p>` : ''}
-                ${member.phone ? `<p class="text-xs text-gray-500 mt-2">📞 ${member.phone}</p>` : ''}
-                ${member.email ? `<p class="text-xs text-gray-500 mt-1">✉️ ${member.email}</p>` : ''}
-                <div class="flex gap-2 mt-4">
+            <div class="p-4 space-y-2">
+                <div>
+                    <h3 class="text-lg font-bold text-gray-800">${member.name}</h3>
+                    <p class="text-sm text-sk_teal font-medium">${member.role}</p>
+                </div>
+                ${member.intro ? `<p class="text-sm text-gray-700 italic leading-relaxed">“${member.intro}”</p>` : ''}
+                ${member.bio ? `<p class="text-sm text-gray-600 line-clamp-2">${member.bio}</p>` : ''}
+                <div class="text-xs text-gray-500 space-y-1">
+                    ${member.phone ? `<p>📞 ${member.phone}</p>` : ''}
+                    ${member.email ? `<p>✉️ ${member.email}</p>` : ''}
+                </div>
+                <div class="flex gap-2 pt-2">
                     <button onclick="editTeamMember('${member.id}')" 
                         class="flex-1 px-4 py-2 text-blue-600 hover:bg-blue-50 rounded-lg transition text-sm font-medium">
                         Bewerken
@@ -75,6 +80,13 @@ function showTeamModal(memberId = null) {
                         <label class="block text-sm font-bold text-gray-700 mb-2">Rol *</label>
                         <input type="text" id="team-role" required placeholder="Bijv. Algemeen Coördinator"
                             class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Intro tekst</label>
+                        <textarea id="team-intro" rows="2" placeholder="Vertel kort wie je bent..."
+                            class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none"></textarea>
+                        <p class="text-xs text-gray-500 mt-1">Dit korte tekstje wordt bovenaan het teamkaartje getoond.</p>
                     </div>
 
                     <div>
@@ -154,6 +166,7 @@ async function loadTeamMemberData(memberId) {
         
         document.getElementById('team-name').value = member.name;
         document.getElementById('team-role').value = member.role;
+        document.getElementById('team-intro').value = member.intro || '';
         document.getElementById('team-bio').value = member.bio || '';
         document.getElementById('team-phone').value = member.phone || '';
         document.getElementById('team-email').value = member.email || '';
@@ -204,6 +217,7 @@ async function saveTeamMember(isEdit) {
             id,
             name: document.getElementById('team-name').value,
             role: document.getElementById('team-role').value,
+            intro: document.getElementById('team-intro').value || '',
             bio: document.getElementById('team-bio').value || '',
             phone: document.getElementById('team-phone').value || '',
             email: document.getElementById('team-email').value || '',

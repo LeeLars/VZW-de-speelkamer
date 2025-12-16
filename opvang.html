@@ -215,28 +215,16 @@
                             <div class="bg-white rounded-[2.5rem] p-8 shadow-xl border border-white hover:-translate-y-1 transition-transform duration-500">
                                 <div class="flex items-center gap-4 mb-6">
                                     <div class="flex-shrink-0 w-12 h-12 min-w-[3rem] bg-sk_pink/20 rounded-xl flex items-center justify-center text-pink-700">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2h8l4 4v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"></path><path d="M8 2v4h8"></path><path d="M9 12h6"></path><path d="M9 16h6"></path></svg>
                                     </div>
-                                    <h3 class="text-xl font-bold text-gray-800">Praktisch</h3>
+                                    <div class="flex-1">
+                                        <h3 class="text-xl font-bold text-gray-800">Praktisch</h3>
+                                        <p class="text-sm text-gray-500 mt-1">Klik hier voor praktische informatie</p>
+                                    </div>
                                 </div>
-                                <ul class="space-y-3 text-gray-600 text-sm">
-                                    <li class="flex items-start gap-3">
-                                        <span class="text-sk_teal mt-1">✓</span>
-                                        <span>Geen voorafgaande inschrijving nodig</span>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <span class="text-sk_teal mt-1">✓</span>
-                                        <span>Scansysteem bij aankomst en vertrek</span>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <span class="text-sk_teal mt-1">✓</span>
-                                        <span>Factuur via email</span>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <span class="text-sk_teal mt-1">✓</span>
-                                        <span>Betaling wordt aangeraden via domiciliëring</span>
-                                    </li>
-                                </ul>
+                                <button id="practical-info-btn" class="w-full bg-sk_pink text-white px-6 py-3 rounded-xl text-sm font-bold hover:bg-pink-600 transition-all shadow-md hover:shadow-lg hover:scale-105">
+                                    Praktische Info Bekijken
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -309,6 +297,44 @@
                 </div>
 
         </main>
+
+        <!-- Practical Info Modal -->
+        <div id="practical-info-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white rounded-[2rem] p-8 max-w-md w-full mx-4 max-h-[80vh] overflow-y-auto shadow-2xl">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-2xl font-bold text-gray-800">Praktische Informatie</h3>
+                    <button id="close-modal-btn" class="text-gray-400 hover:text-gray-600 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+                <ul class="space-y-4 text-gray-600">
+                    <li class="flex items-start gap-3">
+                        <span class="text-sk_teal mt-1 flex-shrink-0">✓</span>
+                        <span class="text-sm">Geen voorafgaande inschrijving nodig</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-sk_teal mt-1 flex-shrink-0">✓</span>
+                        <span class="text-sm">Scansysteem bij aankomst en vertrek</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-sk_teal mt-1 flex-shrink-0">✓</span>
+                        <span class="text-sm">Factuur via email</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-sk_teal mt-1 flex-shrink-0">✓</span>
+                        <span class="text-sm">Betaling wordt aangeraden via domiciliëring</span>
+                    </li>
+                </ul>
+                <div class="mt-6 flex justify-end">
+                    <button id="close-modal-bottom-btn" class="bg-gray-100 text-gray-700 px-6 py-2 rounded-xl text-sm font-bold hover:bg-gray-200 transition-colors">
+                        Sluiten
+                    </button>
+                </div>
+            </div>
+        </div>
 
         <!-- Footer -->
         <footer class="bg-white border-t border-gray-100">
