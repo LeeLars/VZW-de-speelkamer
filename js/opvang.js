@@ -181,11 +181,10 @@ function renderActivities() {
                     const badgeColor = isCamp ? 'bg-sk_yellow text-yellow-900' : 'bg-sk_pink text-white';
                     const badgeText = isCamp ? '🏕️ Kamp' : '📅 Vrije dag';
                     const statusValue = (activity.status || 'geopend').toLowerCase();
-                    const hasStatus = isCamp;
-                    const isVolzet = isCamp && statusValue === 'volzet';
-                    const statusBadge = hasStatus ? `
+                    const isVolzet = statusValue === 'volzet';
+                    const statusBadge = `
                         <span class="px-3 py-1 rounded-lg text-xs font-bold ${isVolzet ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}">${isVolzet ? 'Volzet' : 'Geopend'}</span>
-                    ` : '';
+                    `;
                     const practicalInfoArg = activity.practical_info_url 
                         ? `'${activity.practical_info_url.replace(/'/g, "\\'")}'`
                         : "null";
@@ -260,16 +259,8 @@ function renderActivities() {
 
 function openPracticalInfo(url) {
     if (!url) return;
-    const popup = window.open(
-        url,
-        'practicalInfo',
-        'width=900,height=700,menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=yes'
-    );
-    if (popup) {
-        popup.focus();
-    } else {
-        window.open(url, '_blank', 'noopener');
-    }
+    // Open in new tab for preview instead of download popup
+    window.open(url, '_blank', 'noopener,noreferrer');
 }
 
 // Practical Info Modal functionality
