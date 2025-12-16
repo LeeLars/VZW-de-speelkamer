@@ -31,9 +31,9 @@ function renderTeam() {
         
         return `
             <div class="group bg-white rounded-[2.5rem] shadow-xl border border-white hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 h-full">
-                <div class="flex flex-col lg:flex-row gap-6 lg:gap-10 items-stretch h-full p-6 sm:p-8">
+                <div class="flex flex-col gap-6 lg:gap-10 items-center h-full p-6 sm:p-8">
                     <!-- Image -->
-                    <div class="relative w-full lg:w-72 xl:w-80 rounded-[1.5rem] overflow-hidden flex-shrink-0 h-64 sm:h-72 lg:h-auto">
+                    <div class="relative w-32 h-32 rounded-full overflow-hidden flex-shrink-0">
                         <div class="absolute inset-0 bg-gradient-to-br ${colorClasses[color]} opacity-30 mix-blend-multiply"></div>
                         <img src="${getImageUrl(member.image_url || member.imageUrl)}" alt="${member.name}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                     </div>
