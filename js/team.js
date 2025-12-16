@@ -42,16 +42,13 @@ function renderTeam() {
                         <div class="relative w-40 h-40 rounded-full overflow-hidden flex-shrink-0 ring-4 ring-white shadow-lg bg-gray-100">
                             <img src="${getImageUrl(member.image_url || member.imageUrl)}" alt="${member.name}" class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105" />
                         </div>
-                        <div class="${variant === 'featured' ? 'space-y-1 text-left' : 'space-y-1'}">
+                        <div class="${variant === 'featured' ? 'space-y-1 text-left' : 'space-y-1'} min-w-0 w-full">
                             <h3 class="text-2xl font-bold text-gray-900">${member.name}</h3>
                             ${member.role ? `<p class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide ${accent}">${member.role}</p>` : ''}
-                            ${member.intro ? `<p class="mt-4 text-gray-700 text-base leading-relaxed font-medium max-h-20 overflow-hidden transition-all duration-300" style="height: 5rem">${member.intro}</p>` : ''}
-                            ${member.intro ? `<button class="text-sk_teal text-sm font-semibold mt-2 toggle-intro">Meer info</button>` : ''}
+                            ${member.intro && variant !== 'featured' ? `<p class="mt-4 text-gray-700 text-base leading-relaxed font-medium max-h-20 overflow-hidden transition-all duration-300 w-full max-w-full break-words [overflow-wrap:anywhere]" style="height: 5rem">${member.intro}</p>` : ''}
+                            ${member.intro && variant !== 'featured' ? `<button class="text-sk_teal text-sm font-semibold mt-2 toggle-intro">Meer info</button>` : ''}
                         </div>
                     </div>
-                    
-                    <!-- Intro -->
-                    ${member.intro ? `<p class="mt-4 text-gray-700 text-base leading-relaxed font-medium ${variant === 'featured' ? 'lg:mt-0' : ''}">${member.intro}</p>` : ''}
                     
                     ${(member.phone || member.email) ? `
                         <div class="mt-auto pt-6 border-t border-dashed border-gray-200 flex flex-col gap-3 ${variant === 'featured' ? 'text-left' : 'text-left sm:text-center'}">
@@ -76,6 +73,13 @@ function renderTeam() {
                                     <span class="font-semibold break-all group-hover:underline">${member.email}</span>
                                 </a>
                             ` : ''}
+                        </div>
+                    ` : ''}
+
+                    ${member.intro && variant === 'featured' ? `
+                        <div class="pt-6">
+                            <p class="text-gray-700 text-base leading-relaxed font-medium max-h-20 overflow-hidden transition-all duration-300 w-full max-w-full break-words [overflow-wrap:anywhere]" style="height: 5rem">${member.intro}</p>
+                            <button class="text-sk_teal text-sm font-semibold mt-2 toggle-intro">Meer info</button>
                         </div>
                     ` : ''}
                 </div>
