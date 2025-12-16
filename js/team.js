@@ -95,39 +95,52 @@ function renderTeam() {
     `;
 }
 
+function initIntroToggles() {
+    document.querySelectorAll('.team-member').forEach((card) => {
+        const intro = card.querySelector('p.max-h-20');
+        const button = card.querySelector('.toggle-intro');
+        if (!intro || !button) return;
+
+        intro.style.height = '5rem';
+        button.textContent = 'Meer info';
+        button.dataset.expanded = 'false';
+
+        const isOverflowing = intro.scrollHeight > intro.clientHeight + 1;
+        button.classList.toggle('hidden', !isOverflowing);
+        if (!isOverflowing) return;
+
+        if (!button.dataset.bound) {
+            button.addEventListener('click', (e) => {
+                const btn = e.currentTarget;
+                const c = btn.closest('.team-member');
+                const p = c?.querySelector('p.max-h-20');
+                if (!p) return;
+
+                const expanded = btn.dataset.expanded === 'true';
+                if (expanded) {
+                    p.style.height = '5rem';
+                    btn.textContent = 'Meer info';
+                    btn.dataset.expanded = 'false';
+                } else {
+                    p.style.height = 'auto';
+                    btn.textContent = 'Minder info';
+                    btn.dataset.expanded = 'true';
+                }
+            });
+            button.dataset.bound = 'true';
+        }
+    });
+}
+
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
     renderTeam();
-    
-    // Add toggle functionality for intro text
-    document.querySelectorAll('.toggle-intro').forEach(button => {
-        button.addEventListener('click', (e) => {
-            const card = e.target.closest('.team-member');
-            const intro = card.querySelector('p.max-h-20');
-            
-            if (intro.style.height === '5rem') {
-                intro.style.height = 'auto';
-                e.target.textContent = 'Minder info';
-            } else {
-                intro.style.height = '5rem';
-                e.target.textContent = 'Meer info';
-            }
-            
-            // Smooth card height transition
-            card.style.overflow = 'hidden';
-            card.style.transition = 'height 0.3s ease';
-            card.style.height = card.scrollHeight + 'px';
-            setTimeout(() => {
-                card.style.overflow = '';
-                card.style.transition = '';
-                card.style.height = '';
-            }, 300);
-        });
-    });
+    initIntroToggles();
 });
 
 // Re-render when API data is loaded
 window.addEventListener('dataLoaded', function(event) {
     console.log('👥 Team: Data loaded event received', event.detail);
     renderTeam();
+    initIntroToggles();
 });
