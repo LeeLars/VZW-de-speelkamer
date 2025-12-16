@@ -38,7 +38,9 @@ function renderTeam(team) {
                 ${member.intro ? `<p class="text-sm text-gray-700 italic leading-relaxed">“${member.intro}”</p>` : ''}
                 <div class="text-xs text-gray-500 space-y-1">
                     ${member.phone ? `<p>📞 ${member.phone}</p>` : ''}
+                    ${member.phone2 ? `<p>📞 ${member.phone2}</p>` : ''}
                     ${member.email ? `<p>✉️ ${member.email}</p>` : ''}
+                    ${member.email2 ? `<p>✉️ ${member.email2}</p>` : ''}
                 </div>
                 <div class="flex gap-2 pt-2">
                     <button onclick="editTeamMember('${member.id}')" 
@@ -95,8 +97,20 @@ function showTeamModal(memberId = null) {
                     </div>
 
                     <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Telefoonnummer (2)</label>
+                        <input type="tel" id="team-phone2" placeholder="Bijv. 050 33 63 47"
+                            class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
+                    </div>
+
+                    <div>
                         <label class="block text-sm font-bold text-gray-700 mb-2">E-mailadres</label>
                         <input type="email" id="team-email" placeholder="Bijv. naam@despeelkamer.be"
+                            class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">E-mailadres (2)</label>
+                        <input type="email" id="team-email2" placeholder="Bijv. naam@despeelkamer.be"
                             class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
                     </div>
 
@@ -161,7 +175,9 @@ async function loadTeamMemberData(memberId) {
         document.getElementById('team-role').value = member.role;
         document.getElementById('team-intro').value = member.intro || '';
         document.getElementById('team-phone').value = member.phone || '';
+        document.getElementById('team-phone2').value = member.phone2 || '';
         document.getElementById('team-email').value = member.email || '';
+        document.getElementById('team-email2').value = member.email2 || '';
         
         if (member.image_url) {
             const previewUrl = getImageUrl(member.image_url, './images/team.jpg');
@@ -211,7 +227,9 @@ async function saveTeamMember(isEdit) {
             role: document.getElementById('team-role').value,
             intro: document.getElementById('team-intro').value || '',
             phone: document.getElementById('team-phone').value || '',
+            phone2: document.getElementById('team-phone2').value || '',
             email: document.getElementById('team-email').value || '',
+            email2: document.getElementById('team-email2').value || '',
             image_url
         };
         

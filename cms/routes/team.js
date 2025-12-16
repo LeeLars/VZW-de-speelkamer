@@ -37,22 +37,24 @@ router.get('/:id', async (req, res) => {
 // Create team member (protected)
 router.post('/', authMiddleware, async (req, res) => {
     try {
-        const { name, role, intro, phone, email, image_url } = req.body;
+        const { name, role, intro, phone, phone2, email, email2, image_url } = req.body;
 
         if (!name || !role) {
             return res.status(400).json({ error: 'Missing required fields (name, role)' });
         }
 
         const newMember = await queryOne(
-            `INSERT INTO team_members (name, role, intro, phone, email, image_url)
-             VALUES ($1, $2, $3, $4, $5, $6)
+            `INSERT INTO team_members (name, role, intro, phone, phone2, email, email2, image_url)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
              RETURNING *`,
             [
                 name,
                 role,
                 intro || null,
                 phone || null,
+                phone2 || null,
                 email || null,
+                email2 || null,
                 image_url || './images/team.jpg'
             ]
         );
@@ -67,7 +69,7 @@ router.post('/', authMiddleware, async (req, res) => {
 // Update team member (protected)
 router.put('/:id', authMiddleware, async (req, res) => {
     try {
-        const { name, role, intro, phone, email, image_url } = req.body;
+        const { name, role, intro, phone, phone2, email, email2, image_url } = req.body;
         const memberId = parseInt(req.params.id);
 
         const existing = await queryOne(
@@ -84,17 +86,21 @@ router.put('/:id', authMiddleware, async (req, res) => {
                 role = COALESCE($2, role),
                 intro = $3,
                 phone = $4,
-                email = $5,
-                image_url = $6,
+                phone2 = $5,
+                email = $6,
+                email2 = $7,
+                image_url = $8,
                 updated_at = CURRENT_TIMESTAMP
-             WHERE id = $7
+             WHERE id = $9
              RETURNING *`,
             [
                 name, 
                 role, 
                 intro !== undefined ? intro : existing.intro,
                 phone !== undefined ? phone : existing.phone,
+                phone2 !== undefined ? phone2 : existing.phone2,
                 email !== undefined ? email : existing.email,
+                email2 !== undefined ? email2 : existing.email2,
                 image_url !== undefined ? image_url : existing.image_url, 
                 memberId
             ]
