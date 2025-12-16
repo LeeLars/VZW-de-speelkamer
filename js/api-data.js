@@ -8,12 +8,13 @@ async function loadDataFromAPI() {
     try {
         // Add cache-busting timestamp to prevent browser caching
         const timestamp = new Date().getTime();
-        const [locations, team, activities, pricing, siteImages] = await Promise.all([
+        const [locations, team, activities, pricing, siteImages, contact] = await Promise.all([
             fetch(`${API_BASE_URL}/locations?_=${timestamp}`, { cache: 'no-store' }).then(r => r.json()),
             fetch(`${API_BASE_URL}/team?_=${timestamp}`, { cache: 'no-store' }).then(r => r.json()),
             fetch(`${API_BASE_URL}/activities?_=${timestamp}`, { cache: 'no-store' }).then(r => r.json()),
             fetch(`${API_BASE_URL}/pricing?_=${timestamp}`, { cache: 'no-store' }).then(r => r.json()),
-            fetch(`${API_BASE_URL}/site-images?_=${timestamp}`, { cache: 'no-store' }).then(r => r.json())
+            fetch(`${API_BASE_URL}/site-images?_=${timestamp}`, { cache: 'no-store' }).then(r => r.json()),
+            fetch(`${API_BASE_URL}/contact?_=${timestamp}`, { cache: 'no-store' }).then(r => r.json())
         ]);
 
         return {
@@ -29,11 +30,14 @@ async function loadDataFromAPI() {
             },
             siteImages: siteImages || [],
             contact: {
-                email: 'Inge.Versavel@vbsdefreres.be',
-                phone: '050 33 63 47',
-                gsm: '0476 90 81 23',
-                facebook: 'https://www.facebook.com/opvangminipalet',
-                address: 'Mariastraat 7, 8000 Brugge'
+                email: contact?.email || 'Inge.Versavel@vbsdefreres.be',
+                email2: contact?.email2 || '',
+                phone: contact?.phone || '050 33 63 47',
+                phone2: contact?.phone2 || '',
+                gsm: contact?.gsm || '0476 90 81 23',
+                gsm2: contact?.gsm2 || '',
+                facebook: contact?.facebook || 'https://www.facebook.com/opvangminipalet',
+                address: contact?.address || 'Mariastraat 7, 8000 Brugge'
             }
         };
     } catch (error) {
@@ -75,6 +79,7 @@ let DATA = {
         DATA.activities = apiData.activities;
         DATA.pricing = apiData.pricing;
         DATA.siteImages = apiData.siteImages || [];
+        DATA.contact = apiData.contact || DATA.contact;
         
         console.log('✅ Data loaded from Railway API:', {
             locations: DATA.locations.length,

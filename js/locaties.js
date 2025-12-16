@@ -101,30 +101,63 @@ function renderLocations() {
                             
                             <!-- Contact Info -->
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div class="flex items-start gap-3 bg-gray-50 rounded-xl p-4">
-                                    <div class="flex-shrink-0 w-10 h-10 min-w-[2.5rem] bg-gray-200 rounded-xl flex items-center justify-center text-gray-600">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                                        </svg>
+                                ${location.phone ? `
+                                    <div class="flex items-start gap-3 bg-gray-50 rounded-xl p-4">
+                                        <div class="flex-shrink-0 w-10 h-10 min-w-[2.5rem] bg-gray-200 rounded-xl flex items-center justify-center text-gray-600">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                            </svg>
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <p class="text-xs text-gray-500 font-bold">Telefoon</p>
+                                            <a href="tel:${location.phone.replace(/\s/g, '')}" class="text-gray-800 font-bold hover:${colorClass.text} text-sm block">${location.phone}</a>
+                                        </div>
                                     </div>
-                                    <div class="flex-1 min-w-0">
-                                        <p class="text-xs text-gray-500 font-bold">Telefoon</p>
-                                        <a href="tel:${location.phone.replace(/\s/g, '')}" class="text-gray-800 font-bold hover:${colorClass.text} text-sm block">${location.phone}</a>
+                                ` : ''}
+
+                                ${location.phone2 ? `
+                                    <div class="flex items-start gap-3 bg-gray-50 rounded-xl p-4">
+                                        <div class="flex-shrink-0 w-10 h-10 min-w-[2.5rem] bg-gray-200 rounded-xl flex items-center justify-center text-gray-600">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                            </svg>
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <p class="text-xs text-gray-500 font-bold">Telefoon (2)</p>
+                                            <a href="tel:${location.phone2.replace(/\s/g, '')}" class="text-gray-800 font-bold hover:${colorClass.text} text-sm block">${location.phone2}</a>
+                                        </div>
                                     </div>
-                                </div>
-                                
-                                <div class="flex items-start gap-3 bg-gray-50 rounded-xl p-4">
-                                    <div class="flex-shrink-0 w-10 h-10 min-w-[2.5rem] bg-gray-200 rounded-xl flex items-center justify-center text-gray-600">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                            <polyline points="22,6 12,13 2,6"></polyline>
-                                        </svg>
+                                ` : ''}
+
+                                ${location.email ? `
+                                    <div class="flex items-start gap-3 bg-gray-50 rounded-xl p-4">
+                                        <div class="flex-shrink-0 w-10 h-10 min-w-[2.5rem] bg-gray-200 rounded-xl flex items-center justify-center text-gray-600">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                                <polyline points="22,6 12,13 2,6"></polyline>
+                                            </svg>
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <p class="text-xs text-gray-500 font-bold">Email</p>
+                                            <a href="mailto:${location.email}" class="text-gray-800 font-bold hover:${colorClass.text} text-xs break-all block">${location.email}</a>
+                                        </div>
                                     </div>
-                                    <div class="flex-1 min-w-0">
-                                        <p class="text-xs text-gray-500 font-bold">Email</p>
-                                        <a href="mailto:${location.email}" class="text-gray-800 font-bold hover:${colorClass.text} text-xs break-all block">${location.email}</a>
+                                ` : ''}
+
+                                ${location.email2 ? `
+                                    <div class="flex items-start gap-3 bg-gray-50 rounded-xl p-4">
+                                        <div class="flex-shrink-0 w-10 h-10 min-w-[2.5rem] bg-gray-200 rounded-xl flex items-center justify-center text-gray-600">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                                <polyline points="22,6 12,13 2,6"></polyline>
+                                            </svg>
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <p class="text-xs text-gray-500 font-bold">Email (2)</p>
+                                            <a href="mailto:${location.email2}" class="text-gray-800 font-bold hover:${colorClass.text} text-xs break-all block">${location.email2}</a>
+                                        </div>
                                     </div>
-                                </div>
+                                ` : ''}
                             </div>
                         </div>
                     </div>

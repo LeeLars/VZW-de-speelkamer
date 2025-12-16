@@ -131,6 +131,9 @@
                     <button onclick="switchTab('locations')" data-tab="locations" class="tab-btn py-3 sm:py-4 px-2 sm:px-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-xs sm:text-sm md:text-base whitespace-nowrap">
                         Locaties
                     </button>
+                    <button onclick="switchTab('contact')" data-tab="contact" class="tab-btn py-3 sm:py-4 px-2 sm:px-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-xs sm:text-sm md:text-base whitespace-nowrap">
+                        Contact
+                    </button>
                     <button onclick="switchTab('media')" data-tab="media" class="tab-btn py-3 sm:py-4 px-2 sm:px-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-xs sm:text-sm md:text-base whitespace-nowrap">
                         Afbeeldingen
                     </button>
@@ -212,6 +215,11 @@
                     </button>
                 </div>
                 <div id="locations-list" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            </div>
+
+            <!-- Contact Tab -->
+            <div id="tab-contact" class="tab-content hidden">
+                <div id="contact-settings"></div>
             </div>
 
             <!-- Media Tab -->
@@ -307,6 +315,7 @@
     <script src="./js/pricing.js"></script>
     <script src="./js/team.js"></script>
     <script src="./js/locations.js"></script>
+    <script src="./js/contact.js"></script>
     <script src="./js/media.js"></script>
     <script src="./js/app.js"></script>
 </body>
