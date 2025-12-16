@@ -186,7 +186,9 @@ function renderActivities() {
                     const statusBadge = hasStatus ? `
                         <span class="px-3 py-1 rounded-lg text-xs font-bold ${isVolzet ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}">${isVolzet ? 'Volzet' : 'Geopend'}</span>
                     ` : '';
-                    const practicalInfoArg = JSON.stringify(activity.practical_info_url);
+                    const practicalInfoArg = activity.practical_info_url 
+                        ? `'${activity.practical_info_url.replace(/'/g, "\\'")}'`
+                        : "null";
                     
                     return `
                         <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border-l-4 border-${accentColor} ml-[-2px]">
