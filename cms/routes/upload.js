@@ -133,6 +133,33 @@ router.post('/document', authMiddleware, documentUpload.single('document'), asyn
     }
 });
 
+// Delete document endpoint (raw files)
+router.delete('/document/:public_id(*)', authMiddleware, async (req, res) => {
+    try {
+        // The public_id comes URL-encoded with slashes replaced by dashes
+        // We need to restore the original format
+        let publicId = req.params.public_id;
+        
+        // If it contains dashes that should be slashes (for folder structure)
+        // The format is: vzw-speelkamer-practical-info-filename
+        // Should become: vzw-speelkamer/practical-info/filename
+        if (publicId.startsWith('vzw-speelkamer-practical-info-')) {
+            publicId = publicId.replace('vzw-speelkamer-practical-info-', 'vzw-speelkamer/practical-info/');
+        }
+        
+        const result = await cloudinary.uploader.destroy(publicId, { resource_type: 'raw' });
+        
+        if (result.result === 'ok' || result.result === 'not found') {
+            res.json({ success: true, message: 'Document verwijderd' });
+        } else {
+            res.status(404).json({ error: 'Document niet gevonden' });
+        }
+    } catch (error) {
+        console.error('Delete document error:', error);
+        res.status(500).json({ error: 'Fout bij verwijderen van document' });
+    }
+});
+
 // Public document preview proxy (iframe-friendly)
 router.get('/document/preview', async (req, res) => {
     try {

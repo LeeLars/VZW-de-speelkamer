@@ -229,6 +229,10 @@ function showActivityModal(activityId = null) {
                                 <input type="file" id="activity-practical-info-file" class="absolute inset-0 opacity-0 cursor-pointer">
                                 Bestand uploaden
                             </label>
+                            <button type="button" id="activity-practical-info-delete" onclick="deletePracticalInfoFile()" 
+                                class="hidden px-4 py-2.5 rounded-xl bg-red-100 text-red-700 font-bold hover:bg-red-200 transition">
+                                Verwijderen
+                            </button>
                         </div>
                         <p id="activity-practical-info-status" class="text-xs text-gray-500 mt-2 hidden"></p>
                     </div>
@@ -272,6 +276,7 @@ function showActivityModal(activityId = null) {
 
 function updatePracticalInfoStatus(url) {
     const statusEl = document.getElementById('activity-practical-info-status');
+    const deleteBtn = document.getElementById('activity-practical-info-delete');
     if (!statusEl) return;
 
     if (url) {
@@ -280,11 +285,67 @@ function updatePracticalInfoStatus(url) {
         statusEl.classList.remove('hidden');
         statusEl.classList.remove('text-gray-500');
         statusEl.classList.add('text-green-600');
+        if (deleteBtn) deleteBtn.classList.remove('hidden');
     } else {
         statusEl.textContent = '';
         statusEl.classList.add('hidden');
         statusEl.classList.remove('text-green-600');
         statusEl.classList.add('text-gray-500');
+        if (deleteBtn) deleteBtn.classList.add('hidden');
+    }
+}
+
+async function deletePracticalInfoFile() {
+    const urlInput = document.getElementById('activity-practical-info');
+    const currentUrl = urlInput?.value;
+    
+    if (!currentUrl) {
+        showToast('Geen bestand om te verwijderen', 'error');
+        return;
+    }
+    
+    if (!confirm('Weet je zeker dat je dit bestand wilt verwijderen?')) {
+        return;
+    }
+    
+    try {
+        // Extract public_id from Cloudinary URL
+        // URL format: https://res.cloudinary.com/xxx/raw/upload/v123/vzw-speelkamer/practical-info/filename.ext
+        const urlParts = currentUrl.split('/');
+        const uploadIndex = urlParts.indexOf('upload');
+        if (uploadIndex === -1) {
+            // Not a Cloudinary URL, just clear the field
+            urlInput.value = '';
+            updatePracticalInfoStatus('');
+            showToast('Bestand verwijderd uit formulier');
+            return;
+        }
+        
+        // Get everything after 'upload/vXXX/' as the public_id
+        const publicIdParts = urlParts.slice(uploadIndex + 2); // Skip 'upload' and version
+        const publicId = publicIdParts.join('/');
+        
+        // Encode the public_id for the URL (replace slashes with dashes)
+        const encodedPublicId = publicId.replace(/\//g, '-');
+        
+        const response = await fetch(`${API_BASE_URL}/upload/document/${encodedPublicId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${getToken()}`
+            }
+        });
+        
+        if (!response.ok) {
+            const error = await response.json().catch(() => ({ error: 'Verwijderen mislukt' }));
+            throw new Error(error.error || 'Verwijderen mislukt');
+        }
+        
+        urlInput.value = '';
+        updatePracticalInfoStatus('');
+        showToast('Bestand succesvol verwijderd!');
+    } catch (error) {
+        console.error('Delete practical info error:', error);
+        showToast(error.message || 'Fout bij verwijderen', 'error');
     }
 }
 

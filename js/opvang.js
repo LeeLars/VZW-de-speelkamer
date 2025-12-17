@@ -232,7 +232,7 @@ function renderActivities() {
                                             <line x1="12" y1="18" x2="12" y2="12"></line>
                                             <line x1="9" y1="15" x2="15" y2="15"></line>
                                         </svg>
-                                        Inschrijven
+                                        ${isVolzet ? 'Inschrijven (volzet)' : 'Inschrijven'}
                                     </a>
                                     ${activity.practical_info_url ? `
                                         <button type="button"
