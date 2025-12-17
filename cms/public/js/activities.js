@@ -223,16 +223,21 @@ function showActivityModal(activityId = null) {
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-2">Praktische info (bestand)</label>
                         <div class="flex flex-col sm:flex-row gap-3">
-                            <input type="url" id="activity-practical-info" placeholder="https://voorbeeld.com/bestand.pdf"
-                                class="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
+                            <div class="relative flex-1">
+                                <input type="url" id="activity-practical-info" placeholder="https://voorbeeld.com/bestand.pdf"
+                                    class="w-full px-4 py-2 pr-10 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
+                                <button type="button" id="activity-practical-info-clear" onclick="clearPracticalInfoField()" 
+                                    class="hidden absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500 transition p-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                            </div>
                             <label class="relative inline-flex items-center justify-center px-5 py-2.5 rounded-xl bg-sk_yellow/20 text-yellow-900 font-bold cursor-pointer hover:bg-sk_yellow/30 transition">
                                 <input type="file" id="activity-practical-info-file" class="absolute inset-0 opacity-0 cursor-pointer">
                                 Bestand uploaden
                             </label>
-                            <button type="button" id="activity-practical-info-delete" onclick="deletePracticalInfoFile()" 
-                                class="hidden px-4 py-2.5 rounded-xl bg-red-100 text-red-700 font-bold hover:bg-red-200 transition">
-                                Verwijderen
-                            </button>
                         </div>
                         <p id="activity-practical-info-status" class="text-xs text-gray-500 mt-2 hidden"></p>
                     </div>
@@ -276,7 +281,7 @@ function showActivityModal(activityId = null) {
 
 function updatePracticalInfoStatus(url) {
     const statusEl = document.getElementById('activity-practical-info-status');
-    const deleteBtn = document.getElementById('activity-practical-info-delete');
+    const clearBtn = document.getElementById('activity-practical-info-clear');
     if (!statusEl) return;
 
     if (url) {
@@ -285,13 +290,21 @@ function updatePracticalInfoStatus(url) {
         statusEl.classList.remove('hidden');
         statusEl.classList.remove('text-gray-500');
         statusEl.classList.add('text-green-600');
-        if (deleteBtn) deleteBtn.classList.remove('hidden');
+        if (clearBtn) clearBtn.classList.remove('hidden');
     } else {
         statusEl.textContent = '';
         statusEl.classList.add('hidden');
         statusEl.classList.remove('text-green-600');
         statusEl.classList.add('text-gray-500');
-        if (deleteBtn) deleteBtn.classList.add('hidden');
+        if (clearBtn) clearBtn.classList.add('hidden');
+    }
+}
+
+function clearPracticalInfoField() {
+    const urlInput = document.getElementById('activity-practical-info');
+    if (urlInput) {
+        urlInput.value = '';
+        updatePracticalInfoStatus('');
     }
 }
 
