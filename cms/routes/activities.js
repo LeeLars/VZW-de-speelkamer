@@ -146,7 +146,7 @@ router.put('/:id', authMiddleware, async (req, res) => {
         const resolvedPrice = pick(price, existing.price);
         const resolvedFormUrl = pick(google_form_url, existing.google_form_url);
         const resolvedDescription = description !== undefined ? description : existing.description;
-        const resolvedPracticalUrl = pick(practical_info_url, existing.practical_info_url);
+        const resolvedPracticalUrl = practical_info_url !== undefined ? (practical_info_url || null) : existing.practical_info_url;
 
         // Status: use provided status or existing, default to 'geopend' for all types
         let resolvedStatus = 'geopend';

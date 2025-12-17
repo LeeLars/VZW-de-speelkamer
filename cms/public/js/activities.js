@@ -455,7 +455,7 @@ async function saveActivity(isEdit) {
         google_form_url: document.getElementById('activity-form-url').value,
         status: statusValue || 'geopend',
         description: document.getElementById('activity-description').value || null,
-        practical_info_url: document.getElementById('activity-practical-info').value || null
+        practical_info_url: document.getElementById('activity-practical-info').value
     };
 
     try {
