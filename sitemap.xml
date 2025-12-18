@@ -36,4 +36,10 @@
         <changefreq>monthly</changefreq>
         <priority>0.3</priority>
     </url>
+    <url>
+        <loc>https://vzwdespeelkamer.be/privacy/</loc>
+        <lastmod>2025-12-18</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.3</priority>
+    </url>
 </urlset>
