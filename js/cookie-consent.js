@@ -63,11 +63,10 @@
         const banner = document.createElement('div');
         banner.id = 'cookie-consent-banner';
         banner.innerHTML = `
-            <div class="cookie-banner-overlay"></div>
             <div class="cookie-banner-container">
                 <div class="cookie-banner-content">
                     <div class="cookie-banner-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="10"></circle>
                             <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
                             <line x1="9" y1="9" x2="9.01" y2="9"></line>
@@ -75,14 +74,13 @@
                         </svg>
                     </div>
                     <div class="cookie-banner-text">
-                        <h3>Cookies & Privacy</h3>
-                        <p>Wij gebruiken cookies om onze website te verbeteren. We gebruiken <strong>Umami Analytics</strong>, een privacy-vriendelijke tool die geen persoonlijke gegevens verzamelt.</p>
-                        <a href="./privacy/" class="cookie-banner-link">Lees ons privacybeleid</a>
+                        <span>We gebruiken cookies voor analytics. </span>
+                        <a href="./privacy/" class="cookie-banner-link">Meer info</a>
                     </div>
                 </div>
                 <div class="cookie-banner-buttons">
                     <button id="cookie-decline" class="cookie-btn cookie-btn-decline">Weigeren</button>
-                    <button id="cookie-accept" class="cookie-btn cookie-btn-accept">Accepteren</button>
+                    <button id="cookie-accept" class="cookie-btn cookie-btn-accept">OK</button>
                 </div>
             </div>
         `;
@@ -93,37 +91,30 @@
         styles.textContent = `
             #cookie-consent-banner {
                 position: fixed;
-                bottom: 0;
-                left: 0;
-                right: 0;
+                bottom: 1rem;
+                left: 1rem;
+                right: auto;
                 z-index: 9999;
                 font-family: 'ABeeZee', sans-serif;
             }
 
-            .cookie-banner-overlay {
-                position: fixed;
-                inset: 0;
-                background: rgba(0, 0, 0, 0.3);
-                backdrop-filter: blur(2px);
-            }
-
             .cookie-banner-container {
-                position: relative;
-                max-width: 600px;
-                margin: 0 auto 1.5rem;
                 background: white;
-                border-radius: 1.5rem;
-                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-                padding: 1.5rem;
-                margin-left: 1rem;
-                margin-right: 1rem;
-                animation: slideUp 0.4s ease-out;
+                border-radius: 1rem;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+                padding: 0.875rem 1rem;
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                animation: slideUp 0.3s ease-out;
+                border: 1px solid rgba(0, 0, 0, 0.05);
+                max-width: 420px;
             }
 
             @keyframes slideUp {
                 from {
                     opacity: 0;
-                    transform: translateY(20px);
+                    transform: translateY(10px);
                 }
                 to {
                     opacity: 1;
@@ -133,38 +124,30 @@
 
             .cookie-banner-content {
                 display: flex;
-                gap: 1rem;
-                margin-bottom: 1.25rem;
+                align-items: center;
+                gap: 0.5rem;
+                flex: 1;
             }
 
             .cookie-banner-icon {
                 flex-shrink: 0;
-                width: 48px;
-                height: 48px;
+                width: 32px;
+                height: 32px;
                 background: linear-gradient(135deg, #B8D7A3 0%, #4AB1C4 100%);
-                border-radius: 12px;
+                border-radius: 8px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 color: white;
             }
 
-            .cookie-banner-text h3 {
-                font-size: 1.125rem;
-                font-weight: 700;
-                color: #1f2937;
-                margin: 0 0 0.5rem 0;
-            }
-
-            .cookie-banner-text p {
-                font-size: 0.875rem;
+            .cookie-banner-text {
+                font-size: 0.8125rem;
                 color: #6b7280;
-                margin: 0 0 0.5rem 0;
-                line-height: 1.5;
+                line-height: 1.4;
             }
 
             .cookie-banner-link {
-                font-size: 0.875rem;
                 color: #4AB1C4;
                 text-decoration: none;
                 font-weight: 500;
@@ -176,14 +159,14 @@
 
             .cookie-banner-buttons {
                 display: flex;
-                gap: 0.75rem;
-                justify-content: flex-end;
+                gap: 0.5rem;
+                flex-shrink: 0;
             }
 
             .cookie-btn {
-                padding: 0.625rem 1.25rem;
+                padding: 0.4rem 0.75rem;
                 border-radius: 9999px;
-                font-size: 0.875rem;
+                font-size: 0.75rem;
                 font-weight: 600;
                 cursor: pointer;
                 transition: all 0.2s ease;
@@ -202,39 +185,33 @@
             }
 
             .cookie-btn-accept {
-                background: linear-gradient(135deg, #4AB1C4 0%, #3a9db0 100%);
+                background: #4AB1C4;
                 color: white;
-                box-shadow: 0 4px 14px -3px rgba(74, 177, 196, 0.4);
             }
 
             .cookie-btn-accept:hover {
-                transform: translateY(-1px);
-                box-shadow: 0 6px 20px -3px rgba(74, 177, 196, 0.5);
+                background: #3a9db0;
             }
 
             @media (max-width: 480px) {
+                #cookie-consent-banner {
+                    left: 0.75rem;
+                    right: 0.75rem;
+                    bottom: 0.75rem;
+                }
+
                 .cookie-banner-container {
-                    margin: 0 0.75rem 1rem;
-                    padding: 1.25rem;
+                    flex-wrap: wrap;
+                    max-width: none;
                 }
 
                 .cookie-banner-content {
-                    flex-direction: column;
-                    gap: 0.75rem;
-                }
-
-                .cookie-banner-icon {
-                    width: 40px;
-                    height: 40px;
+                    width: 100%;
                 }
 
                 .cookie-banner-buttons {
-                    flex-direction: column-reverse;
-                }
-
-                .cookie-btn {
                     width: 100%;
-                    text-align: center;
+                    justify-content: flex-end;
                 }
             }
         `;
