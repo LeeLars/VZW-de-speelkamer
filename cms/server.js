@@ -23,7 +23,11 @@ const allowedOrigins = process.env.CORS_ORIGIN
     ? process.env.CORS_ORIGIN.split(',').map(o => o.trim()).filter(Boolean)
     : [
         'https://leelars.github.io',
-        'https://vzw-de-speelkamer-production.up.railway.app'
+        'https://vzw-de-speelkamer-production.up.railway.app',
+        'https://vzwdespeelkamer.be',
+        'http://vzwdespeelkamer.be',
+        'https://www.vzwdespeelkamer.be',
+        'http://www.vzwdespeelkamer.be'
     ];
 
 const corsOptions = {
