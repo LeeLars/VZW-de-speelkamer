@@ -1,0 +1,132 @@
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const path = require('path');
+const { initializeDatabase } = require('./database/init');
+
+// Import routes
+const authRoutes = require('./routes/auth');
+const activitiesRoutes = require('./routes/activities');
+const pricingRoutes = require('./routes/pricing');
+const teamRoutes = require('./routes/team');
+const locationsRoutes = require('./routes/locations');
+const contactRoutes = require('./routes/contact');
+const uploadRoutes = require('./routes/upload');
+const siteImagesRoutes = require('./routes/siteImages');
+const seedRoutes = require('./routes/seed');
+
+const app = express();
+const PORT = process.env.PORT || 3001;
+
+// Middleware
+const allowedOrigins = process.env.CORS_ORIGIN
+    ? process.env.CORS_ORIGIN.split(',').map(o => o.trim()).filter(Boolean)
+    : [
+        'https://leelars.github.io',
+        'https://vzw-de-speelkamer-production.up.railway.app',
+        'https://vzwdespeelkamer.be',
+        'http://vzwdespeelkamer.be',
+        'https://www.vzwdespeelkamer.be',
+        'http://www.vzwdespeelkamer.be'
+    ];
+
+const corsOptions = {
+    origin: (origin, cb) => {
+        // Allow server-to-server requests, CLI tools, or same-origin requests without an Origin header
+        if (!origin) return cb(null, true);
+
+        // Allow explicit allowlist
+        if (allowedOrigins.includes(origin)) return cb(null, true);
+
+        // Allow localhost on any port (dev)
+        if (/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) return cb(null, true);
+
+        // Allow Railway hosted origins (CMS runs on Railway)
+        if (/^https?:\/\/.*\.up\.railway\.app$/.test(origin)) return cb(null, true);
+
+        return cb(new Error(`CORS blocked: ${origin}`));
+    },
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: false
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Note: Images are now stored on Cloudinary, no local uploads folder needed
+
+// Serve CMS static files
+app.use(express.static(path.join(__dirname, 'public')));
+
+// API Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/activities', activitiesRoutes);
+app.use('/api/pricing', pricingRoutes);
+app.use('/api/team', teamRoutes);
+app.use('/api/locations', locationsRoutes);
+app.use('/api/contact', contactRoutes);
+app.use('/api/upload', uploadRoutes);
+app.use('/api/site-images', siteImagesRoutes);
+app.use('/api/seed', seedRoutes);
+
+// Health check
+app.get('/api/health', (req, res) => {
+    res.json({ status: 'ok', message: 'CMS API is running' });
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error('Error:', err);
+    res.status(err.status || 500).json({
+        error: err.message || 'Internal server error'
+    });
+});
+
+// Start server function
+async function startServer() {
+    try {
+        // Check if DATABASE_URL is set
+        if (!process.env.DATABASE_URL) {
+            console.error('\n❌ CRITICAL ERROR: DATABASE_URL environment variable is not set!\n');
+            console.error('📋 To fix this in Railway:');
+            console.error('   1. Go to your Railway project dashboard');
+            console.error('   2. Click on your CMS service');
+            console.error('   3. Go to "Variables" tab');
+            console.error('   4. Add: DATABASE_URL = ${{Postgres.DATABASE_URL}}');
+            console.error('   5. Make sure the Postgres service name matches exactly');
+            console.error('   6. Redeploy the service\n');
+            console.error('💡 Note: The variable reference syntax is case-sensitive!');
+            console.error('   Example: If your Postgres service is named "Postgres", use ${{Postgres.DATABASE_URL}}');
+            console.error('   Example: If your Postgres service is named "postgres", use ${{postgres.DATABASE_URL}}\n');
+            process.exit(1);
+        }
+
+        console.log('🔄 Initializing database...');
+        await initializeDatabase();
+        console.log('✅ Database initialized successfully');
+
+        app.listen(PORT, '0.0.0.0', () => {
+            console.log(`\n🚀 CMS Server running on port ${PORT}`);
+            console.log(`📊 API endpoints available at /api`);
+            console.log(`✅ Connected to PostgreSQL database`);
+            console.log(`\n⚠️  Make sure to:`);
+            console.log(`   1. Change the default admin password`);
+            console.log(`   2. Set a secure JWT_SECRET\n`);
+        });
+    } catch (error) {
+        console.error('❌ Failed to start server:', error);
+        console.error('\n🔍 Troubleshooting:');
+        console.error('   1. Check if DATABASE_URL is set in Railway');
+        console.error('   2. Verify PostgreSQL service is running');
+        console.error('   3. Check Railway logs for more details\n');
+        process.exit(1);
+    }
+}
+
+// Start the server
+startServer();
+
+module.exports = app;
