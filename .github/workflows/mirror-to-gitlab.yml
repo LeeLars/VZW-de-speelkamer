@@ -1,0 +1,21 @@
+name: Mirror to GitLab
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 9 1 * *'  # 1e van elke maand om 9:00 UTC (11:00 Belgische tijd)
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Mirror to GitLab
+        run: |
+          git remote add gitlab https://${{ secrets.GITLAB_USERNAME }}:${{ secrets.GITLAB_TOKEN }}@gitlab.com/${{ secrets.GITLAB_USERNAME }}/${GITHUB_REPOSITORY#*/}.git
+          git push gitlab --all --force
+          git push gitlab --tags --force
