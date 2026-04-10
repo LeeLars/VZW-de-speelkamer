@@ -4,7 +4,7 @@
 function getImageUrl(imagePath) {
     if (!imagePath) return './images/team.jpg'; // Default fallback
     
-    // If it's already a full URL (Cloudinary or other), return as is
+    // If it's already a full URL (ImageKit or other), return as is
     if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
         return imagePath;
     }

@@ -322,12 +322,12 @@ async function deletePracticalInfoFile() {
     }
     
     try {
-        // Extract public_id from Cloudinary URL
-        // URL format: https://res.cloudinary.com/xxx/raw/upload/v123/vzw-speelkamer/practical-info/filename.ext
+        // Extract public_id from ImageKit URL
+        // URL format: https://res.imagekit.com/xxx/raw/upload/v123/vzw-speelkamer/practical-info/filename.ext
         const urlParts = currentUrl.split('/');
         const uploadIndex = urlParts.indexOf('upload');
         if (uploadIndex === -1) {
-            // Not a Cloudinary URL, just clear the field
+            // Not a ImageKit URL, just clear the field
             urlInput.value = '';
             updatePracticalInfoStatus('');
             showToast('Bestand verwijderd uit formulier');

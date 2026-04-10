@@ -5,11 +5,11 @@ const API_BASE_URL = window.location.hostname === 'localhost' || window.location
     ? 'http://localhost:3001/api'
     : `${window.location.origin}/api`;
 
-// Helper function to get proper image URL (supports both Cloudinary and local paths)
+// Helper function to get proper image URL (supports both ImageKit and local paths)
 function getImageUrl(imagePath, fallback = './images/placeholder.jpg') {
     if (!imagePath) return fallback;
     
-    // If it's already a full URL (Cloudinary), return as-is
+    // If it's already a full URL (ImageKit), return as-is
     if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
         return imagePath;
     }
