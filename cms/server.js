@@ -56,7 +56,7 @@ app.options('*', cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Note: Images are now stored on Cloudinary, no local uploads folder needed
+// Note: Images are now stored on ImageKit, no local uploads folder needed
 
 // Serve CMS static files
 app.use(express.static(path.join(__dirname, 'public')));
