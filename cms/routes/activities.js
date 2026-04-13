@@ -62,7 +62,7 @@ router.post('/', authMiddleware, async (req, res) => {
         const resolvedPrice = price || '';
         const resolvedFormUrl = google_form_url || '#';
 
-        if (status && !['geopend', 'volzet'].includes(status)) {
+        if (status && !['geopend', 'volzet', 'deels_volzet'].includes(status)) {
             return res.status(400).json({ error: 'Invalid status' });
         }
 
@@ -125,7 +125,7 @@ router.put('/:id', authMiddleware, async (req, res) => {
         }
 
         // Validate status only if provided and non-empty
-        if (status && status !== '' && !['geopend', 'volzet'].includes(status)) {
+        if (status && status !== '' && !['geopend', 'volzet', 'deels_volzet'].includes(status)) {
             return res.status(400).json({ error: 'Invalid status' });
         }
 

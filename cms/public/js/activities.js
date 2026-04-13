@@ -71,10 +71,14 @@ function renderActivities(activities) {
 
     container.innerHTML = activities.map(activity => {
         const status = (activity.status || 'geopend').toLowerCase();
+        const statusClass = status === 'volzet' ? 'bg-red-100 text-red-700'
+            : status === 'deels_volzet' ? 'bg-yellow-100 text-yellow-800'
+            : 'bg-green-100 text-green-700';
+        const statusText = status === 'volzet' ? 'Volzet'
+            : status === 'deels_volzet' ? 'Deels Volzet'
+            : 'Geopend';
         const statusBadge = `
-            <span class="px-2 sm:px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap ${
-                status === 'volzet' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'
-            }">${status === 'volzet' ? 'Volzet' : 'Geopend'}</span>
+            <span class="px-2 sm:px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap ${statusClass}">${statusText}</span>
         `;
 
         const typeLabel = activity.type === 'CAMP' ? 'Kamp' : activity.type === 'STUDY_DAY' ? 'Studiedag' : 'Vrije Dag';
@@ -176,6 +180,7 @@ function showActivityModal(activityId = null) {
                             <select id="activity-status"
                                 class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-sk_teal focus:ring-2 focus:ring-sk_teal/20 outline-none">
                                 <option value="geopend">Geopend</option>
+                                <option value="deels_volzet">Deels Volzet</option>
                                 <option value="volzet">Volzet</option>
                             </select>
                         </div>

@@ -182,8 +182,15 @@ function renderActivities() {
                     const badgeText = isCamp ? '🏕️ Kamp' : '📅 Vrije dag';
                     const statusValue = (activity.status || 'geopend').toLowerCase();
                     const isVolzet = statusValue === 'volzet';
+                    const isDeelsVolzet = statusValue === 'deels_volzet';
+                    const statusBadgeClass = isVolzet ? 'bg-red-100 text-red-700'
+                        : isDeelsVolzet ? 'bg-yellow-100 text-yellow-800'
+                        : 'bg-green-100 text-green-700';
+                    const statusBadgeText = isVolzet ? 'Volzet'
+                        : isDeelsVolzet ? 'Deels volzet'
+                        : 'Beschikbare plaatsen';
                     const statusBadge = `
-                        <span class="px-3 py-1 rounded-lg text-xs font-bold ${isVolzet ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}">${isVolzet ? 'Volzet' : 'Geopend'}</span>
+                        <span class="px-3 py-1 rounded-lg text-xs font-bold ${statusBadgeClass}">${statusBadgeText}</span>
                     `;
                     const practicalInfoArg = activity.practical_info_url 
                         ? `'${activity.practical_info_url.replace(/'/g, "\\'")}'`
@@ -224,16 +231,21 @@ function renderActivities() {
                                 </div>
                                 
                                 <div class="flex flex-wrap gap-3">
-                                    <a href="${activity.google_form_url}" target="_blank" 
-                                       class="inline-flex items-center justify-center gap-2 bg-sk_teal text-white px-6 py-3 rounded-xl text-sm font-bold hover:bg-[#3d94a5] transition-all shadow-md hover:shadow-lg hover:scale-105 ${isVolzet ? 'opacity-50 cursor-not-allowed pointer-events-none hover:shadow-md hover:scale-100' : ''}">
+                                    <a href="${activity.google_form_url}" target="_blank"
+                                       class="inline-flex items-center justify-center gap-2 bg-sk_teal text-white px-6 py-3 rounded-xl text-sm font-bold hover:bg-[#3d94a5] transition-all shadow-md hover:shadow-lg hover:scale-105 ${isVolzet || isDeelsVolzet ? 'opacity-50 cursor-not-allowed pointer-events-none hover:shadow-md hover:scale-100' : ''}">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                             <polyline points="14 2 14 8 20 8"></polyline>
                                             <line x1="12" y1="18" x2="12" y2="12"></line>
                                             <line x1="9" y1="15" x2="15" y2="15"></line>
                                         </svg>
-                                        ${isVolzet ? 'Inschrijven (volzet)' : 'Inschrijven'}
+                                        ${isVolzet ? 'Inschrijven (volzet)' : isDeelsVolzet ? 'Inschrijven (deels volzet)' : 'Inschrijven'}
                                     </a>
+                                    ${isDeelsVolzet ? `
+                                        <div class="w-full text-sm text-yellow-800 mt-1">
+                                            Inschrijven kan enkel via mail: <a href="mailto:info@despeelkamer.be" class="font-bold underline hover:text-yellow-900">info@despeelkamer.be</a>
+                                        </div>
+                                    ` : ''}
                                     ${activity.practical_info_url ? `
                                         <button type="button"
                                             onclick="openPracticalInfo(${practicalInfoArg})"
