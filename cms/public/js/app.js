@@ -39,6 +39,9 @@ function switchTab(tabName) {
         case 'media':
             loadSiteImages();
             break;
+        case 'documents':
+            loadDocuments();
+            break;
         case 'settings':
             loadUsers();
             break;

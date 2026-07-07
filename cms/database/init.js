@@ -97,7 +97,15 @@ async function initializeDatabase() {
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
-        console.log('✅ Verified optional columns (activities.practical_info_url, activities.status, team_members.intro, team_members.phone2/email2, locations.phone2/email2, contact_info table)');
+        await query(`
+            CREATE TABLE IF NOT EXISTS site_settings (
+                id INTEGER PRIMARY KEY DEFAULT 1,
+                reglement_url TEXT,
+                reglement_name TEXT,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+        console.log('✅ Verified optional columns (activities.practical_info_url, activities.status, team_members.intro, team_members.phone2/email2, locations.phone2/email2, contact_info table, site_settings table)');
 
         // Insert default admin user if not exists
         const adminUsername = process.env.ADMIN_USERNAME || 'admin';
