@@ -8,13 +8,14 @@ async function loadDataFromAPI() {
     try {
         // Add cache-busting timestamp to prevent browser caching
         const timestamp = new Date().getTime();
-        const [locations, team, activities, pricing, siteImages, contact] = await Promise.all([
+        const [locations, team, activities, pricing, siteImages, contact, settings] = await Promise.all([
             fetch(`${API_BASE_URL}/locations?_=${timestamp}`, { cache: 'no-store' }).then(r => r.json()),
             fetch(`${API_BASE_URL}/team?_=${timestamp}`, { cache: 'no-store' }).then(r => r.json()),
             fetch(`${API_BASE_URL}/activities?_=${timestamp}`, { cache: 'no-store' }).then(r => r.json()),
             fetch(`${API_BASE_URL}/pricing?_=${timestamp}`, { cache: 'no-store' }).then(r => r.json()),
             fetch(`${API_BASE_URL}/site-images?_=${timestamp}`, { cache: 'no-store' }).then(r => r.json()),
-            fetch(`${API_BASE_URL}/contact?_=${timestamp}`, { cache: 'no-store' }).then(r => r.json())
+            fetch(`${API_BASE_URL}/contact?_=${timestamp}`, { cache: 'no-store' }).then(r => r.json()),
+            fetch(`${API_BASE_URL}/settings?_=${timestamp}`, { cache: 'no-store' }).then(r => r.json()).catch(() => ({}))
         ]);
 
         return {
@@ -29,6 +30,10 @@ async function loadDataFromAPI() {
                 halfDay: 12.00
             },
             siteImages: siteImages || [],
+            settings: {
+                reglementUrl: settings?.reglement_url || '',
+                reglementName: settings?.reglement_name || ''
+            },
             contact: {
                 email: contact?.email || 'Inge.Versavel@vbsdefreres.be',
                 email2: contact?.email2 || '',
@@ -60,6 +65,10 @@ let DATA = {
         halfDay: 12.00
     },
     siteImages: [],
+    settings: {
+        reglementUrl: '',
+        reglementName: ''
+    },
     contact: {
         email: 'Inge.Versavel@vbsdefreres.be',
         phone: '050 33 63 47',
@@ -68,6 +77,29 @@ let DATA = {
         address: 'Mariastraat 7, 8000 Brugge'
     }
 };
+
+// Update the "Huishoudelijk Reglement" link(s) in the footer to point at the
+// CMS-managed document. Falls back to the static PDF if nothing is uploaded yet.
+function updateReglementLinks(settings) {
+    const url = settings?.reglementUrl;
+    if (!url) return; // keep the existing static ./documents/... link as fallback
+
+    const apply = () => {
+        document.querySelectorAll('a[href$="huishoudelijk-reglement-25-26.pdf"], a[data-reglement-link]')
+            .forEach(link => {
+                link.href = url;
+                link.setAttribute('data-reglement-link', '');
+                link.setAttribute('target', '_blank');
+                link.setAttribute('rel', 'noopener');
+            });
+    };
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', apply, { once: true });
+    } else {
+        apply();
+    }
+}
 
 // Load data when script loads
 (async function() {
@@ -79,8 +111,12 @@ let DATA = {
         DATA.activities = apiData.activities;
         DATA.pricing = apiData.pricing;
         DATA.siteImages = apiData.siteImages || [];
+        DATA.settings = apiData.settings || DATA.settings;
         DATA.contact = apiData.contact || DATA.contact;
-        
+
+        // Point the footer "Huishoudelijk Reglement" link at the CMS document
+        updateReglementLinks(DATA.settings);
+
         console.log('✅ Data loaded from Railway API:', {
             locations: DATA.locations.length,
             team: DATA.team.length,

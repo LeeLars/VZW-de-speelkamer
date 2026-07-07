@@ -13,6 +13,7 @@ const locationsRoutes = require('./routes/locations');
 const contactRoutes = require('./routes/contact');
 const uploadRoutes = require('./routes/upload');
 const siteImagesRoutes = require('./routes/siteImages');
+const settingsRoutes = require('./routes/settings');
 const seedRoutes = require('./routes/seed');
 
 const app = express();
@@ -70,6 +71,7 @@ app.use('/api/locations', locationsRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/site-images', siteImagesRoutes);
+app.use('/api/settings', settingsRoutes);
 app.use('/api/seed', seedRoutes);
 
 // Health check
